@@ -1,0 +1,43 @@
+version: '3.5'
+services:
+  flyway:
+    image: flyway/flyway
+    command: migrate
+    volumes:
+      - ../api/resources/migrations/sql:/flyway/sql
+      - ./data/flyway/flyway.conf:/flyway/conf/flyway.conf
+
+  postgres:
+    image: postgres:14
+    volumes:
+      - ./data/postgres/data:/var/lib/postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - 5432:5432
+
+  redis:
+    image: redis:7.0.5-alpine
+    ports:
+      - 6379:6379
+
+  api:
+    image: node:18
+    working_dir: /usr/src/app
+    environment:
+      - APP_PORT=80
+      - NODE_ENV=development
+    command: yarn run dev
+    volumes:
+      - ../api/:/usr/src/app
+    ports:
+      - 3001:80
+    depends_on:
+      - redis
+      - postgres
+
+networks:
+  default:
+    external:
+      name: gendaize
