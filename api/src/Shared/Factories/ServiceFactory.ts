@@ -2,8 +2,6 @@ import { AuthenticationService } from '../../Authentication/AuthenticationServic
 import { EndpointPermissionsService } from '../../EndpointPermissions/EndpointPermissionsService'
 import { OrganizationService } from '../../Organization/OrganizationService'
 import { OrganizationValidator } from '../../Organization/OrganizationValidator'
-import { ProductTypeService } from '../../ProductType/ProductTypeService'
-import { ProductTypeValidator } from '../../ProductType/ProductTypeValidator'
 import { RegisterService } from '../../Register/RegisterService'
 import { RegisterValidator } from '../../Register/RegisterValidator'
 import { UserService } from '../../User/UserService'
@@ -49,14 +47,6 @@ export class ServiceFactory {
       this.repositoryFactory.getDataSource(),
       this.repositoryFactory.buildRepository('User'),
       new UserValidator()
-    )
-  }
-
-  public buildProductTypeService() {
-    return new ProductTypeService(
-      this.repositoryFactory.getDataSource(),
-      this.repositoryFactory.buildRepository('ProductType'),
-      new ProductTypeValidator()
     )
   }
 }
