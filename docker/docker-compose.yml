@@ -7,6 +7,13 @@ services:
       - ../api/resources/migrations/sql:/flyway/sql
       - ./data/flyway/flyway.conf:/flyway/conf/flyway.conf
 
+  flyway-prd:
+    image: flyway/flyway
+    command: migrate
+    volumes:
+      - ../api/resources/migrations/sql:/flyway/sql
+      - ./data/flyway/flyway-prd.conf:/flyway/conf/flyway.conf
+
   postgres:
     image: postgres:14
     volumes:
