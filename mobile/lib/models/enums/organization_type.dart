@@ -1,0 +1,1 @@
+enum OrganizationType { personal, enterprise }
