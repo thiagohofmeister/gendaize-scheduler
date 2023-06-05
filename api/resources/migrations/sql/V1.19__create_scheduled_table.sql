@@ -1,0 +1,20 @@
+CREATE TABLE public.scheduled (
+	id char(36) NOT NULL,
+	start_at timestamp NOT NULL,
+	end_at timestamp NOT NULL,
+	created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	status varchar NOT NULL,
+	addresses json NOT NULL,
+	amount json NOT NULL,
+	user_id char(36) NOT NULL,
+	customer_id char(36) NOT NULL,
+	service_id char(36) NULL,
+	headquarter_id char(36) NOT NULL,
+	customer_package_service_id char(36) NULL,
+	CONSTRAINT scheduled_pk PRIMARY KEY (id),
+	CONSTRAINT scheduled_fk FOREIGN KEY (headquarter_id) REFERENCES public.headquarter(id),
+	CONSTRAINT scheduled_fk_1 FOREIGN KEY (customer_id) REFERENCES public.customer(id),
+	CONSTRAINT scheduled_fk_2 FOREIGN KEY (service_id) REFERENCES public.service(id),
+	CONSTRAINT scheduled_fk_3 FOREIGN KEY (user_id) REFERENCES public."user"(id),
+	CONSTRAINT scheduled_fk_4 FOREIGN KEY (customer_package_service_id) REFERENCES public.customer_package_service(id)
+);
