@@ -24,11 +24,6 @@ services:
     ports:
       - 5432:5432
 
-  redis:
-    image: redis:7.0.5-alpine
-    ports:
-      - 6379:6379
-
   api:
     image: node:18
     working_dir: /usr/src/app
@@ -41,7 +36,6 @@ services:
     ports:
       - 3001:80
     depends_on:
-      - redis
       - postgres
 
 networks:
