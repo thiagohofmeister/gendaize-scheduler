@@ -1,5 +1,7 @@
 import { Column, Entity, JoinColumn, OneToMany, PrimaryColumn } from 'typeorm'
 
+import { HeadquarterDao } from '../../Headquarter/Models/HeadquarterDao'
+import { OrganizationConfigurationDao } from '../../OrganizationConfiguration/Models/OrganizationConfigurationDao'
 import { DaoModel } from '../../Shared/Models/DaoModel'
 import { UserOrganizationDao } from '../../UserOrganization/Models/UserOrganizationDao'
 import { DocumentTypeEnum } from '../Enums/DocumentTypeEnum'
@@ -41,6 +43,21 @@ export class OrganizationDao implements DaoModel {
     name: 'user_id'
   })
   userOrganizations: UserOrganizationDao[]
+
+  @OneToMany(
+    () => OrganizationConfigurationDao,
+    OrganizationConfiguration => OrganizationConfiguration.organization
+  )
+  @JoinColumn({
+    name: 'organization_id'
+  })
+  organizationConfigurations: OrganizationConfigurationDao[]
+
+  @OneToMany(() => HeadquarterDao, headquarter => headquarter.organization)
+  @JoinColumn({
+    name: 'organization_id'
+  })
+  headquarters: HeadquarterDao[]
 
   constructor(
     id: string,

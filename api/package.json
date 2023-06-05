@@ -12,6 +12,7 @@
     "prod": "node ./dist/Api.js"
   },
   "dependencies": {
+    "@googlemaps/google-maps-services-js": "^3.3.31",
     "amqplib": "^0.10.0",
     "axios": "^0.27.2",
     "cors": "^2.8.5",

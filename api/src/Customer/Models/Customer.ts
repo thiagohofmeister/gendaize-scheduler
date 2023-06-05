@@ -1,10 +1,14 @@
 import { randomUUID } from 'crypto'
+import { CustomerAddress } from '../../CustomerAddress/Models/CustomerAddress'
 import { Organization } from '../../Organization/Models/Organization'
 import { DomainModel } from '../../Shared/Models/DomainModel'
 import { ResponseModel } from '../../Shared/Models/ResponseModel'
+import { EncryptUtils } from '../../Shared/Utils/EncryptUtils'
 import { CustomerDao } from './CustomerDao'
 
 export class Customer implements ResponseModel, DomainModel {
+  private addresses: CustomerAddress[]
+
   constructor(
     private name: string,
     private phone: string,
@@ -24,6 +28,11 @@ export class Customer implements ResponseModel, DomainModel {
     return this.password
   }
 
+  public setPassword(password: string) {
+    this.password = EncryptUtils.password(password)
+    return this
+  }
+
   public getEmail(): string {
     return this.email
   }
@@ -40,18 +49,39 @@ export class Customer implements ResponseModel, DomainModel {
     return this.organization
   }
 
+  public getAddresses(): CustomerAddress[] {
+    return this.addresses
+  }
+
+  public removeAddresses(idsToKeep: string[]) {
+    if (!this.addresses) this.addresses = []
+
+    this.addresses = this.addresses.filter(address => !idsToKeep.includes(address.getId()))
+
+    return this
+  }
+
+  public addAddress(address: CustomerAddress) {
+    if (!this.addresses) this.addresses = []
+
+    this.addresses.push(address)
+
+    return this
+  }
+
   toView() {
     return {
       id: this.getId(),
       name: this.getName(),
       phone: this.getPhone(),
       email: this.getEmail(),
-      organization: this.getOrganization()?.toView()
+      organization: this.getOrganization()?.toView(),
+      addresses: this.getAddresses()?.map(address => address.toView())
     }
   }
 
   toDao() {
-    return new CustomerDao(
+    const entity = new CustomerDao(
       this.getId(),
       this.getName(),
       this.getPhone(),
@@ -59,5 +89,11 @@ export class Customer implements ResponseModel, DomainModel {
       this.getPassword(),
       this.getOrganization()?.toDao()
     )
+
+    if (this.getAddresses()) {
+      entity.addresses = this.getAddresses().map(address => address.toDao())
+    }
+
+    return entity
   }
 }

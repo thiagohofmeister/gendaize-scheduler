@@ -7,8 +7,7 @@ CREATE TABLE public.customer_address (
 	"number" varchar NOT NULL,
 	complement varchar NULL,
 	zip_code varchar NOT NULL,
-  distance int NOT NULL,
-  duration_time int NOT NULL,
+  distances json NOT NULL,
 	customer_id char(36) NOT NULL,
 	CONSTRAINT customer_address_pk PRIMARY KEY (id),
 	CONSTRAINT customer_address_fk FOREIGN KEY (customer_id) REFERENCES public.customer(id)

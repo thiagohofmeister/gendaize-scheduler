@@ -18,7 +18,10 @@ export class Factory {
   }
 
   public buildServiceFactory(organizationId: string) {
-    return new ServiceFactory(this.buildRepositoryFactory(organizationId))
+    return new ServiceFactory(
+      this.buildRepositoryFactory(organizationId),
+      this.buildProviderFactory()
+    )
   }
 
   public buildService(domainName: string) {

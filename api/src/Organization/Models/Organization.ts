@@ -1,11 +1,14 @@
 import { randomUUID } from 'crypto'
 
+import { OrganizationConfiguration } from '../../OrganizationConfiguration/Models/OrganizationConfiguration'
 import { DomainModel } from '../../Shared/Models/DomainModel'
 import { ResponseModel } from '../../Shared/Models/ResponseModel'
 import { DocumentTypeEnum } from '../Enums/DocumentTypeEnum'
 import { OrganizationDao } from './OrganizationDao'
 
 export class Organization implements ResponseModel, DomainModel {
+  private organizationConfigurations: OrganizationConfiguration[]
+
   constructor(
     private name: string,
     private documentType: DocumentTypeEnum,
@@ -44,6 +47,26 @@ export class Organization implements ResponseModel, DomainModel {
 
   public getId(): string {
     return this.id
+  }
+
+  public removeOrganizations(keepOrganizationIds: string[]) {
+    if (!this.organizationConfigurations) this.organizationConfigurations = []
+
+    this.organizationConfigurations = this.organizationConfigurations.filter(
+      org => !keepOrganizationIds.includes(org.getId())
+    )
+
+    return this.organizationConfigurations
+  }
+
+  public addOrganization(organizationConfiguration: OrganizationConfiguration) {
+    if (!this.organizationConfigurations) this.organizationConfigurations = []
+    this.organizationConfigurations.push(organizationConfiguration)
+    return this
+  }
+
+  public getOrganizationConfigurations(): OrganizationConfiguration[] {
+    return this.organizationConfigurations
   }
 
   toView() {

@@ -1,5 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm'
 import { AuthenticationDao } from '../../Authentication/Models/AuthenticationDao'
+import { CustomerAddressDao } from '../../CustomerAddress/Models/CustomerAddressDao'
 import { OrganizationDao } from '../../Organization/Models/OrganizationDao'
 import { DaoModel } from '../../Shared/Models/DaoModel'
 import { Customer } from './Customer'
@@ -33,6 +34,14 @@ export class CustomerDao implements DaoModel {
   })
   authentications: AuthenticationDao[]
 
+  @OneToMany(() => CustomerAddressDao, customerAddress => customerAddress.customer, {
+    cascade: true
+  })
+  @JoinColumn({
+    name: 'customer_id'
+  })
+  addresses: CustomerAddressDao[]
+
   constructor(
     id: string,
     name: string,
@@ -50,7 +59,7 @@ export class CustomerDao implements DaoModel {
   }
 
   toDomain() {
-    return new Customer(
+    const domain = new Customer(
       this.name,
       this.phone,
       this.email,
@@ -58,5 +67,11 @@ export class CustomerDao implements DaoModel {
       this.organization?.toDomain(),
       this.id
     )
+
+    if (this.addresses) {
+      this.addresses.forEach(address => domain.addAddress(address.toDomain()))
+    }
+
+    return domain
   }
 }
