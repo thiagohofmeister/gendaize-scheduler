@@ -1,16 +1,4 @@
-import { AuthenticationService } from '../../Authentication/AuthenticationService'
-import { CustomerService } from '../../Customer/CustomerService'
-import { CustomerValidator } from '../../Customer/CustomerValidator'
-import { EndpointPermissionsService } from '../../EndpointPermissions/EndpointPermissionsService'
-import { HeadquarterService } from '../../Headquarter/HeadquarterService'
-import { LocationService } from '../../Location/LocationService'
-import { OrganizationService } from '../../Organization/OrganizationService'
-import { OrganizationValidator } from '../../Organization/OrganizationValidator'
-import { RegisterService } from '../../Register/RegisterService'
-import { RegisterValidator } from '../../Register/RegisterValidator'
-import { UserService } from '../../User/UserService'
-import { UserValidator } from '../../User/UserValidator'
-import { JWT } from '../Modules/JWT'
+import { PathUtils } from '../Utils/PathUtils'
 import { ProviderFactory } from './ProviderFactory'
 import { RepositoryFactory } from './RepositoryFactory'
 
@@ -20,69 +8,34 @@ export class ServiceFactory {
     private readonly providerFactory: ProviderFactory
   ) {}
 
-  buildEndpointPermissionsService() {
-    return new EndpointPermissionsService()
-  }
+  buildService(domainName: string): any {
+    const Service = PathUtils.getService(domainName)
 
-  buildAuthenticationService() {
-    return new AuthenticationService(
-      this.repositoryFactory.getDataSource(),
-      this.repositoryFactory.buildRepository('Authentication'),
-      this.buildUserService(),
-      this.buildCustomerService(),
-      new JWT(process.env.JWT_KEY)
-    )
-  }
+    return Reflect.construct(
+      Service,
+      Service.getReflect().map(item => {
+        switch (item.name) {
+          case 'DataSource':
+            return this.repositoryFactory.getDataSource()
 
-  buildOrganizationService() {
-    return new OrganizationService(
-      this.repositoryFactory.getDataSource(),
-      this.repositoryFactory.buildRepository('Organization'),
-      new OrganizationValidator()
-    )
-  }
+          case `${domainName}Repository`:
+            return this.repositoryFactory.buildRepository(domainName)
 
-  buildRegisterService() {
-    return new RegisterService(
-      this.repositoryFactory.getDataSource(),
-      this.buildUserService(),
-      this.buildOrganizationService(),
-      this.buildAuthenticationService(),
-      new RegisterValidator()
-    )
-  }
+          case `${domainName}Validator`:
+            return Reflect.construct(PathUtils.getValidator(domainName), [])
 
-  buildUserService() {
-    return new UserService(
-      this.repositoryFactory.getDataSource(),
-      this.repositoryFactory.buildRepository('User'),
-      new UserValidator()
-    )
-  }
+          default:
+            if (item.name.includes('Provider')) {
+              return this.providerFactory[`build${item.name}`]()
+            }
 
-  buildCustomerService() {
-    return new CustomerService(
-      this.repositoryFactory.getDataSource(),
-      this.repositoryFactory.buildRepository('Customer'),
-      new CustomerValidator(),
-      this.buildLocationService()
-    )
-  }
+            if (item.name.includes('Service')) {
+              return this.buildService(item.name.replace('Service', ''))
+            }
 
-  buildLocationService() {
-    return new LocationService(
-      this.repositoryFactory.getDataSource(),
-      this.repositoryFactory.buildRepository('Location'),
-      this.buildHeadquarterService(),
-      this.providerFactory.buildViaCepProvider(),
-      this.providerFactory.buildGoogleDistanceMatrixProvider()
-    )
-  }
-
-  buildHeadquarterService() {
-    return new HeadquarterService(
-      this.repositoryFactory.getDataSource(),
-      this.repositoryFactory.buildRepository('Headquarter')
+            throw new Error(`Not implemented factory to: ${item.name}`)
+        }
+      })
     )
   }
 }

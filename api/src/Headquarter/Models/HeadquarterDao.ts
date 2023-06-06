@@ -2,6 +2,7 @@ import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm'
 import { OrganizationDao } from '../../Organization/Models/OrganizationDao'
 import { DaoModel } from '../../Shared/Models/DaoModel'
 import { Headquarter } from './Headquarter'
+import { HeadquarterSchedule } from './HeadquarterSchedule'
 
 @Entity('headquarter')
 export class HeadquarterDao implements DaoModel {
@@ -46,8 +47,8 @@ export class HeadquarterDao implements DaoModel {
   })
   addressZipCode: string
 
-  @Column()
-  schedules: string
+  @Column('json')
+  schedules: HeadquarterSchedule
 
   @ManyToOne(() => OrganizationDao, organization => organization.headquarters)
   @JoinColumn({
@@ -65,7 +66,7 @@ export class HeadquarterDao implements DaoModel {
     addressNumber: string,
     addressComplement: string,
     addressZipCode: string,
-    schedules: string,
+    schedules: HeadquarterSchedule,
     organization?: OrganizationDao
   ) {
     this.id = id

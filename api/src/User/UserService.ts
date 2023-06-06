@@ -11,7 +11,9 @@ import { UserDataNotFound } from './Exceptions/UserDataNotFound'
 import { User } from './Models/User'
 import { UserRepository } from './UserRepository'
 import { UserValidator } from './UserValidator'
+import { Service } from '../Shared/Utils/DecoratorUtils'
 
+@Service
 export class UserService extends BaseService {
   constructor(
     dataSource: DataSource,

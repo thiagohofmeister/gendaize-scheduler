@@ -2,6 +2,8 @@ import { randomUUID } from 'crypto'
 import { Organization } from '../../Organization/Models/Organization'
 import { DomainModel } from '../../Shared/Models/DomainModel'
 import { ResponseModel } from '../../Shared/Models/ResponseModel'
+import { HeadquarterDao } from './HeadquarterDao'
+import { HeadquarterSchedule } from './HeadquarterSchedule'
 
 export class Headquarter implements DomainModel, ResponseModel {
   constructor(
@@ -13,7 +15,7 @@ export class Headquarter implements DomainModel, ResponseModel {
     private addressNumber: string,
     private addressComplement: string,
     private addressZipCode: string,
-    private schedules: string,
+    private schedules: HeadquarterSchedule,
     private organization?: Organization,
     private id?: string
   ) {
@@ -28,7 +30,7 @@ export class Headquarter implements DomainModel, ResponseModel {
     return this.organization
   }
 
-  public getSchedules(): string {
+  public getSchedules(): HeadquarterSchedule {
     return this.schedules
   }
 
@@ -79,17 +81,33 @@ export class Headquarter implements DomainModel, ResponseModel {
     return {
       id: this.getId(),
       name: this.getName(),
-      addressState: this.getAddressState(),
-      addressCity: this.getAddressCity(),
-      addressDistrict: this.getAddressDistrict(),
-      addressStreet: this.getAddressStreet(),
-      addressNumber: this.getAddressNumber(),
-      addressComplement: this.getAddressComplement(),
-      addressZipCode: this.getAddressZipCode(),
+      address: {
+        state: this.getAddressState(),
+        city: this.getAddressCity(),
+        district: this.getAddressDistrict(),
+        street: this.getAddressStreet(),
+        number: this.getAddressNumber(),
+        complement: this.getAddressComplement(),
+        zipCode: this.getAddressZipCode()
+      },
       schedules: this.getSchedules(),
       organization: this.getOrganization()
     }
   }
 
-  toDao() {}
+  toDao() {
+    return new HeadquarterDao(
+      this.getId(),
+      this.getName(),
+      this.getAddressState(),
+      this.getAddressCity(),
+      this.getAddressDistrict(),
+      this.getAddressStreet(),
+      this.getAddressNumber(),
+      this.getAddressComplement(),
+      this.getAddressZipCode(),
+      this.getSchedules(),
+      this.getOrganization()?.toDao()
+    )
+  }
 }

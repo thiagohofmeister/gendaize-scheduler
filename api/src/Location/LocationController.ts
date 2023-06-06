@@ -17,7 +17,7 @@ export class LocationController extends BaseController {
     await this.responseHandler(
       res,
       next,
-      this.getServiceFactory(req).buildLocationService().get(),
+      this.getServiceFactory(req).buildService('Location').get(),
       ResponseTypeEnum.OK
     )
   }
@@ -26,7 +26,7 @@ export class LocationController extends BaseController {
     await this.responseHandler(
       res,
       next,
-      this.getServiceFactory(req).buildLocationService().findLocationByAddress(req.body),
+      this.getServiceFactory(req).buildService('Location').findLocationByAddress(req.body),
       ResponseTypeEnum.OK
     )
   }
@@ -35,7 +35,7 @@ export class LocationController extends BaseController {
     await this.responseHandler(
       res,
       next,
-      this.getServiceFactory(req).buildLocationService().findOneByZipCode(req.params.zipCode),
+      this.getServiceFactory(req).buildService('Location').findOneByZipCode(req.params.zipCode),
       ResponseTypeEnum.OK
     )
   }
@@ -44,7 +44,7 @@ export class LocationController extends BaseController {
     await this.responseHandler(
       res,
       next,
-      this.getServiceFactory(req).buildLocationService().calculateDistances(req.body),
+      this.getServiceFactory(req).buildService('Location').calculateDistances(req.body),
       ResponseTypeEnum.OK
     )
   }

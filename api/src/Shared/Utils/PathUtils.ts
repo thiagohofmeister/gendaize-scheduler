@@ -49,6 +49,22 @@ export class PathUtils {
     return require(PathUtils.getDomain(domainName)['controller'])[`${domainName}Controller`]
   }
 
+  public static getService(domainName: string) {
+    const path = PathUtils.getDomain(domainName)['service']
+
+    if (!path) return null
+
+    return require(PathUtils.getDomain(domainName)['service'])[`${domainName}Service`]
+  }
+
+  public static getValidator(domainName: string) {
+    const path = PathUtils.getDomain(domainName)['validator']
+
+    if (!path) return null
+
+    return require(PathUtils.getDomain(domainName)['validator'])[`${domainName}Validator`]
+  }
+
   public static getPathes() {
     if (!this.pathes) {
       this.fillPathes()

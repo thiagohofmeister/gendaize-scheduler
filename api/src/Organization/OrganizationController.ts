@@ -14,7 +14,7 @@ export class OrganizationController extends BaseController {
     return this.responseHandler(
       res,
       next,
-      (await this.getServiceFactory(req)).buildOrganizationService().create(req.body),
+      (await this.getServiceFactory(req)).buildService('Organization').create(req.body),
       ResponseTypeEnum.CREATED
     )
   }

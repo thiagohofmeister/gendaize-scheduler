@@ -14,7 +14,9 @@ export class UserController extends BaseController {
     return this.responseHandler(
       response,
       next,
-      (await this.getServiceFactory(request)).buildUserService().getById(request.context?.user?.id),
+      (await this.getServiceFactory(request))
+        .buildService('User')
+        .getById(request.context?.user?.id),
       ResponseTypeEnum.OK
     )
   }

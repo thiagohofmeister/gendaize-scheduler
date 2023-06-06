@@ -17,7 +17,7 @@ export class AuthenticationController extends BaseController {
       res,
       next,
       (await this.getServiceFactory(req))
-        .buildAuthenticationService()
+        .buildService('Authentication')
         .logout(req.context?.authenticationId),
       ResponseTypeEnum.NO_CONTENT
     )
@@ -39,7 +39,7 @@ export class AuthenticationController extends BaseController {
     return this.responseHandler(
       res,
       next,
-      (await this.getServiceFactory(req)).buildAuthenticationService().authenticate({
+      (await this.getServiceFactory(req)).buildService('Authentication').authenticate({
         device: req.header('User-Agent'),
         isCustomer: !!req.header('x-customer-app'),
         login,
