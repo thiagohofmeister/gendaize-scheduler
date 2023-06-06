@@ -2,9 +2,12 @@ import * as Joi from 'joi'
 import { Schema } from 'joi'
 import { BaseValidator } from '../Base/BaseValidator'
 import { HeadquarterCreateDto } from './Dto/HeadquarterCreateDto'
+import { HeadquarterUpdateLocationDto } from './Dto/HeadquarterUpdateLocationDto'
 
 export class HeadquarterValidator extends BaseValidator {
   private readonly createSchema: Schema
+
+  private readonly updateLocationsSchema: Schema
 
   constructor() {
     super()
@@ -32,9 +35,19 @@ export class HeadquarterValidator extends BaseValidator {
         })
       )
     })
+
+    this.updateLocationsSchema = Joi.array().items(
+      Joi.object({
+        id: Joi.string().required()
+      })
+    )
   }
 
   public async validateCreatePayload(payload: HeadquarterCreateDto) {
     return this.validateBySchema(payload, this.createSchema)
+  }
+
+  public async validateUpdateLocationsPayload(payload: HeadquarterUpdateLocationDto[]) {
+    return this.validateBySchema(payload, this.updateLocationsSchema)
   }
 }

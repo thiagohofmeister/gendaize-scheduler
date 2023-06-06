@@ -32,6 +32,10 @@ export class LocationService extends BaseService {
     return this.repository.findAll({})
   }
 
+  public async getOneById(id: string): Promise<Location> {
+    return this.repository.findOneByPrimaryColumn(id)
+  }
+
   public async findOneByZipCode(zipCode: string): Promise<ZipCode> {
     return this.viaCepProvider.getOneByZipCode(zipCode)
   }

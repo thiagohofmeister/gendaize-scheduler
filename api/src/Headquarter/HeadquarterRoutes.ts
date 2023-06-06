@@ -8,6 +8,14 @@ export class HeadquarterRoutes extends BaseRoute<HeadquarterController> {
   getRoutes(): RouteDto[] {
     const controller = this.getController()
 
-    return [new AuthRouteDto(this.getFullEndpoint(), HttpMethodEnum.POST, controller.post)]
+    return [
+      new AuthRouteDto(this.getFullEndpoint(), HttpMethodEnum.POST, controller.post),
+      new AuthRouteDto(this.getFullEndpoint(), HttpMethodEnum.GET, controller.get),
+      new AuthRouteDto(
+        this.getFullEndpoint(':id/locations'),
+        HttpMethodEnum.PUT,
+        controller.putLocations
+      )
+    ]
   }
 }

@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm'
+import { Column, Entity, JoinTable, ManyToMany, PrimaryColumn } from 'typeorm'
+import { HeadquarterDao } from '../../Headquarter/Models/HeadquarterDao'
 import { DaoModel } from '../../Shared/Models/DaoModel'
 import { Location } from './Location'
 
@@ -12,6 +13,10 @@ export class LocationDao implements DaoModel {
 
   @Column()
   city: string
+
+  @ManyToMany(() => HeadquarterDao, { cascade: true })
+  @JoinTable()
+  headquarters: HeadquarterDao[]
 
   constructor(id: string, state: string, city: string) {
     this.id = id

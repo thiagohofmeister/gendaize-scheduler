@@ -1,4 +1,13 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm'
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  PrimaryColumn
+} from 'typeorm'
+import { LocationDao } from '../../Location/Models/LocationDao'
 import { OrganizationDao } from '../../Organization/Models/OrganizationDao'
 import { DaoModel } from '../../Shared/Models/DaoModel'
 import { Headquarter } from './Headquarter'
@@ -56,6 +65,18 @@ export class HeadquarterDao implements DaoModel {
   })
   organization: OrganizationDao
 
+  @ManyToMany(() => LocationDao, { cascade: true })
+  @JoinTable({
+    name: 'headquarter_location',
+    joinColumn: {
+      name: 'headquarter_id'
+    },
+    inverseJoinColumn: {
+      name: 'location_id'
+    }
+  })
+  locations: LocationDao[]
+
   constructor(
     id: string,
     name: string,
@@ -83,7 +104,7 @@ export class HeadquarterDao implements DaoModel {
   }
 
   toDomain() {
-    return new Headquarter(
+    const domain = new Headquarter(
       this.name,
       this.addressState,
       this.addressCity,
@@ -96,5 +117,11 @@ export class HeadquarterDao implements DaoModel {
       this.organization?.toDomain(),
       this.id
     )
+
+    if (this.locations) {
+      this.locations.forEach(location => domain.addLocation(location.toDomain()))
+    }
+
+    return domain
   }
 }

@@ -1,3 +1,4 @@
+import { JWT } from '../Modules/JWT'
 import { PathUtils } from '../Utils/PathUtils'
 import { ProviderFactory } from './ProviderFactory'
 import { RepositoryFactory } from './RepositoryFactory'
@@ -10,6 +11,8 @@ export class ServiceFactory {
 
   buildService(domainName: string): any {
     const Service = PathUtils.getService(domainName)
+
+    console.log({ params: Service.getReflect() })
 
     return Reflect.construct(
       Service,
@@ -24,6 +27,9 @@ export class ServiceFactory {
           case `${domainName}Validator`:
             return Reflect.construct(PathUtils.getValidator(domainName), [])
 
+          case 'JWT':
+            return new JWT(process.env.JWT_KEY)
+
           default:
             if (item.name.includes('Provider')) {
               return this.providerFactory[`build${item.name}`]()
@@ -31,6 +37,10 @@ export class ServiceFactory {
 
             if (item.name.includes('Service')) {
               return this.buildService(item.name.replace('Service', ''))
+            }
+
+            if (item.name.includes('Repository')) {
+              return this.repositoryFactory.buildRepository(item.name.replace('Repository', ''))
             }
 
             throw new Error(`Not implemented factory to: ${item.name}`)

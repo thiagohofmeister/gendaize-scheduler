@@ -1,4 +1,5 @@
 import { randomUUID } from 'crypto'
+import { Location } from '../../Location/Models/Location'
 import { Organization } from '../../Organization/Models/Organization'
 import { DomainModel } from '../../Shared/Models/DomainModel'
 import { ResponseModel } from '../../Shared/Models/ResponseModel'
@@ -6,6 +7,8 @@ import { HeadquarterDao } from './HeadquarterDao'
 import { HeadquarterSchedule } from './HeadquarterSchedule'
 
 export class Headquarter implements DomainModel, ResponseModel {
+  private locations: Location[]
+
   constructor(
     private name: string,
     private addressState: string,
@@ -77,6 +80,22 @@ export class Headquarter implements DomainModel, ResponseModel {
     return infos.filter(i => !!i).join(' ')
   }
 
+  public getLocations() {
+    return this.locations
+  }
+
+  public removeLocations(idsToKeep: string[]): this {
+    if (!this.locations) this.locations = []
+    this.locations = this.locations.filter(location => !idsToKeep.includes(location.getId()))
+    return this
+  }
+
+  public addLocation(location: Location) {
+    if (!this.locations) this.locations = []
+    this.locations.push(location)
+    return this
+  }
+
   toView() {
     return {
       id: this.getId(),
@@ -91,12 +110,13 @@ export class Headquarter implements DomainModel, ResponseModel {
         zipCode: this.getAddressZipCode()
       },
       schedules: this.getSchedules(),
-      organization: this.getOrganization()
+      organization: this.getOrganization()?.toView(),
+      locations: this.getLocations()?.map(location => location.toView())
     }
   }
 
   toDao() {
-    return new HeadquarterDao(
+    const entity = new HeadquarterDao(
       this.getId(),
       this.getName(),
       this.getAddressState(),
@@ -109,5 +129,11 @@ export class Headquarter implements DomainModel, ResponseModel {
       this.getSchedules(),
       this.getOrganization()?.toDao()
     )
+
+    if (this.getLocations()) {
+      entity.locations = this.getLocations()?.map(location => location.toDao())
+    }
+
+    return entity
   }
 }
