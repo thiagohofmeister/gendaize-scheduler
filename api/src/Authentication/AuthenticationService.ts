@@ -3,7 +3,7 @@ import { BaseService } from '../Base/BaseService'
 import { CustomerService } from '../Customer/CustomerService'
 import { Customer } from '../Customer/Models/Customer'
 import { JWT } from '../Shared/Modules/JWT'
-import { Service } from '../Shared/Utils/DecoratorUtils'
+import { ServiceDecorator } from '../Shared/Utils/DecoratorUtils'
 import { User } from '../User/Models/User'
 import { UserService } from '../User/UserService'
 import { UserOrganization } from '../UserOrganization/Models/UserOrganization'
@@ -13,7 +13,7 @@ import { AuthenticationTokenDto } from './Dto/AuthenticationTokenDto'
 import { AuthenticationStatusEnum } from './Enums/AuthenticationStatusEnum'
 import { Authentication } from './Models/Authentication'
 
-@Service
+@ServiceDecorator
 export class AuthenticationService extends BaseService {
   constructor(
     dataSource: DataSource,

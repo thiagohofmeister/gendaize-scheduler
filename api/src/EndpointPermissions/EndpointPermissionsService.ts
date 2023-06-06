@@ -1,11 +1,11 @@
 import * as fs from 'fs'
 import * as path from 'path'
 
-import { Service } from '../Shared/Utils/DecoratorUtils'
+import { ServiceDecorator } from '../Shared/Utils/DecoratorUtils'
 import { PathUtils } from '../Shared/Utils/PathUtils'
 import { EndpointPermissions } from './Models/EndpointPermissions'
 
-@Service
+@ServiceDecorator
 export class EndpointPermissionsService {
   constructor() {}
 

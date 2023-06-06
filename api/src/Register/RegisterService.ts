@@ -3,13 +3,13 @@ import { AuthenticationService } from '../Authentication/AuthenticationService'
 import { BaseService } from '../Base/BaseService'
 import { OrganizationService } from '../Organization/OrganizationService'
 import { InvalidDataException } from '../Shared/Models/Exceptions/InvalidDataException'
-import { Service } from '../Shared/Utils/DecoratorUtils'
+import { ServiceDecorator } from '../Shared/Utils/DecoratorUtils'
 import { UserService } from '../User/UserService'
 import { RegisterCreateDto } from './Dto/RegisterCreateDto'
 import { Register } from './Models/Register'
 import { RegisterValidator } from './RegisterValidator'
 
-@Service
+@ServiceDecorator
 export class RegisterService extends BaseService {
   constructor(
     dataSource: DataSource,

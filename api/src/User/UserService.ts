@@ -3,6 +3,7 @@ import { AuthenticationCreateDto } from '../Authentication/Dto/AuthenticationCre
 import { BaseService } from '../Base/BaseService'
 import { Organization } from '../Organization/Models/Organization'
 import { UnauthorizedException } from '../Shared/Models/Exceptions/UnauthorizedException'
+import { ServiceDecorator } from '../Shared/Utils/DecoratorUtils'
 import { UserOrganizationStatusEnum } from '../UserOrganization/Enums/UserOrganizationStatusEnum'
 import { UserOrganization } from '../UserOrganization/Models/UserOrganization'
 import { UserCreateDto } from './Dto/UserCreateDto'
@@ -11,9 +12,8 @@ import { UserDataNotFound } from './Exceptions/UserDataNotFound'
 import { User } from './Models/User'
 import { UserRepository } from './UserRepository'
 import { UserValidator } from './UserValidator'
-import { Service } from '../Shared/Utils/DecoratorUtils'
 
-@Service
+@ServiceDecorator
 export class UserService extends BaseService {
   constructor(
     dataSource: DataSource,

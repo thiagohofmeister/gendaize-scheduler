@@ -1,3 +1,3 @@
-export function Service(target: any) {}
+export function ServiceDecorator(target: any) {}
 
 export function Controller(target: any) {}

@@ -6,14 +6,14 @@ import { InvalidDataException } from '../Shared/Models/Exceptions/InvalidDataExc
 import { ErrorReason } from '../Shared/Models/Interfaces/ErrorReason'
 import { FilterDefault } from '../Shared/Models/Interfaces/FilterDefault'
 import { ListResponseModel } from '../Shared/Models/Interfaces/ListResponseModel'
-import { Service } from '../Shared/Utils/DecoratorUtils'
+import { ServiceDecorator } from '../Shared/Utils/DecoratorUtils'
 import { HeadquarterCreateDto } from './Dto/HeadquarterCreateDto'
 import { HeadquarterUpdateLocationDto } from './Dto/HeadquarterUpdateLocationDto'
 import { HeadquarterRepository } from './HeadquarterRepository'
 import { HeadquarterValidator } from './HeadquarterValidator'
 import { Headquarter } from './Models/Headquarter'
 
-@Service
+@ServiceDecorator
 export class HeadquarterService extends BaseService {
   constructor(
     dataSource: DataSource,

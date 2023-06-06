@@ -1,4 +1,13 @@
-import { Column, Entity, JoinColumn, OneToMany, PrimaryColumn } from 'typeorm'
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
+  PrimaryColumn
+} from 'typeorm'
+import { ServiceDao } from '../../Service/Models/ServiceDao'
 import { DaoModel } from '../../Shared/Models/DaoModel'
 import { UserOrganizationDao } from '../../UserOrganization/Models/UserOrganizationDao'
 import { UserStatusEnum } from '../Enums/UserStatusEnum'
@@ -36,6 +45,18 @@ export class UserDao implements DaoModel {
     name: 'user_id'
   })
   userOrganizations: UserOrganizationDao[]
+
+  @ManyToMany(() => ServiceDao, { cascade: true })
+  @JoinTable({
+    name: 'service_user',
+    joinColumn: {
+      name: 'user_id'
+    },
+    inverseJoinColumn: {
+      name: 'service_id'
+    }
+  })
+  services: ServiceDao[]
 
   constructor(
     id: string,

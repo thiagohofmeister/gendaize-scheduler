@@ -2,7 +2,7 @@ import { DataSource } from 'typeorm'
 import { BaseService } from '../Base/BaseService'
 import { HeadquarterService } from '../Headquarter/HeadquarterService'
 import { ListResponseModel } from '../Shared/Models/Interfaces/ListResponseModel'
-import { Service } from '../Shared/Utils/DecoratorUtils'
+import { ServiceDecorator } from '../Shared/Utils/DecoratorUtils'
 import { CalculateDistanceDto } from './Dto/CalculateDistanceDto'
 import { GetZipCodeByAddressDto } from './Dto/GetZipCodeByAddressDto'
 import { LocationRepository } from './LocationRepository'
@@ -12,7 +12,7 @@ import { ZipCode } from './Models/ZipCode'
 import { GoogleDistanceMatrixProvider } from './Providers/GoogleDistanceMatrixProvider'
 import { ViaCepProvider } from './Providers/ViaCepProvider'
 
-@Service
+@ServiceDecorator
 export class LocationService extends BaseService {
   constructor(
     dataSource: DataSource,

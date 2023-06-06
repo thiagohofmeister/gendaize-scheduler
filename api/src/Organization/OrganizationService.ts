@@ -1,12 +1,12 @@
 import { DataSource, EntityManager } from 'typeorm'
 import { BaseService } from '../Base/BaseService'
-import { Service } from '../Shared/Utils/DecoratorUtils'
+import { ServiceDecorator } from '../Shared/Utils/DecoratorUtils'
 import { OrganizationCreateDto } from './Dto/OrganizationCreateDto'
 import { Organization } from './Models/Organization'
 import { OrganizationRepository } from './OrganizationRepository'
 import { OrganizationValidator } from './OrganizationValidator'
 
-@Service
+@ServiceDecorator
 export class OrganizationService extends BaseService {
   constructor(
     dataSource: DataSource,

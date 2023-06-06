@@ -5,14 +5,14 @@ import { CustomerAddress } from '../CustomerAddress/Models/CustomerAddress'
 import { LocationService } from '../Location/LocationService'
 import { Organization } from '../Organization/Models/Organization'
 import { UnauthorizedException } from '../Shared/Models/Exceptions/UnauthorizedException'
-import { Service } from '../Shared/Utils/DecoratorUtils'
+import { ServiceDecorator } from '../Shared/Utils/DecoratorUtils'
 import { StringUtils } from '../Shared/Utils/StringUtils'
 import { CustomerRepository } from './CustomerRepository'
 import { CustomerValidator } from './CustomerValidator'
 import { CustomerCreateDto } from './Dto/CustomerCreateDto'
 import { Customer } from './Models/Customer'
 
-@Service
+@ServiceDecorator
 export class CustomerService extends BaseService {
   constructor(
     dataSource: DataSource,
