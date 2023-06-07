@@ -4,6 +4,7 @@ import { HeadquarterDao } from '../../Headquarter/Models/HeadquarterDao'
 import { OrganizationConfigurationDao } from '../../OrganizationConfiguration/Models/OrganizationConfigurationDao'
 import { ServiceDao } from '../../Service/Models/ServiceDao'
 import { DaoModel } from '../../Shared/Models/DaoModel'
+import { TaxDao } from '../../Tax/Models/TaxDao'
 import { UserOrganizationDao } from '../../UserOrganization/Models/UserOrganizationDao'
 import { DocumentTypeEnum } from '../Enums/DocumentTypeEnum'
 import { Organization } from './Organization'
@@ -65,6 +66,12 @@ export class OrganizationDao implements DaoModel {
     name: 'organization_id'
   })
   services: ServiceDao[]
+
+  @OneToMany(() => TaxDao, tax => tax.organization)
+  @JoinColumn({
+    name: 'organization_id'
+  })
+  taxes: TaxDao[]
 
   constructor(
     id: string,

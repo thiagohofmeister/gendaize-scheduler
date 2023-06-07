@@ -15,7 +15,15 @@ export class LocationDao implements DaoModel {
   city: string
 
   @ManyToMany(() => HeadquarterDao, { cascade: true })
-  @JoinTable()
+  @JoinTable({
+    name: 'headquarter_location',
+    joinColumn: {
+      name: 'location_id'
+    },
+    inverseJoinColumn: {
+      name: 'headquarter_id'
+    }
+  })
   headquarters: HeadquarterDao[]
 
   constructor(id: string, state: string, city: string) {

@@ -12,6 +12,12 @@ export class HeadquarterValidator extends BaseValidator {
   constructor() {
     super()
 
+    this.updateLocationsSchema = Joi.array().items(
+      Joi.object({
+        id: Joi.string().required()
+      })
+    )
+
     this.createSchema = Joi.object({
       name: Joi.string().required(),
       address: Joi.object({
@@ -33,14 +39,9 @@ export class HeadquarterValidator extends BaseValidator {
             })
           )
         })
-      )
+      ),
+      locations: this.updateLocationsSchema
     })
-
-    this.updateLocationsSchema = Joi.array().items(
-      Joi.object({
-        id: Joi.string().required()
-      })
-    )
   }
 
   public async validateCreatePayload(payload: HeadquarterCreateDto) {

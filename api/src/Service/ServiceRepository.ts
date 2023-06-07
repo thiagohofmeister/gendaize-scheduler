@@ -7,7 +7,9 @@ export class ServiceRepository extends TypeOrmMysqlRepositoryContract<Service, S
   protected customToFindOneByPrimaryColumn(
     query: SelectQueryBuilder<ServiceDao>
   ): SelectQueryBuilder<ServiceDao> {
-    return query.leftJoinAndSelect('ServiceDao.users', 'users')
+    return query
+      .leftJoinAndSelect('ServiceDao.users', 'users')
+      .leftJoinAndSelect('ServiceDao.taxes', 'taxes')
   }
 
   getRepository() {

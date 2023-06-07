@@ -56,7 +56,7 @@ export class Customer implements ResponseModel, DomainModel {
   public removeAddresses(idsToKeep: string[]) {
     if (!this.addresses) this.addresses = []
 
-    this.addresses = this.addresses.filter(address => !idsToKeep.includes(address.getId()))
+    this.addresses = this.addresses.filter(address => idsToKeep.includes(address.getId()))
 
     return this
   }
@@ -76,7 +76,7 @@ export class Customer implements ResponseModel, DomainModel {
       phone: this.getPhone(),
       email: this.getEmail(),
       organization: this.getOrganization()?.toView(),
-      addresses: this.getAddresses()?.map(address => address.toView())
+      addresses: this.getAddresses()?.map(address => address.toView()) || []
     }
   }
 

@@ -86,7 +86,7 @@ export class Headquarter implements DomainModel, ResponseModel {
 
   public removeLocations(idsToKeep: string[]): this {
     if (!this.locations) this.locations = []
-    this.locations = this.locations.filter(location => !idsToKeep.includes(location.getId()))
+    this.locations = this.locations.filter(location => idsToKeep.includes(location.getId()))
     return this
   }
 
@@ -111,7 +111,7 @@ export class Headquarter implements DomainModel, ResponseModel {
       },
       schedules: this.getSchedules(),
       organization: this.getOrganization()?.toView(),
-      locations: this.getLocations()?.map(location => location.toView())
+      locations: this.getLocations()?.map(location => location.toView()) || []
     }
   }
 

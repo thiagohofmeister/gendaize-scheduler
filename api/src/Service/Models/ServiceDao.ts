@@ -9,6 +9,7 @@ import {
 } from 'typeorm'
 import { OrganizationDao } from '../../Organization/Models/OrganizationDao'
 import { DaoModel } from '../../Shared/Models/DaoModel'
+import { TaxDao } from '../../Tax/Models/TaxDao'
 import { UserDao } from '../../User/Models/UserDao'
 import { ServiceTypeEnum } from '../Enums/ServiceTypeEnum'
 import { Service } from './Service'
@@ -53,6 +54,18 @@ export class ServiceDao implements DaoModel {
   })
   users: UserDao[]
 
+  @ManyToMany(() => TaxDao, { cascade: true })
+  @JoinTable({
+    name: 'service_tax',
+    joinColumn: {
+      name: 'service_id'
+    },
+    inverseJoinColumn: {
+      name: 'tax_id'
+    }
+  })
+  taxes: TaxDao[]
+
   constructor(
     id: string,
     name: string,
@@ -81,6 +94,10 @@ export class ServiceDao implements DaoModel {
 
     if (this.users) {
       this.users.forEach(user => domain.addUser(user.toDomain()))
+    }
+
+    if (this.taxes) {
+      this.taxes.forEach(tax => domain.addTax(tax.toDomain()))
     }
 
     return domain

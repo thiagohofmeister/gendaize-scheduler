@@ -1,4 +1,4 @@
-import { DataSource } from 'typeorm'
+import { DataSource, EntityManager } from 'typeorm'
 import { BaseService } from '../Base/BaseService'
 import { LocationRepository } from '../Location/LocationRepository'
 import { Organization } from '../Organization/Models/Organization'
@@ -25,22 +25,28 @@ export class HeadquarterService extends BaseService {
   }
 
   async create(organization: Organization, data: HeadquarterCreateDto): Promise<Headquarter> {
-    await this.validator.validateCreatePayload(data)
+    return this.transactionalFn(async manager => {
+      await this.validator.validateCreatePayload(data)
 
-    const headquarter = new Headquarter(
-      data.name,
-      data.address.state,
-      data.address.city,
-      data.address.district,
-      data.address.street,
-      data.address.number,
-      data.address.complement,
-      data.address.zipCode,
-      data.schedules,
-      organization
-    )
+      const headquarter = new Headquarter(
+        data.name,
+        data.address.state,
+        data.address.city,
+        data.address.district,
+        data.address.street,
+        data.address.number,
+        data.address.complement,
+        data.address.zipCode,
+        data.schedules,
+        organization
+      )
 
-    return this.repository.create(headquarter)
+      if (data.locations) {
+        await this.fillLocations(manager, headquarter, data.locations)
+      }
+
+      return this.repository.setManager(manager).save(headquarter)
+    })
   }
 
   async get(filter: FilterDefault): Promise<ListResponseModel<Headquarter>> {
@@ -52,15 +58,55 @@ export class HeadquarterService extends BaseService {
   }
 
   async updateLocations(id: string, data: HeadquarterUpdateLocationDto[]): Promise<Headquarter> {
-    await this.validator.validateUpdateLocationsPayload(data)
+    return this.transactionalFn(async manager => {
+      await this.validator.validateUpdateLocationsPayload(data)
 
-    const headquarter = await this.getById(id)
+      const headquarter = await this.setManager(manager).getById(id)
 
+      const errorReasons: ErrorReason[] = []
+
+      headquarter.removeLocations(data.map(location => location.id))
+
+      await Promise.all(
+        data.map(async ({ id }, index) => {
+          const location = await this.locationRepository
+            .setManager(manager)
+            .findOneByPrimaryColumn(id)
+
+          if (!location) {
+            errorReasons.push({
+              id: `[].${index}.id.${id}`,
+              message: `Location ${id} not found`
+            })
+            return
+          }
+
+          headquarter.addLocation(location)
+        })
+      )
+
+      if (errorReasons.length) {
+        throw new InvalidDataException('Invalid', errorReasons)
+      }
+
+      return this.repository.setManager(manager).save(headquarter)
+    })
+  }
+
+  private async fillLocations(
+    manager: EntityManager,
+    headquarter: Headquarter,
+    data: HeadquarterUpdateLocationDto[]
+  ) {
     const errorReasons: ErrorReason[] = []
+
+    headquarter.removeLocations(data.map(location => location.id))
 
     await Promise.all(
       data.map(async ({ id }, index) => {
-        const location = await this.locationRepository.findOneByPrimaryColumn(id)
+        const location = await this.locationRepository
+          .setManager(manager)
+          .findOneByPrimaryColumn(id)
 
         if (!location) {
           errorReasons.push({
@@ -77,7 +123,10 @@ export class HeadquarterService extends BaseService {
     if (errorReasons.length) {
       throw new InvalidDataException('Invalid', errorReasons)
     }
+  }
 
-    return this.repository.save(headquarter)
+  setManager(manager: EntityManager) {
+    this.repository.setManager(manager)
+    return this
   }
 }

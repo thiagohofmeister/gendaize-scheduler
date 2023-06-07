@@ -46,7 +46,7 @@ export class Configuration implements DomainModel, ResponseModel {
     if (!this.organizationConfigurations) this.organizationConfigurations = []
 
     this.organizationConfigurations = this.organizationConfigurations.filter(
-      organizationConfiguration => !idsToKeep.includes(organizationConfiguration.getId())
+      organizationConfiguration => idsToKeep.includes(organizationConfiguration.getId())
     )
 
     return this

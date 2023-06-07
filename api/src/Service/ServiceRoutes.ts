@@ -11,7 +11,8 @@ export class ServiceRoutes extends BaseRoute<ServiceController> {
     return [
       new AuthRouteDto(this.getFullEndpoint(), HttpMethodEnum.POST, controller.post),
       new AuthRouteDto(this.getFullEndpoint(), HttpMethodEnum.GET, controller.get),
-      new AuthRouteDto(this.getFullEndpoint(':id/users'), HttpMethodEnum.PUT, controller.putUsers)
+      new AuthRouteDto(this.getFullEndpoint(':id/users'), HttpMethodEnum.PUT, controller.putUsers),
+      new AuthRouteDto(this.getFullEndpoint(':id/taxes'), HttpMethodEnum.PUT, controller.putTaxes)
     ]
   }
 }

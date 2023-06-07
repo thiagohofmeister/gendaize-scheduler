@@ -2,12 +2,14 @@ import { randomUUID } from 'crypto'
 import { Organization } from '../../Organization/Models/Organization'
 import { DomainModel } from '../../Shared/Models/DomainModel'
 import { ResponseModel } from '../../Shared/Models/ResponseModel'
+import { Tax } from '../../Tax/Models/Tax'
 import { User } from '../../User/Models/User'
 import { ServiceTypeEnum } from '../Enums/ServiceTypeEnum'
 import { ServiceDao } from './ServiceDao'
 
 export class Service implements DomainModel, ResponseModel {
   private users: User[]
+  private taxes: Tax[]
 
   constructor(
     private name: string,
@@ -50,13 +52,29 @@ export class Service implements DomainModel, ResponseModel {
 
   public removeUsers(idsToKeep: string[]): this {
     if (!this.users) this.users = []
-    this.users = this.users.filter(location => !idsToKeep.includes(location.getId()))
+    this.users = this.users.filter(user => idsToKeep.includes(user.getId()))
     return this
   }
 
   public addUser(user: User) {
     if (!this.users) this.users = []
     this.users.push(user)
+    return this
+  }
+
+  public getTaxes() {
+    return this.taxes
+  }
+
+  public removeTaxes(idsToKeep: string[]): this {
+    if (!this.taxes) this.taxes = []
+    this.taxes = this.taxes.filter(tax => idsToKeep.includes(tax.getId()))
+    return this
+  }
+
+  public addTax(tax: Tax) {
+    if (!this.taxes) this.taxes = []
+    this.taxes.push(tax)
     return this
   }
 
@@ -68,7 +86,8 @@ export class Service implements DomainModel, ResponseModel {
       type: this.getType(),
       sameTimeQuantity: this.getSameTimeQuantity(),
       organization: this.getOrganization()?.toView(),
-      users: this.getUsers()?.map(user => user.toView())
+      users: this.getUsers()?.map(user => user.toView()) || [],
+      taxes: this.getTaxes()?.map(user => user.toView()) || []
     }
   }
 
@@ -84,6 +103,10 @@ export class Service implements DomainModel, ResponseModel {
 
     if (this.getUsers()) {
       entity.users = this.getUsers().map(user => user.toDao())
+    }
+
+    if (this.getTaxes()) {
+      entity.taxes = this.getTaxes().map(tax => tax.toDao())
     }
 
     return entity

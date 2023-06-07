@@ -6,24 +6,33 @@ import { ServiceUpdateUserDto } from './Dto/ServiceUpdateUserDto'
 import { ServiceTypeEnum } from './Enums/ServiceTypeEnum'
 
 export class ServiceValidator extends BaseValidator {
-  private createSchema: Schema
   private updateUsersSchema: Schema
+  private updateTaxesSchema: Schema
+  private createSchema: Schema
 
   constructor() {
     super()
-
-    this.createSchema = Joi.object({
-      name: Joi.string().required(),
-      price: Joi.number().required(),
-      type: Joi.valid(...Object.keys(ServiceTypeEnum)).required(),
-      sameTimeQuantity: Joi.number().required()
-    })
 
     this.updateUsersSchema = Joi.array().items(
       Joi.object({
         id: Joi.string().required()
       })
     )
+
+    this.updateTaxesSchema = Joi.array().items(
+      Joi.object({
+        id: Joi.string().required()
+      })
+    )
+
+    this.createSchema = Joi.object({
+      name: Joi.string().required(),
+      price: Joi.number().required(),
+      type: Joi.valid(...Object.keys(ServiceTypeEnum)).required(),
+      sameTimeQuantity: Joi.number().required(),
+      users: this.updateUsersSchema,
+      taxes: this.updateTaxesSchema
+    })
   }
 
   async validateCreatePayload(payload: ServiceCreateDto) {
@@ -32,5 +41,9 @@ export class ServiceValidator extends BaseValidator {
 
   async validateUpdateUsersPayload(payload: ServiceUpdateUserDto[]) {
     return this.validateBySchema(payload, this.updateUsersSchema)
+  }
+
+  async validateUpdateTaxesPayload(payload: ServiceUpdateUserDto[]) {
+    return this.validateBySchema(payload, this.updateTaxesSchema)
   }
 }

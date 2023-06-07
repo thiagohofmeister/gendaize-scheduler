@@ -1,4 +1,5 @@
 import { HeadquarterSchedule } from '../Models/HeadquarterSchedule'
+import { HeadquarterUpdateLocationDto } from './HeadquarterUpdateLocationDto'
 
 export interface HeadquarterCreateDto {
   name: string
@@ -12,4 +13,5 @@ export interface HeadquarterCreateDto {
     zipCode: string
   }
   schedules: HeadquarterSchedule
+  locations: HeadquarterUpdateLocationDto[]
 }

@@ -10,6 +10,7 @@ export class ServiceController extends BaseController {
     this.post = this.post.bind(this)
     this.get = this.get.bind(this)
     this.putUsers = this.putUsers.bind(this)
+    this.putTaxes = this.putTaxes.bind(this)
   }
 
   async post(req: CoreRequest, res: Response, next: NextFunction) {
@@ -37,6 +38,15 @@ export class ServiceController extends BaseController {
       res,
       next,
       this.getServiceFactory(req).buildService('Service').updateUsers(req.params.id, req.body),
+      ResponseTypeEnum.OK
+    )
+  }
+
+  async putTaxes(req: CoreRequest, res: Response, next: NextFunction) {
+    return this.responseHandler(
+      res,
+      next,
+      this.getServiceFactory(req).buildService('Service').updateTaxes(req.params.id, req.body),
       ResponseTypeEnum.OK
     )
   }

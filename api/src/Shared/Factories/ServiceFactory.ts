@@ -12,8 +12,6 @@ export class ServiceFactory {
   buildService(domainName: string): any {
     const Service = PathUtils.getService(domainName)
 
-    console.log({ params: Service.getReflect() })
-
     return Reflect.construct(
       Service,
       Service.getReflect().map(item => {
