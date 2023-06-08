@@ -53,7 +53,7 @@ export class AuthenticationService extends BaseService {
   }
 
   public async authenticateUser(user: User, device: string): Promise<Authentication> {
-    const userOrganization = user.getAllOrganizations()?.[0]
+    const userOrganization = user.getOrganizations()?.[0]
 
     return this.repository.create(
       new Authentication(

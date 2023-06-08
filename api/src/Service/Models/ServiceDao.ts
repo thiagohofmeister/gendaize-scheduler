@@ -36,6 +36,9 @@ export class ServiceDao implements DaoModel {
   })
   sameTimeQuantity: number
 
+  @Column()
+  duration: number
+
   @ManyToOne(() => OrganizationDao, organization => organization.services)
   @JoinColumn({
     name: 'organization_id'
@@ -72,6 +75,7 @@ export class ServiceDao implements DaoModel {
     price: number,
     type: ServiceTypeEnum,
     sameTimeQuantity: number,
+    duration: number,
     organization?: OrganizationDao
   ) {
     this.id = id
@@ -79,6 +83,7 @@ export class ServiceDao implements DaoModel {
     this.price = price
     this.type = type
     this.sameTimeQuantity = sameTimeQuantity
+    this.duration = duration
     this.organization = organization
   }
 
@@ -88,6 +93,7 @@ export class ServiceDao implements DaoModel {
       this.price,
       this.type,
       this.sameTimeQuantity,
+      this.duration,
       this.organization?.toDomain(),
       this.id
     )

@@ -7,6 +7,7 @@ import {
   OneToMany,
   PrimaryColumn
 } from 'typeorm'
+import { ScheduledDao } from '../../Scheduled/Models/ScheduledDao'
 import { ServiceDao } from '../../Service/Models/ServiceDao'
 import { DaoModel } from '../../Shared/Models/DaoModel'
 import { UserOrganizationDao } from '../../UserOrganization/Models/UserOrganizationDao'
@@ -58,6 +59,12 @@ export class UserDao implements DaoModel {
   })
   services: ServiceDao[]
 
+  @OneToMany(() => ScheduledDao, scheduled => scheduled.user)
+  @JoinColumn({
+    name: 'user_id'
+  })
+  scheduleds: ScheduledDao[]
+
   constructor(
     id: string,
     name: string,
@@ -75,7 +82,7 @@ export class UserDao implements DaoModel {
   }
 
   toDomain() {
-    const user = new User(
+    const domain = new User(
       this.name,
       this.documentNumber,
       this.email,
@@ -85,9 +92,13 @@ export class UserDao implements DaoModel {
     )
 
     if (this.userOrganizations) {
-      this.userOrganizations.map(usrOrg => user.addOrganization(usrOrg.toDomain()))
+      this.userOrganizations.map(usrOrg => domain.addOrganization(usrOrg.toDomain()))
     }
 
-    return user
+    if (this.scheduleds) {
+      this.scheduleds.forEach(scheduled => domain.addScheduled(scheduled.toDomain()))
+    }
+
+    return domain
   }
 }

@@ -65,6 +65,10 @@ export class CustomerService extends BaseService {
     return this.repository.save(customer)
   }
 
+  async getById(id: string) {
+    return this.repository.findOneByPrimaryColumn(id)
+  }
+
   async findOneByAuthData(data: AuthenticationCreateDto) {
     const customer = await this.repository.findOneByAuthData(
       data.login.toLowerCase(),

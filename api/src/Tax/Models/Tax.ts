@@ -47,6 +47,19 @@ export class Tax implements DomainModel, ResponseModel {
     return this.label
   }
 
+  public getFinalValue(subtotal: number, distance: number): number {
+    switch (this.valueType) {
+      case TaxValueTypeEnum.DISTANCE:
+        return this.value * distance + subtotal
+
+      case TaxValueTypeEnum.FIXED:
+        return this.value + subtotal
+
+      case TaxValueTypeEnum.PERCENT:
+        return (subtotal * this.value) / 100
+    }
+  }
+
   toView() {
     return {
       id: this.getId(),

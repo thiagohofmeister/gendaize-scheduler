@@ -1,6 +1,7 @@
 import { randomUUID } from 'crypto'
 import { CustomerAddress } from '../../CustomerAddress/Models/CustomerAddress'
 import { Organization } from '../../Organization/Models/Organization'
+import { Scheduled } from '../../Scheduled/Models/Scheduled'
 import { DomainModel } from '../../Shared/Models/DomainModel'
 import { ResponseModel } from '../../Shared/Models/ResponseModel'
 import { EncryptUtils } from '../../Shared/Utils/EncryptUtils'
@@ -8,6 +9,7 @@ import { CustomerDao } from './CustomerDao'
 
 export class Customer implements ResponseModel, DomainModel {
   private addresses: CustomerAddress[]
+  private scheduleds: Scheduled[]
 
   constructor(
     private name: string,
@@ -49,6 +51,10 @@ export class Customer implements ResponseModel, DomainModel {
     return this.organization
   }
 
+  public getAddress(addressId: string) {
+    return this.getAddresses().find(address => address.getId() === addressId)
+  }
+
   public getAddresses(): CustomerAddress[] {
     return this.addresses
   }
@@ -66,6 +72,24 @@ export class Customer implements ResponseModel, DomainModel {
 
     this.addresses.push(address)
 
+    return this
+  }
+
+  public getScheduleds(): Scheduled[] {
+    return this.scheduleds
+  }
+
+  public removeScheduleds(idsToKeep: string[]) {
+    if (!this.scheduleds) this.scheduleds = []
+
+    this.scheduleds = this.scheduleds.filter(org => idsToKeep.includes(org.getId()))
+
+    return this.scheduleds
+  }
+
+  public addScheduled(scheduled: Scheduled) {
+    if (!this.scheduleds) this.scheduleds = []
+    this.scheduleds.push(scheduled)
     return this
   }
 

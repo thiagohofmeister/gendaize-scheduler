@@ -1,4 +1,5 @@
 import { randomUUID } from 'crypto'
+import { Scheduled } from '../../Scheduled/Models/Scheduled'
 import { DomainModel } from '../../Shared/Models/DomainModel'
 import { ResponseModel } from '../../Shared/Models/ResponseModel'
 import { EncryptUtils } from '../../Shared/Utils/EncryptUtils'
@@ -8,6 +9,7 @@ import { UserDao } from './UserDao'
 
 export class User implements ResponseModel, DomainModel {
   private organizations: UserOrganization[]
+  private scheduleds: Scheduled[]
 
   constructor(
     private name: string,
@@ -69,12 +71,14 @@ export class User implements ResponseModel, DomainModel {
     return this.id
   }
 
-  public removeOrganizations(keepOrganizationIds: string[]) {
+  public getOrganizations(): UserOrganization[] {
+    return this.organizations
+  }
+
+  public removeOrganizations(idsToKeep: string[]) {
     if (!this.organizations) this.organizations = []
 
-    this.organizations = this.organizations.filter(
-      org => !keepOrganizationIds.includes(org.getId())
-    )
+    this.organizations = this.organizations.filter(org => idsToKeep.includes(org.getId()))
 
     return this.organizations
   }
@@ -85,8 +89,22 @@ export class User implements ResponseModel, DomainModel {
     return this
   }
 
-  public getAllOrganizations(): UserOrganization[] {
-    return this.organizations
+  public getScheduleds(): Scheduled[] {
+    return this.scheduleds
+  }
+
+  public removeScheduleds(idsToKeep: string[]) {
+    if (!this.scheduleds) this.scheduleds = []
+
+    this.scheduleds = this.scheduleds.filter(org => idsToKeep.includes(org.getId()))
+
+    return this.scheduleds
+  }
+
+  public addScheduled(scheduled: Scheduled) {
+    if (!this.scheduleds) this.scheduleds = []
+    this.scheduleds.push(scheduled)
+    return this
   }
 
   toView() {
@@ -109,8 +127,8 @@ export class User implements ResponseModel, DomainModel {
       this.getStatus()
     )
 
-    if (this.getAllOrganizations()) {
-      user.userOrganizations = this.getAllOrganizations().map(userOrg => userOrg.toDao())
+    if (this.getOrganizations()) {
+      user.userOrganizations = this.getOrganizations().map(userOrg => userOrg.toDao())
     }
 
     return user

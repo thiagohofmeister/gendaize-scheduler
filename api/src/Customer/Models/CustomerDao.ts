@@ -2,6 +2,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn } from 
 import { AuthenticationDao } from '../../Authentication/Models/AuthenticationDao'
 import { CustomerAddressDao } from '../../CustomerAddress/Models/CustomerAddressDao'
 import { OrganizationDao } from '../../Organization/Models/OrganizationDao'
+import { ScheduledDao } from '../../Scheduled/Models/ScheduledDao'
 import { DaoModel } from '../../Shared/Models/DaoModel'
 import { Customer } from './Customer'
 
@@ -42,6 +43,12 @@ export class CustomerDao implements DaoModel {
   })
   addresses: CustomerAddressDao[]
 
+  @OneToMany(() => ScheduledDao, scheduled => scheduled.user)
+  @JoinColumn({
+    name: 'customer_id'
+  })
+  scheduleds: ScheduledDao[]
+
   constructor(
     id: string,
     name: string,
@@ -70,6 +77,10 @@ export class CustomerDao implements DaoModel {
 
     if (this.addresses) {
       this.addresses.forEach(address => domain.addAddress(address.toDomain()))
+    }
+
+    if (this.scheduleds) {
+      this.scheduleds.forEach(scheduled => domain.addScheduled(scheduled.toDomain()))
     }
 
     return domain

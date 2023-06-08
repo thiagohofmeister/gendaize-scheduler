@@ -16,6 +16,7 @@ export class Service implements DomainModel, ResponseModel {
     private price: number,
     private type: ServiceTypeEnum,
     private sameTimeQuantity: number,
+    private duration: number,
     private organization?: Organization,
     private id?: string
   ) {
@@ -32,6 +33,10 @@ export class Service implements DomainModel, ResponseModel {
 
   public getSameTimeQuantity(): number {
     return this.sameTimeQuantity
+  }
+
+  public getDuration(): number {
+    return this.duration
   }
 
   public getType(): ServiceTypeEnum {
@@ -98,6 +103,7 @@ export class Service implements DomainModel, ResponseModel {
       this.getPrice(),
       this.getType(),
       this.getSameTimeQuantity(),
+      this.getDuration(),
       this.getOrganization()?.toDao()
     )
 
