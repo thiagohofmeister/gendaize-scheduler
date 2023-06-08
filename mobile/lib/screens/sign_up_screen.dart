@@ -4,14 +4,14 @@ import 'package:mobile/screens/sign_up_steps/organization_step.dart';
 import 'package:mobile/screens/sign_up_steps/user_step.dart';
 import 'package:mobile/services/register_service.dart';
 
-class SignUpPage extends StatefulWidget {
-  const SignUpPage({Key? key}) : super(key: key);
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({Key? key}) : super(key: key);
 
   @override
-  State<SignUpPage> createState() => _SignUpPageState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
+class _SignUpScreenState extends State<SignUpScreen> {
   int currentStep = 0;
   int maxSteps = 2;
 

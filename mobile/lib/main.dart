@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/screens/home_page.dart';
-import 'package:mobile/screens/sign_in_page.dart';
-import 'package:mobile/screens/sign_up_page.dart';
+import 'package:mobile/screens/calendar_screen.dart';
+import 'package:mobile/screens/home_screen.dart';
+import 'package:mobile/screens/sign_in_screen.dart';
+import 'package:mobile/screens/sign_up_screen.dart';
+import 'package:mobile/screens/splash_screen.dart';
 import 'package:mobile/store/authentication_store.dart';
+import 'package:mobile/store/navigation_store.dart';
 import 'package:mobile/store/user_logged_store.dart';
 import 'package:provider/provider.dart';
 
@@ -11,6 +14,7 @@ void main() {
     providers: [
       ChangeNotifierProvider(create: (_) => UserLoggedStore()),
       ChangeNotifierProvider(create: (_) => AuthenticationStore()),
+      ChangeNotifierProvider(create: (_) => NavigationStore()),
     ],
     child: const MyApp(),
   ));
@@ -30,11 +34,13 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      initialRoute: 'home',
+      initialRoute: 'splash',
       routes: {
-        'signin': (context) => const SignInPage(),
-        'signup': (context) => const SignUpPage(),
-        'home': (context) => const HomePage(),
+        'splash': (context) => const SplashScreen(),
+        'signin': (context) => const SignInScreen(),
+        'signup': (context) => const SignUpScreen(),
+        'home': (context) => const HomeScreen(),
+        'calendar': (context) => const CalendarScreen(),
       },
     );
   }

@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/components/template/nav_drawer.dart';
-import 'package:mobile/models/user_model.dart';
+import 'package:mobile/store/authentication_store.dart';
 import 'package:mobile/store/user_logged_store.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../store/authentication_store.dart';
-
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({Key? key}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _SplashScreenState extends State<SplashScreen> {
   bool isLoading = true;
 
   void handleLogin() {
@@ -36,6 +33,7 @@ class _HomePageState extends State<HomePage> {
 
         Provider.of<AuthenticationStore>(context, listen: false)
             .setToken(token);
+        Navigator.pushReplacementNamed(context, 'home');
       }).catchError((onError) {
         Navigator.pushReplacementNamed(context, 'signin');
       });
@@ -50,16 +48,10 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    UserModel? user = Provider.of<UserLoggedStore>(context, listen: true).user;
-
     return Scaffold(
-      appBar: AppBar(),
-      drawer: const NavDrawer(),
       body: Container(
         alignment: Alignment.center,
-        child: isLoading || user == null
-            ? const CircularProgressIndicator()
-            : Text('Bem-vindo ${user.name}'),
+        child: const CircularProgressIndicator(),
       ),
     );
   }

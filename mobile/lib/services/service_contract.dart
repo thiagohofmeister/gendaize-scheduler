@@ -7,7 +7,7 @@ abstract class ServiceContract {
   http.Client httpClient = InterceptedClient.build(interceptors: []);
 
   String getBaseUrl() {
-    return 'https://api-scheduler.gendaize.com.br';
+    return 'http://192.168.68.121:3001';
   }
 
   Uri getUri({
