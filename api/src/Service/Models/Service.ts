@@ -90,6 +90,7 @@ export class Service implements DomainModel, ResponseModel {
       price: this.getPrice(),
       type: this.getType(),
       sameTimeQuantity: this.getSameTimeQuantity(),
+      duration: this.getDuration(),
       organization: this.getOrganization()?.toView(),
       users: this.getUsers()?.map(user => user.toView()) || [],
       taxes: this.getTaxes()?.map(user => user.toView()) || []

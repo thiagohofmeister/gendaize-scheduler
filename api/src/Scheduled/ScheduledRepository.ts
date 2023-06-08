@@ -1,3 +1,5 @@
+import { SelectQueryBuilder } from 'typeorm'
+import { FilterDefault } from '../Shared/Models/Interfaces/FilterDefault'
 import { TypeOrmMysqlRepositoryContract } from '../Shared/Modules/Repositories/TypeOrmMysqlRepositoryContract'
 import { Scheduled } from './Models/Scheduled'
 import { ScheduledDao } from './Models/ScheduledDao'
@@ -16,6 +18,17 @@ export class ScheduledRepository extends TypeOrmMysqlRepositoryContract<Schedule
         userId
       })
       .getOne()
+  }
+
+  protected customToFindAll(
+    query: SelectQueryBuilder<ScheduledDao>,
+    filter?: FilterDefault
+  ): SelectQueryBuilder<ScheduledDao> {
+    return query
+      .leftJoinAndSelect('ScheduledDao.customer', 'customer')
+      .leftJoinAndSelect('ScheduledDao.user', 'user')
+      .leftJoinAndSelect('ScheduledDao.headquarter', 'headquarter')
+      .leftJoinAndSelect('ScheduledDao.service', 'service')
   }
 
   getRepository() {

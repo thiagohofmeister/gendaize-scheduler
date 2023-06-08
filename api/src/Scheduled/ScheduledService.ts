@@ -7,6 +7,8 @@ import { Service } from '../Service/Models/Service'
 import { ServiceService } from '../Service/ServiceService'
 import { ConflictException } from '../Shared/Models/Exceptions/ConflictException'
 import { InvalidDataException } from '../Shared/Models/Exceptions/InvalidDataException'
+import { FilterDefault } from '../Shared/Models/Interfaces/FilterDefault'
+import { ListResponseModel } from '../Shared/Models/Interfaces/ListResponseModel'
 import { ServiceDecorator } from '../Shared/Utils/DecoratorUtils'
 import { User } from '../User/Models/User'
 import { UserService } from '../User/UserService'
@@ -30,6 +32,10 @@ export class ScheduledService extends BaseService {
     private readonly serviceService: ServiceService
   ) {
     super(dataSource)
+  }
+
+  async get(filter: FilterDefault): Promise<ListResponseModel<Scheduled>> {
+    return this.repository.findAll(filter)
   }
 
   async create(data: ScheduledCreateDto) {

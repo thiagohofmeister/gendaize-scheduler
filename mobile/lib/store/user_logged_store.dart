@@ -1,17 +1,16 @@
-import 'package:flutter/material.dart';
 import 'package:mobile/models/user_model.dart';
+import 'package:mobile/store/store_contract.dart';
 
 import '../services/user_service.dart';
 
-class UserLoggedStore extends ChangeNotifier {
+class UserLoggedStore extends StoreContract {
   UserModel? user;
-  bool isFetching = false;
 
   UserLoggedStore() : super();
 
   Future<void> fetch(String token) async {
-    isFetching = true;
-    user = await UserService(token: token).getLogged();
-    isFetching = false;
+    setLoading(true);
+    user = await UserService().getLogged();
+    setLoading(false);
   }
 }

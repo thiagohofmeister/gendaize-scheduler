@@ -13,7 +13,7 @@ class AuthenticationService extends ServiceContract {
   Future<AuthenticationModel> authenticate(String user, String password) async {
     String basicAuth = base64Encode(utf8.encode('$user:$password'));
 
-    http.Response response = await super.httpClient.post(
+    http.Response response = await httpClient.post(
       getUri(resource: resource),
       headers: {
         'authorization': 'Basic $basicAuth',
@@ -35,11 +35,9 @@ class AuthenticationService extends ServiceContract {
   }
 
   Future<void> logout({required String token}) async {
-    http.Response response = await super.httpClient.delete(
+    http.Response response = await httpClient.delete(
       getUri(resource: resource),
-      headers: {
-        'authorization': 'Bearer $token',
-      },
+      headers: {...(await defaultHeaders())},
     );
 
     if (isError(response)) {

@@ -1,7 +1,22 @@
 class UserModel {
+  String id;
   String name;
+  String documentNumber;
+  String email;
+  String status;
 
-  UserModel({required this.name}) : super();
+  UserModel({
+    required this.id,
+    required this.name,
+    required this.documentNumber,
+    required this.email,
+    required this.status,
+  });
 
-  UserModel.fromJson(Map<String, dynamic> json) : name = json['name'];
+  UserModel.fromMap(Map<String, dynamic> json)
+      : id = json["id"],
+        name = json["name"],
+        documentNumber = json["documentNumber"],
+        email = json["email"],
+        status = json["status"];
 }

@@ -5,10 +5,6 @@ import 'package:mobile/models/user_model.dart';
 import 'package:mobile/services/service_contract.dart';
 
 class UserService extends ServiceContract {
-  String token;
-
-  UserService({required this.token}) : super();
-
   static const String resource = 'user';
 
   Future<UserModel?> getLogged() async {
@@ -17,16 +13,14 @@ class UserService extends ServiceContract {
         resource: resource,
         endpoint: 'me',
       ),
-      headers: {
-        'authorization': 'Bearer $token',
-      },
+      headers: {...(await defaultHeaders())},
     );
 
     if (isError(response)) {
       throw Exception(response.body);
     }
 
-    return UserModel.fromJson(
+    return UserModel.fromMap(
       jsonDecode(response.body),
     );
   }

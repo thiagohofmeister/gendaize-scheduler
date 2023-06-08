@@ -8,6 +8,9 @@ export class ScheduledRoutes extends BaseRoute<ScheduledController> {
   getRoutes(): RouteDto[] {
     const controller = this.getController()
 
-    return [new AuthRouteDto(this.getFullEndpoint(), HttpMethodEnum.POST, controller.post)]
+    return [
+      new AuthRouteDto(this.getFullEndpoint(), HttpMethodEnum.POST, controller.post),
+      new AuthRouteDto(this.getFullEndpoint(), HttpMethodEnum.GET, controller.get)
+    ]
   }
 }

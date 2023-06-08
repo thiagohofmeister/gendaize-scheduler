@@ -14,14 +14,23 @@ class NavBottom extends StatelessWidget {
     ).currentScreen;
 
     return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
       items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
           label: 'Início',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Alunos',
+          icon: Icon(Icons.calendar_today),
+          label: 'Agendados',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.schedule),
+          label: 'Marcar',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.people),
+          label: 'Clientes',
         )
       ],
       currentIndex: currentIndex,

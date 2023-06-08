@@ -1,9 +1,8 @@
 import 'package:http/http.dart' as http;
 import 'package:http_interceptor/http/http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class ServiceContract {
-  ServiceContract();
-
   http.Client httpClient = InterceptedClient.build(interceptors: []);
 
   String getBaseUrl() {
@@ -21,8 +20,12 @@ abstract class ServiceContract {
 
     String query = queryParams.join('&');
 
-    return Uri.parse(
+    Uri uri = Uri.parse(
         '${getBaseUrl()}/$resource${endpoint != null ? '/$endpoint' : ''}${query.isNotEmpty ? '?$query' : ''}');
+
+    print(uri);
+
+    return uri;
   }
 
   bool isSuccess(http.Response response) {
@@ -31,5 +34,25 @@ abstract class ServiceContract {
 
   bool isError(http.Response response) {
     return !isSuccess(response);
+  }
+
+  Future<Map<String, String>> defaultHeaders({bool isLogged = true}) async {
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    };
+
+    if (isLogged) {
+      String? token = await getToken();
+      headers['Authorization'] = 'Bearer $token';
+    }
+
+    return headers;
+  }
+
+  Future<String?> getToken() async {
+    SharedPreferences sharedPref = await SharedPreferences.getInstance();
+
+    return sharedPref.getString('token');
   }
 }

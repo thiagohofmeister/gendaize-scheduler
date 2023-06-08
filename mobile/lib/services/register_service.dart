@@ -11,8 +11,10 @@ class RegisterService extends ServiceContract {
   static const String resource = 'register';
 
   Future<void> register(RegisterModel data) async {
-    http.Response response = await super.httpClient.post(
-        getUri(resource: resource),
+    http.Response response = await httpClient.post(
+        getUri(
+          resource: resource,
+        ),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode(data.toMap()));
 
