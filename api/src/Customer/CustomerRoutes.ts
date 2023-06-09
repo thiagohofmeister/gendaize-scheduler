@@ -8,6 +8,10 @@ export class CustomerRoutes extends BaseRoute<CustomerController> {
   getRoutes(): RouteDto[] {
     const controller = this.getController()
 
-    return [new AuthRouteDto(this.getFullEndpoint(), HttpMethodEnum.POST, controller.post)]
+    return [
+      new AuthRouteDto(this.getFullEndpoint(), HttpMethodEnum.POST, controller.post),
+      new AuthRouteDto(this.getFullEndpoint(), HttpMethodEnum.GET, controller.get),
+      new AuthRouteDto(this.getFullEndpoint(':id'), HttpMethodEnum.GET, controller.getOneById)
+    ]
   }
 }

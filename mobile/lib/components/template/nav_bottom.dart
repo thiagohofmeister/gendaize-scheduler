@@ -15,24 +15,11 @@ class NavBottom extends StatelessWidget {
 
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
-      items: const [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Início',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.calendar_today),
-          label: 'Agendados',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.schedule),
-          label: 'Marcar',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.people),
-          label: 'Clientes',
-        )
-      ],
+      items: Provider.of<NavigationStore>(context, listen: false)
+          .navigation
+          .map((nav) =>
+              BottomNavigationBarItem(icon: Icon(nav.icon), label: nav.label))
+          .toList(),
       currentIndex: currentIndex,
       onTap: (index) {
         String routeName = Provider.of<NavigationStore>(

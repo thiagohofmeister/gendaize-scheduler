@@ -7,6 +7,7 @@ import 'package:mobile/screens/sign_in_screen.dart';
 import 'package:mobile/screens/sign_up_screen.dart';
 import 'package:mobile/screens/splash_screen.dart';
 import 'package:mobile/store/authentication_store.dart';
+import 'package:mobile/store/customer_store.dart';
 import 'package:mobile/store/navigation_store.dart';
 import 'package:mobile/store/scheduled_store.dart';
 import 'package:mobile/store/user_logged_store.dart';
@@ -15,11 +16,11 @@ import 'package:provider/provider.dart';
 void main() {
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider<UserLoggedStore>(create: (_) => UserLoggedStore()),
-      ChangeNotifierProvider<AuthenticationStore>(
-          create: (_) => AuthenticationStore()),
-      ChangeNotifierProvider<NavigationStore>(create: (_) => NavigationStore()),
-      ChangeNotifierProvider<ScheduledStore>(create: (_) => ScheduledStore()),
+      ChangeNotifierProvider(create: (_) => UserLoggedStore()),
+      ChangeNotifierProvider(create: (_) => AuthenticationStore()),
+      ChangeNotifierProvider(create: (_) => NavigationStore()),
+      ChangeNotifierProvider(create: (_) => ScheduledStore()),
+      ChangeNotifierProvider(create: (_) => CustomerStore()),
     ],
     child: const MyApp(),
   ));

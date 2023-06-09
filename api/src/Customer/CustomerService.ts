@@ -5,6 +5,7 @@ import { CustomerAddress } from '../CustomerAddress/Models/CustomerAddress'
 import { LocationService } from '../Location/LocationService'
 import { Organization } from '../Organization/Models/Organization'
 import { UnauthorizedException } from '../Shared/Models/Exceptions/UnauthorizedException'
+import { FilterDefault } from '../Shared/Models/Interfaces/FilterDefault'
 import { ServiceDecorator } from '../Shared/Utils/DecoratorUtils'
 import { StringUtils } from '../Shared/Utils/StringUtils'
 import { CustomerRepository } from './CustomerRepository'
@@ -67,6 +68,10 @@ export class CustomerService extends BaseService {
 
   async getById(id: string) {
     return this.repository.findOneByPrimaryColumn(id)
+  }
+
+  async get(filter: FilterDefault) {
+    return this.repository.findAll(filter)
   }
 
   async findOneByAuthData(data: AuthenticationCreateDto) {
