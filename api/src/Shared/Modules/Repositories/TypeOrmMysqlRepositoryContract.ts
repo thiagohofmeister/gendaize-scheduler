@@ -76,6 +76,14 @@ export abstract class TypeOrmMysqlRepositoryContract<
       query.andWhere(`${this.getTableName()}.organization_id = :organizationId`, {
         organizationId: this.organizationId
       })
+    } else if (this.hasColumn('headquarter') && !bypassorganizationId) {
+      if (!this.hasRelation('headquarter')) {
+        query.leftJoin(`${this.getTableName()}.headquarter`, 'headquarter')
+      }
+
+      query.andWhere(`headquarter.organization_id = :organizationId`, {
+        organizationId: this.organizationId
+      })
     }
 
     return this.getMany(query)
@@ -91,10 +99,19 @@ export abstract class TypeOrmMysqlRepositoryContract<
         .where(`${this.getTableName()}.${this.getPrimaryColumnName()} = :value`, { value })
     )
 
-    if (this.hasColumn('organizationId') && !bypassorganizationId)
+    if (this.hasColumn('organizationId') && !bypassorganizationId) {
       query.andWhere(`${this.getTableName()}.organization_id = :organizationId`, {
         organizationId: this.organizationId
       })
+    } else if (this.hasColumn('headquarter') && !bypassorganizationId) {
+      if (!this.hasRelation('headquarter')) {
+        query.leftJoin(`${this.getTableName()}.headquarter`, 'headquarter')
+      }
+
+      query.andWhere(`headquarter.organization_id = :organizationId`, {
+        organizationId: this.organizationId
+      })
+    }
 
     return this.getOne(query)
   }
@@ -145,6 +162,9 @@ export abstract class TypeOrmMysqlRepositoryContract<
   }
 
   protected hasColumn(columnName: string): boolean {
+    console.log({
+      columns: this.getRepository().metadata.columns.map(column => column.propertyName)
+    })
     return this.getRepository()
       .metadata.columns.map(column => column.propertyName)
       .includes(columnName)
