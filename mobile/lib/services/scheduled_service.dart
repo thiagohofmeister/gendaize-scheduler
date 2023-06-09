@@ -32,4 +32,17 @@ class ScheduledService extends ServiceContract {
       total: jsonDecode(response.body)['total'],
     );
   }
+
+  Future<bool> delete(String id) async {
+    http.Response response = await httpClient.delete(
+      getUri(resource: resource, endpoint: id),
+      headers: {...(await defaultHeaders())},
+    );
+
+    if (isError(response)) {
+      throw Exception(response.body);
+    }
+
+    return true;
+  }
 }

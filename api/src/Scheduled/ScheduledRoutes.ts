@@ -10,7 +10,8 @@ export class ScheduledRoutes extends BaseRoute<ScheduledController> {
 
     return [
       new AuthRouteDto(this.getFullEndpoint(), HttpMethodEnum.POST, controller.post),
-      new AuthRouteDto(this.getFullEndpoint(), HttpMethodEnum.GET, controller.get)
+      new AuthRouteDto(this.getFullEndpoint(), HttpMethodEnum.GET, controller.get),
+      new AuthRouteDto(this.getFullEndpoint(':id'), HttpMethodEnum.DELETE, controller.delete)
     ]
   }
 }

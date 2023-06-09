@@ -15,10 +15,11 @@ import 'package:provider/provider.dart';
 void main() {
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider(create: (_) => UserLoggedStore()),
-      ChangeNotifierProvider(create: (_) => AuthenticationStore()),
-      ChangeNotifierProvider(create: (_) => NavigationStore()),
-      ChangeNotifierProvider(create: (_) => ScheduledStore()),
+      ChangeNotifierProvider<UserLoggedStore>(create: (_) => UserLoggedStore()),
+      ChangeNotifierProvider<AuthenticationStore>(
+          create: (_) => AuthenticationStore()),
+      ChangeNotifierProvider<NavigationStore>(create: (_) => NavigationStore()),
+      ChangeNotifierProvider<ScheduledStore>(create: (_) => ScheduledStore()),
     ],
     child: const MyApp(),
   ));

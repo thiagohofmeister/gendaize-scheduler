@@ -34,6 +34,10 @@ export class ScheduledService extends BaseService {
     super(dataSource)
   }
 
+  async delete(id: string) {
+    await this.repository.delete(id)
+  }
+
   async get(filter: FilterDefault): Promise<ListResponseModel<Scheduled>> {
     return this.repository.findAll(filter)
   }

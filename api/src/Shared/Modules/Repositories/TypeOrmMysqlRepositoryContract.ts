@@ -162,9 +162,6 @@ export abstract class TypeOrmMysqlRepositoryContract<
   }
 
   protected hasColumn(columnName: string): boolean {
-    console.log({
-      columns: this.getRepository().metadata.columns.map(column => column.propertyName)
-    })
     return this.getRepository()
       .metadata.columns.map(column => column.propertyName)
       .includes(columnName)

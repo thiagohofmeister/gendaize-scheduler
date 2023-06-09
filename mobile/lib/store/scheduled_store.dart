@@ -9,4 +9,12 @@ class ScheduledStore extends ListStoreContract {
   Future<ResponseList> getAll({Map<String, String>? params}) {
     return ScheduledService().fetchAll(params);
   }
+
+  Future<bool> delete(String id) async {
+    bool result = await ScheduledService().delete(id);
+
+    await refetch();
+
+    return result;
+  }
 }

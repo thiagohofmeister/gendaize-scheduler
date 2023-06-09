@@ -1,15 +1,50 @@
 import 'package:flutter/material.dart';
+import 'package:maps_launcher/maps_launcher.dart';
+import 'package:mobile/components/confirmation_dialog.dart';
 import 'package:mobile/components/template/data_label.dart';
 import 'package:mobile/models/enums/service_type.dart';
 import 'package:mobile/models/scheduled_model.dart';
+import 'package:mobile/store/scheduled_store.dart';
+import 'package:provider/provider.dart';
 
 class ScheduledItem extends StatelessWidget {
   final ScheduledModel scheduled;
 
   const ScheduledItem({Key? key, required this.scheduled}) : super(key: key);
 
-  Future<void> openMap() async {
-    // MapsLauncher.launchQuery(schedule.student.address.getFullAddress());
+  Future<void> openConfirmMap(BuildContext context) async {
+    if (await showConfirmationDialog(
+      context,
+      title: "Deslocamento",
+      content: "Você tem certeza que deseja abrir o GPS?",
+    )) {
+      MapsLauncher.launchQuery(
+          scheduled.addresses.startAddress.getFullAddress());
+    }
+  }
+
+  void openConfirmCancel(BuildContext context, String id) {
+    showConfirmationDialog(
+      context,
+      title: "Cancelar agendamento",
+      content: "Você tem certeza que deseja cancelar?",
+    ).then((isConfirmed) {
+      if (!isConfirmed) {
+        return;
+      }
+
+      Provider.of<ScheduledStore>(context, listen: false).delete(id).then(
+        (value) {
+          if (value) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Agendamento cancelado!'),
+              ),
+            );
+          }
+        },
+      );
+    });
   }
 
   @override
@@ -64,12 +99,20 @@ class ScheduledItem extends StatelessWidget {
                   info: scheduled.amount.getTotal(),
                 ),
               ),
-              scheduled.service.type == ServiceType.external
-                  ? ElevatedButton(
-                      onPressed: openMap,
-                      child: const Text('Ir até o cliente'),
-                    )
-                  : Container()
+              Row(
+                children: [
+                  scheduled.service.type == ServiceType.external
+                      ? IconButton(
+                          onPressed: () => openConfirmMap(context),
+                          icon: const Icon(Icons.pin_drop),
+                        )
+                      : Container(),
+                  IconButton(
+                    onPressed: () => openConfirmCancel(context, scheduled.id),
+                    icon: const Icon(Icons.cancel),
+                  )
+                ],
+              )
             ],
           ),
         ),

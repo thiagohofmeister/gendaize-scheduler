@@ -20,6 +20,16 @@ export class ScheduledRepository extends TypeOrmMysqlRepositoryContract<Schedule
       .getOne()
   }
 
+  protected customToFindOneByPrimaryColumn(
+    query: SelectQueryBuilder<ScheduledDao>
+  ): SelectQueryBuilder<ScheduledDao> {
+    return query
+      .leftJoinAndSelect('ScheduledDao.customer', 'customer')
+      .leftJoinAndSelect('ScheduledDao.user', 'user')
+      .leftJoinAndSelect('ScheduledDao.headquarter', 'headquarter')
+      .leftJoinAndSelect('ScheduledDao.service', 'service')
+  }
+
   protected customToFindAll(
     query: SelectQueryBuilder<ScheduledDao>,
     filter?: FilterDefault

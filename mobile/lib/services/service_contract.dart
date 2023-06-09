@@ -6,7 +6,7 @@ abstract class ServiceContract {
   http.Client httpClient = InterceptedClient.build(interceptors: []);
 
   String getBaseUrl() {
-    return 'http://192.168.68.121:3001';
+    return 'http://172.20.10.6:3001';
   }
 
   Uri getUri({
