@@ -33,6 +33,13 @@ class _UserStepState extends State<UserStep> {
   @override
   void initState() {
     super.initState();
+
+    if (widget.data != null) {
+      nameController.text = widget.data!.name;
+      documentNumberController.text = widget.data!.documentNumber;
+      passwordController.text = widget.data!.password;
+      emailController.text = widget.data!.email;
+    }
   }
 
   handleSubmit() {

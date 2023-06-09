@@ -23,8 +23,6 @@ abstract class ServiceContract {
     Uri uri = Uri.parse(
         '${getBaseUrl()}/$resource${endpoint != null ? '/$endpoint' : ''}${query.isNotEmpty ? '?$query' : ''}');
 
-    print(uri);
-
     return uri;
   }
 

@@ -25,7 +25,7 @@ class SignInScreen extends StatelessWidget {
         passwordController.text,
       )
           .then((value) {
-        Navigator.pushReplacementNamed(context, 'home');
+        Navigator.pushReplacementNamed(context, 'splash');
       }).catchError((error) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(

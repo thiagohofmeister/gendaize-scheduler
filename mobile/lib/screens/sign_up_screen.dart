@@ -31,7 +31,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
         );
 
-        Navigator.pushReplacementNamed(context, 'home');
+        Navigator.pushNamedAndRemoveUntil(context, 'splash', (r) => false);
       },
     ).catchError((onError) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -70,6 +70,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
   void setOrganizationData(RegisterOrganizationModel data) {
     setState(() {
       organization = data;
+
+      if (organization!.documentType == "PERSONAL") {
+        user = RegisterUserModel(
+            documentNumber: organization!.documentNumber,
+            email: organization!.email,
+            name: organization!.name,
+            password: '');
+      }
     });
   }
 
