@@ -41,6 +41,8 @@ dependencies:
   shared_preferences: ^2.0.15
   flutter_masked_text2: ^0.9.1
   maps_launcher: ^2.2.0
+  contacts_service: ^0.6.3
+  permission_handler: ^10.2.0
 
 dev_dependencies:
   flutter_test:

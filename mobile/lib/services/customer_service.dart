@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:mobile/models/customer_create_model.dart';
 import 'package:mobile/models/customer_model.dart';
 import 'package:mobile/models/response_list.dart';
 import 'package:mobile/services/service_contract.dart';
@@ -44,5 +45,20 @@ class CustomerService extends ServiceContract {
     }
 
     return true;
+  }
+
+  Future<CustomerModel> create(CustomerCreateModel customer) async {
+    http.Response response = await httpClient.get(
+      getUri(
+        resource: resource,
+      ),
+      headers: {...(await defaultHeaders())},
+    );
+
+    if (isError(response)) {
+      throw Exception(response.body);
+    }
+
+    return CustomerModel.fromMap(jsonDecode(response.body));
   }
 }

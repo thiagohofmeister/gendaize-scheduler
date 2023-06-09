@@ -39,6 +39,12 @@ class _CustomersScreenState extends State<CustomersScreen> {
       appBar: AppBar(),
       drawer: const NavDrawer(),
       bottomNavigationBar: const NavBottom(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, 'customer-add');
+        },
+        child: const Icon(Icons.add),
+      ),
       body: Consumer<CustomerStore>(
         builder: (context, store, child) {
           if (store.isLoading) {

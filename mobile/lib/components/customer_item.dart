@@ -27,7 +27,7 @@ class CustomerItem extends StatelessWidget {
                       Navigator.of(context)
                           .pushNamed('schedule', arguments: customer);
                     },
-                    icon: const Icon(Icons.schedule),
+                    icon: const Icon(Icons.timer_sharp),
                   ),
                 ],
               ),

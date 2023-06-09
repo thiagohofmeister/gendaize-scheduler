@@ -8,6 +8,13 @@ export class LocationRoutes extends BaseRoute<LocationController> {
   getRoutes(): RouteDto[] {
     const controller = this.getController()
 
-    return [new AuthRouteDto(this.getFullEndpoint(), HttpMethodEnum.GET, controller.get)]
+    return [
+      new AuthRouteDto(this.getFullEndpoint(), HttpMethodEnum.GET, controller.get),
+      new AuthRouteDto(
+        this.getFullEndpoint('address'),
+        HttpMethodEnum.POST,
+        controller.getLocationByAddress
+      )
+    ]
   }
 }
