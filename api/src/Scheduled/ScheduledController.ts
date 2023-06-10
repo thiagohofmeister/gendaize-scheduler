@@ -10,6 +10,7 @@ export class ScheduledController extends BaseController {
     this.post = this.post.bind(this)
     this.get = this.get.bind(this)
     this.delete = this.delete.bind(this)
+    this.postCalculateAmount = this.postCalculateAmount.bind(this)
   }
 
   async delete(req: CoreRequest, res: Response, next: NextFunction) {
@@ -36,6 +37,15 @@ export class ScheduledController extends BaseController {
       next,
       this.getServiceFactory(req).buildService('Scheduled').get(req.query),
       ResponseTypeEnum.OK
+    )
+  }
+
+  async postCalculateAmount(req: CoreRequest, res: Response, next: NextFunction) {
+    return this.responseHandler(
+      res,
+      next,
+      this.getServiceFactory(req).buildService('Scheduled').createCalculateAmount(req.body),
+      ResponseTypeEnum.CREATED
     )
   }
 }

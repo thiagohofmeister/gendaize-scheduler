@@ -12,11 +12,13 @@ import { ListResponseModel } from '../Shared/Models/Interfaces/ListResponseModel
 import { ServiceDecorator } from '../Shared/Utils/DecoratorUtils'
 import { User } from '../User/Models/User'
 import { UserService } from '../User/UserService'
+import { ScheduledCreateCalculateAmountDto } from './Dto/ScheduledCreateCalculateAmountDto'
 import { ScheduledCreateDto } from './Dto/ScheduledCreateDto'
 import { ScheduledStatusEnum } from './Enums/ScheduledStatusEnum'
 import { Scheduled } from './Models/Scheduled'
 import { Address, ScheduledAddress } from './Models/ScheduledAddress'
 import { ScheduledAmount } from './Models/ScheduledAmount'
+import { ScheduledCalculateAmount } from './Models/ScheduledCalculateAmount'
 import { ScheduledRepository } from './ScheduledRepository'
 import { ScheduledValidator } from './ScheduledValidator'
 
@@ -40,6 +42,40 @@ export class ScheduledService extends BaseService {
 
   async get(filter: FilterDefault): Promise<ListResponseModel<Scheduled>> {
     return this.repository.findAll(filter)
+  }
+
+  async createCalculateAmount(
+    data: ScheduledCreateCalculateAmountDto
+  ): Promise<ScheduledCalculateAmount> {
+    await this.validator.validateCreateCalculatePricePayload(data)
+
+    const headquarter = await this.headquarterService.getById(data.headquarterId)
+
+    if (!headquarter) {
+      throw new InvalidDataException(`Headquarter with id ${data.headquarterId} not found.`)
+    }
+
+    const customer = await this.customerService.getById(data.customerId)
+
+    if (!customer) {
+      throw new InvalidDataException(`Customer with id ${data.customerId} not found.`)
+    }
+
+    const service = await this.serviceService.getById(data.serviceId)
+
+    if (!service) {
+      throw new InvalidDataException(`Service with id ${data.serviceId} not found.`)
+    }
+
+    const customerStartAddress = customer.getAddress(data.customerAddressesId.start)
+    const distance =
+      customerStartAddress
+        .getDistances()
+        .find(distance => distance.headquarterId === headquarter.getId())?.distance || 0
+
+    const price = this.calculateAmount(service, distance)
+
+    return new ScheduledCalculateAmount(price.subtotal, price.taxes, price.discount, price.total)
   }
 
   async create(data: ScheduledCreateDto) {
@@ -107,7 +143,7 @@ export class ScheduledService extends BaseService {
       endAt,
       ScheduledStatusEnum.CONFIRMED,
       addresses,
-      this.calculatePrice(service, distance),
+      this.calculateAmount(service, distance),
       user,
       customer,
       service,
@@ -129,7 +165,7 @@ export class ScheduledService extends BaseService {
     }
   }
 
-  private calculatePrice(service: Service, distance: number): ScheduledAmount {
+  private calculateAmount(service: Service, distance: number): ScheduledAmount {
     let taxes = 0
 
     service.getTaxes()?.forEach(tax => {

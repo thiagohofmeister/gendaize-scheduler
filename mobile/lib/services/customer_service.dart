@@ -10,7 +10,8 @@ import 'package:mobile/services/service_contract.dart';
 class CustomerService extends ServiceContract {
   CustomerService() : super(HttpRequest('customer'));
 
-  Future<ResponseList> fetchAll(Map<String, String>? params) async {
+  Future<ResponseList<CustomerModel>> fetchAll(
+      Map<String, String>? params) async {
     HttpResponseModel response = await httpRequest.createInstance().get();
 
     if (response.isError()) {

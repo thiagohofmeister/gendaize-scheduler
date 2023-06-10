@@ -13,6 +13,7 @@ import 'package:mobile/store/location_store.dart';
 import 'package:mobile/store/navigation_store.dart';
 import 'package:mobile/store/organization_store.dart';
 import 'package:mobile/store/scheduled_store.dart';
+import 'package:mobile/store/service_store.dart';
 import 'package:mobile/store/user_logged_store.dart';
 import 'package:provider/provider.dart';
 
@@ -26,6 +27,7 @@ void main() {
       ChangeNotifierProvider(create: (_) => CustomerStore()),
       ChangeNotifierProvider(create: (_) => LocationStore()),
       ChangeNotifierProvider(create: (_) => OrganizationStore()),
+      ChangeNotifierProvider(create: (_) => ServiceStore()),
     ],
     child: const MyApp(),
   ));

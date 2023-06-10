@@ -1,4 +1,5 @@
 class AddressModel {
+  String? id;
   String zipCode;
   String state;
   String city;
@@ -8,6 +9,7 @@ class AddressModel {
   String? complement;
 
   AddressModel({
+    this.id,
     required this.zipCode,
     required this.state,
     required this.city,
@@ -18,7 +20,8 @@ class AddressModel {
   });
 
   AddressModel.fromMap(Map<String, dynamic> map)
-      : zipCode = map['zipCode'],
+      : id = map['id'],
+        zipCode = map['zipCode'],
         state = map['state'],
         city = map['city'],
         district = map['district'],

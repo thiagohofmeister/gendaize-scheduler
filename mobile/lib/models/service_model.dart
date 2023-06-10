@@ -30,4 +30,8 @@ class ServiceModel {
   String getDuration() {
     return ParseUtils.minutesToTime(duration);
   }
+
+  String getAmount() {
+    return ParseUtils.toMoney(price);
+  }
 }
