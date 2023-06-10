@@ -1,5 +1,6 @@
 import { randomUUID } from 'crypto'
 
+import { Headquarter } from '../../Headquarter/Models/Headquarter'
 import { OrganizationConfiguration } from '../../OrganizationConfiguration/Models/OrganizationConfiguration'
 import { DomainModel } from '../../Shared/Models/DomainModel'
 import { ResponseModel } from '../../Shared/Models/ResponseModel'
@@ -8,6 +9,7 @@ import { OrganizationDao } from './OrganizationDao'
 
 export class Organization implements ResponseModel, DomainModel {
   private organizationConfigurations: OrganizationConfiguration[]
+  private headquarters: Headquarter[]
 
   constructor(
     private name: string,
@@ -49,24 +51,42 @@ export class Organization implements ResponseModel, DomainModel {
     return this.id
   }
 
-  public removeOrganizations(keepOrganizationIds: string[]) {
+  public getConfigurations(): OrganizationConfiguration[] {
+    return this.organizationConfigurations
+  }
+
+  public removeConfigurations(idsToKeep: string[]) {
     if (!this.organizationConfigurations) this.organizationConfigurations = []
 
     this.organizationConfigurations = this.organizationConfigurations.filter(
-      org => !keepOrganizationIds.includes(org.getId())
+      config => !idsToKeep.includes(config.getId())
     )
 
     return this.organizationConfigurations
   }
 
-  public addOrganization(organizationConfiguration: OrganizationConfiguration) {
+  public addConfiguration(organizationConfiguration: OrganizationConfiguration) {
     if (!this.organizationConfigurations) this.organizationConfigurations = []
     this.organizationConfigurations.push(organizationConfiguration)
     return this
   }
 
-  public getOrganizationConfigurations(): OrganizationConfiguration[] {
-    return this.organizationConfigurations
+  public getHeadquarters(): Headquarter[] {
+    return this.headquarters
+  }
+
+  public removeHeadquarters(idsToKeep: string[]) {
+    if (!this.headquarters) this.headquarters = []
+
+    this.headquarters = this.headquarters.filter(config => !idsToKeep.includes(config.getId()))
+
+    return this.headquarters
+  }
+
+  public addHeadquarter(Headquarter: Headquarter) {
+    if (!this.headquarters) this.headquarters = []
+    this.headquarters.push(Headquarter)
+    return this
   }
 
   toView() {
@@ -79,12 +99,14 @@ export class Organization implements ResponseModel, DomainModel {
         name: this.getDocumentName()
       },
       email: this.getEmail(),
-      phone: this.getPhone()
+      phone: this.getPhone(),
+      configurations: this.getConfigurations()?.map(config => config.toView()),
+      headquarters: this.getHeadquarters()?.map(headquarter => headquarter.toView())
     }
   }
 
   toDao() {
-    return new OrganizationDao(
+    const organization = new OrganizationDao(
       this.getId(),
       this.getName(),
       this.getDocumentType(),
@@ -93,5 +115,17 @@ export class Organization implements ResponseModel, DomainModel {
       this.getEmail(),
       this.getPhone()
     )
+
+    if (this.getConfigurations()) {
+      organization.organizationConfigurations = this.getConfigurations().map(config =>
+        config.toDao()
+      )
+    }
+
+    if (this.getHeadquarters()) {
+      organization.headquarters = this.getHeadquarters().map(headquarter => headquarter.toDao())
+    }
+
+    return organization
   }
 }

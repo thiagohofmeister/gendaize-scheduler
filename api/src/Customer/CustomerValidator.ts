@@ -12,7 +12,7 @@ export class CustomerValidator extends BaseValidator {
     this.createSchema = Joi.object({
       name: Joi.string().required(),
       phone: Joi.string().required(),
-      email: Joi.string(),
+      email: Joi.string().optional().allow(null),
       password: Joi.string(),
       address: Joi.object({
         zipCode: Joi.string().required(),

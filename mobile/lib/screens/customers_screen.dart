@@ -41,7 +41,13 @@ class _CustomersScreenState extends State<CustomersScreen> {
       bottomNavigationBar: const NavBottom(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.pushNamed(context, 'customer-add');
+          Navigator.pushNamed(context, 'customer-add').then(
+            (value) {
+              if (value == true) {
+                _fetch(isRefetch: true);
+              }
+            },
+          );
         },
         child: const Icon(Icons.add),
       ),

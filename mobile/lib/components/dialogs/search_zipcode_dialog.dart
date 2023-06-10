@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/models/location_get_address_model.dart';
-import 'package:mobile/models/location_model.dart';
 import 'package:mobile/models/zipcode_model.dart';
 import 'package:mobile/services/location_service.dart';
-import 'package:mobile/store/location_store.dart';
+import 'package:mobile/store/organization_store.dart';
 import 'package:provider/provider.dart';
 
 class SearchZipcodeDialog extends StatefulWidget {
@@ -18,7 +17,7 @@ class SearchZipcodeDialog extends StatefulWidget {
 
 class _SearchZipcodeDialogState extends State<SearchZipcodeDialog> {
   final _formKey = GlobalKey<FormState>();
-  LocationModel? _selectedLocation;
+  String? _selectedState;
   ZipcodeModel? _selectedZipcode;
   String? _selectedCity;
   List<ZipcodeModel> _zipCodes = [];
@@ -27,13 +26,14 @@ class _SearchZipcodeDialogState extends State<SearchZipcodeDialog> {
   final TextEditingController _streetController = TextEditingController();
 
   Future<void> _getStates() async {
-    LocationStore provider = Provider.of<LocationStore>(context, listen: false);
+    OrganizationStore provider =
+        Provider.of<OrganizationStore>(context, listen: false);
 
-    await provider.initialFetch();
+    await provider.getAll();
 
     setState(() {
-      if (provider.items.length == 1) {
-        _selectedLocation = provider.items.firstOrNull();
+      if (provider.states.length == 1) {
+        _selectedState = provider.states.firstOrNull;
       }
     });
   }
@@ -46,6 +46,9 @@ class _SearchZipcodeDialogState extends State<SearchZipcodeDialog> {
 
   @override
   Widget build(BuildContext context) {
+    OrganizationStore organizationStore =
+        Provider.of<OrganizationStore>(context);
+
     return AlertDialog(
       title: const Text('Buscar CEP'),
       content: SingleChildScrollView(
@@ -57,7 +60,7 @@ class _SearchZipcodeDialogState extends State<SearchZipcodeDialog> {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 16.0),
                     child: DropdownButtonFormField(
-                      value: _selectedLocation,
+                      value: _selectedState,
                       validator: (value) {
                         if (value == null) {
                           return 'Selecione o estado';
@@ -65,16 +68,16 @@ class _SearchZipcodeDialogState extends State<SearchZipcodeDialog> {
 
                         return null;
                       },
-                      onChanged: (LocationModel? location) {
+                      onChanged: (String? state) {
                         setState(() {
-                          _selectedLocation = location;
+                          _selectedState = state;
                         });
                       },
-                      items: _locations.map((LocationModel location) {
-                        return DropdownMenuItem<LocationModel>(
-                            value: location,
+                      items: organizationStore.states.map((String state) {
+                        return DropdownMenuItem<String>(
+                            value: state,
                             child: Text(
-                              location.state,
+                              state,
                               overflow: TextOverflow.ellipsis,
                             ));
                       }).toList(),
@@ -84,7 +87,7 @@ class _SearchZipcodeDialogState extends State<SearchZipcodeDialog> {
                       ),
                     ),
                   ),
-                  _selectedLocation != null
+                  _selectedState != null
                       ? Padding(
                           padding: const EdgeInsets.only(bottom: 16.0),
                           child: DropdownButtonFormField(
@@ -101,7 +104,9 @@ class _SearchZipcodeDialogState extends State<SearchZipcodeDialog> {
                                 _selectedCity = city;
                               });
                             },
-                            items: _selectedLocation!.cities.map((String city) {
+                            items: organizationStore
+                                .getCities(_selectedState!)
+                                .map((String city) {
                               return DropdownMenuItem<String>(
                                 value: city,
                                 child: Text(city),
@@ -146,7 +151,7 @@ class _SearchZipcodeDialogState extends State<SearchZipcodeDialog> {
                       }
 
                       LocationGetAddressModel address = LocationGetAddressModel(
-                          state: _selectedLocation!.state,
+                          state: _selectedState!,
                           city: _selectedCity!,
                           street: _streetController.text);
 
@@ -198,7 +203,8 @@ class _SearchZipcodeDialogState extends State<SearchZipcodeDialog> {
                           ),
                         )
                       : Container(),
-                  _selectedZipcode != null
+                  _zipCodes.isNotEmpty &&
+                          widget.zipcodeController.text.isNotEmpty
                       ? Padding(
                           padding: const EdgeInsets.only(top: 16.0),
                           child: ElevatedButton(

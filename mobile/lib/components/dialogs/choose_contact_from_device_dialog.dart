@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -20,8 +22,11 @@ class _ChooseContactFromDeviceDialogState
       isLoading = true;
     });
 
-    if (await Permission.contacts.request().isGranted) {
+    await Permission.contacts.request();
+
+    if (await Permission.contacts.isGranted || Platform.isIOS) {
       Iterable<Contact> contacts = await ContactsService.getContacts();
+
       setState(() {
         _contacts = contacts.map((contact) {
           contact.displayName = contact.displayName!.trim();

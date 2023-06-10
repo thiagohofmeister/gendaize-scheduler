@@ -1,26 +1,23 @@
 import 'dart:convert';
 
-import 'package:http/http.dart' as http;
 import 'package:mobile/models/authentication_model.dart';
+import 'package:mobile/services/request/http_request.dart';
+import 'package:mobile/services/request/http_response_model.dart';
 import 'package:mobile/services/service_contract.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticationService extends ServiceContract {
-  AuthenticationService() : super();
-
-  static const String resource = 'authentication';
+  AuthenticationService() : super(HttpRequest('authentication'));
 
   Future<AuthenticationModel> authenticate(String user, String password) async {
     String basicAuth = base64Encode(utf8.encode('$user:$password'));
 
-    http.Response response = await httpClient.post(
-      getUri(resource: resource),
-      headers: {
-        'authorization': 'Basic $basicAuth',
-      },
-    );
+    HttpResponseModel response = await httpRequest
+        .createInstance(isLogged: false)
+        .addHeader('authorization', 'Basic $basicAuth')
+        .post();
 
-    if (isError(response)) {
+    if (response.isError()) {
       throw Exception(response.body);
     }
 
@@ -34,13 +31,10 @@ class AuthenticationService extends ServiceContract {
     return auth;
   }
 
-  Future<void> logout({required String token}) async {
-    http.Response response = await httpClient.delete(
-      getUri(resource: resource),
-      headers: {...(await defaultHeaders())},
-    );
+  Future<void> logout() async {
+    HttpResponseModel response = await httpRequest.createInstance().delete();
 
-    if (isError(response)) {
+    if (response.isError()) {
       throw Exception(response.body);
     }
 

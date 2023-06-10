@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:mobile/components/dialogs/choose_contact_from_device_dialog.dart';
 import 'package:mobile/components/dialogs/search_zipcode_dialog.dart';
 import 'package:mobile/components/template/nav_bottom.dart';
@@ -20,7 +21,8 @@ class _CustomerAddScreenState extends State<CustomerAddScreen> {
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
-  final TextEditingController _zipCodeController = TextEditingController();
+  final TextEditingController _zipCodeController =
+      MaskedTextController(mask: '00000-000');
   final TextEditingController _numberController = TextEditingController();
   final TextEditingController _complementController = TextEditingController();
 
@@ -46,16 +48,14 @@ class _CustomerAddScreenState extends State<CustomerAddScreen> {
     CustomerCreateModel customer = CustomerCreateModel(
       name: _nameController.text,
       phone: _phoneController.text,
-      addresses: [
-        CustomerAddressCreateModel(
-          zipCode: _zipCodeController.text,
-          number: _numberController.text,
-        )
-      ],
+      address: CustomerAddressCreateModel(
+        zipCode: _zipCodeController.text,
+        number: _numberController.text,
+      ),
     );
 
     CustomerService().create(customer).then((_) {
-      Navigator.pop(context);
+      Navigator.pop(context, true);
     });
   }
 
@@ -65,13 +65,13 @@ class _CustomerAddScreenState extends State<CustomerAddScreen> {
       drawer: const NavDrawer(),
       bottomNavigationBar: const NavBottom(),
       appBar: AppBar(
-        title: const Text("Cadastrar aluno"),
+        title: const Text("Cadastrar cliente"),
         actions: [
           MenuItemButton(
             onPressed: onSave,
             child: const Text(
               "Salvar",
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(color: Colors.black),
             ),
           ),
         ],
@@ -85,7 +85,7 @@ class _CustomerAddScreenState extends State<CustomerAddScreen> {
               key: _formKey,
               child: SingleChildScrollView(
                 child: Container(
-                  padding: const EdgeInsets.fromLTRB(8, 16, 8, 0),
+                  padding: const EdgeInsets.all(30),
                   child: Column(
                     children: [
                       Padding(

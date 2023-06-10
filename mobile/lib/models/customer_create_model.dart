@@ -4,12 +4,21 @@ class CustomerCreateModel {
   String name;
   String phone;
   String? email;
-  List<CustomerAddressCreateModel>? addresses;
+  CustomerAddressCreateModel? address;
 
   CustomerCreateModel({
     required this.name,
     required this.phone,
     this.email,
-    this.addresses,
+    this.address,
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'phone': phone,
+      'email': email,
+      'address': address?.toMap()
+    };
+  }
 }

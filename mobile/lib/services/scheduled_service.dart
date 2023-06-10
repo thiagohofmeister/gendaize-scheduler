@@ -1,22 +1,19 @@
 import 'dart:convert';
 
-import 'package:http/http.dart' as http;
 import 'package:mobile/models/response_list.dart';
 import 'package:mobile/models/scheduled_model.dart';
+import 'package:mobile/services/request/http_request.dart';
+import 'package:mobile/services/request/http_response_model.dart';
 import 'package:mobile/services/service_contract.dart';
 
 class ScheduledService extends ServiceContract {
-  static const String resource = 'scheduled';
+  ScheduledService() : super(HttpRequest('scheduled'));
 
   Future<ResponseList> fetchAll(Map<String, String>? params) async {
-    http.Response response = await httpClient.get(
-      getUri(
-        resource: resource,
-      ),
-      headers: {...(await defaultHeaders())},
-    );
+    HttpResponseModel response =
+        await httpRequest.createInstance().withParams(params).get();
 
-    if (isError(response)) {
+    if (response.isError()) {
       throw Exception(response.body);
     }
 
@@ -34,12 +31,9 @@ class ScheduledService extends ServiceContract {
   }
 
   Future<bool> delete(String id) async {
-    http.Response response = await httpClient.delete(
-      getUri(resource: resource, endpoint: id),
-      headers: {...(await defaultHeaders())},
-    );
+    HttpResponseModel response = await httpRequest.createInstance().delete();
 
-    if (isError(response)) {
+    if (response.isError()) {
       throw Exception(response.body);
     }
 

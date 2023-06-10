@@ -3,11 +3,20 @@ import 'package:http_interceptor/models/request_data.dart';
 import 'package:http_interceptor/models/response_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class UnauthorizedInterceptor extends InterceptorContract {
-  UnauthorizedInterceptor() : super();
+class AuthorizedInterceptor extends InterceptorContract {
+  AuthorizedInterceptor() : super();
 
   @override
   Future<RequestData> interceptRequest({required RequestData data}) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String? token = sharedPreferences.getString('token');
+
+    if (token != null) {
+      data.headers.addAll({
+        'authorization': 'Bearer $token',
+      });
+    }
+
     return data;
   }
 

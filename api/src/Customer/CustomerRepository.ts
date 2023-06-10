@@ -1,4 +1,5 @@
 import { SelectQueryBuilder } from 'typeorm'
+import { FilterDefault } from '../Shared/Models/Interfaces/FilterDefault'
 import { TypeOrmMysqlRepositoryContract } from '../Shared/Modules/Repositories/TypeOrmMysqlRepositoryContract'
 import { EncryptUtils } from '../Shared/Utils/EncryptUtils'
 import { Customer } from './Models/Customer'
@@ -13,6 +14,13 @@ export class CustomerRepository extends TypeOrmMysqlRepositoryContract<Customer,
     query: SelectQueryBuilder<CustomerDao>
   ): SelectQueryBuilder<CustomerDao> {
     return query.leftJoinAndSelect('CustomerDao.addresses', 'addresses')
+  }
+
+  protected customToFindAll(
+    query: SelectQueryBuilder<CustomerDao>,
+    filter?: FilterDefault
+  ): SelectQueryBuilder<CustomerDao> {
+    return query.orderBy('CustomerDao.name')
   }
 
   async findOneByAuthData(login: string, password: string): Promise<Customer> {

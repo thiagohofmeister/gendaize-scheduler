@@ -1,24 +1,21 @@
 import 'dart:convert';
 
-import 'package:http/http.dart' as http;
 import 'package:mobile/models/register_model.dart';
+import 'package:mobile/services/request/http_request.dart';
+import 'package:mobile/services/request/http_response_model.dart';
 import 'package:mobile/services/service_contract.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RegisterService extends ServiceContract {
-  RegisterService() : super();
-
-  static const String resource = 'register';
+  RegisterService() : super(HttpRequest('register'));
 
   Future<void> register(RegisterModel data) async {
-    http.Response response = await httpClient.post(
-        getUri(
-          resource: resource,
-        ),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode(data.toMap()));
+    HttpResponseModel response = await httpRequest
+        .createInstance()
+        .withPayload(jsonEncode(data.toMap()))
+        .post();
 
-    if (isError(response)) {
+    if (response.isError()) {
       throw Exception(response.body);
     }
 

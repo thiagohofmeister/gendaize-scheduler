@@ -1,42 +1,36 @@
 import 'dart:convert';
 
-import 'package:http/http.dart' as http;
 import 'package:mobile/models/location_get_address_model.dart';
 import 'package:mobile/models/location_model.dart';
 import 'package:mobile/models/response_list.dart';
 import 'package:mobile/models/zipcode_model.dart';
+import 'package:mobile/services/request/http_request.dart';
+import 'package:mobile/services/request/http_response_model.dart';
 import 'package:mobile/services/service_contract.dart';
 
 class LocationService extends ServiceContract {
-  LocationService() : super();
-
-  static const String resource = 'location';
+  LocationService() : super(HttpRequest('location'));
 
   Future<List<ZipcodeModel>> getZipcodeByAddress(
       LocationGetAddressModel data) async {
-    http.Response response = await httpClient.get(
-      getUri(
-        resource: resource,
-      ),
-      headers: {...(await defaultHeaders())},
-    );
+    HttpResponseModel response = await httpRequest
+        .createInstance()
+        .withEndpoint('address')
+        .withPayload(jsonEncode(data.toMap()))
+        .post();
 
-    if (isError(response)) {
+    if (response.isError()) {
       throw Exception(response.body);
     }
 
     return ZipcodeModel.fromMapList(jsonDecode(response.body));
   }
 
-  Future<ResponseList> fetchAll(Map<String, String>? params) async {
-    http.Response response = await httpClient.get(
-      getUri(
-        resource: resource,
-      ),
-      headers: {...(await defaultHeaders())},
-    );
+  Future<ResponseList<LocationModel>> fetchAll(
+      Map<String, String>? params) async {
+    HttpResponseModel response = await httpRequest.createInstance().get();
 
-    if (isError(response)) {
+    if (response.isError()) {
       throw Exception(response.body);
     }
 

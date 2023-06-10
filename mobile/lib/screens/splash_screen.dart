@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/store/authentication_store.dart';
 import 'package:mobile/store/user_logged_store.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -31,8 +30,6 @@ class _SplashScreenState extends State<SplashScreen> {
           isLoading = false;
         });
 
-        Provider.of<AuthenticationStore>(context, listen: false)
-            .setToken(token);
         Navigator.pushReplacementNamed(context, 'home');
       }).catchError((onError) {
         Navigator.pushReplacementNamed(context, 'signin');

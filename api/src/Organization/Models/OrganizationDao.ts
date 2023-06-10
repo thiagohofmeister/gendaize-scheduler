@@ -92,7 +92,7 @@ export class OrganizationDao implements DaoModel {
   }
 
   toDomain(): Organization {
-    return new Organization(
+    const domain = new Organization(
       this.name,
       this.documentType,
       this.documentNumber,
@@ -101,5 +101,15 @@ export class OrganizationDao implements DaoModel {
       this.phone,
       this.id
     )
+
+    if (this.organizationConfigurations) {
+      this.organizationConfigurations.forEach(config => domain.addConfiguration(config.toDomain()))
+    }
+
+    if (this.headquarters) {
+      this.headquarters.forEach(headquarter => domain.addHeadquarter(headquarter.toDomain()))
+    }
+
+    return domain
   }
 }
