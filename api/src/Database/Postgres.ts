@@ -6,10 +6,16 @@ export class Postgres {
   private static dataSource: DataSource
 
   public async createDataSource() {
+    if (!!Postgres.dataSource) {
+      console.log('Postgres instance already exists.')
+      return
+    }
+
+    const entities = PathUtils.getEntities()
     Postgres.dataSource = new typeORM.DataSource({
       type: 'postgres',
       url: process.env.DATABASE_URL,
-      entities: PathUtils.getEntities(),
+      entities: entities,
       logging: process.env.DATABASE_LOGGING === 'true'
     })
 

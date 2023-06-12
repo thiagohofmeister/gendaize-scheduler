@@ -17,4 +17,10 @@ class NavigationStore extends ChangeNotifier {
 
     return navigation[screen].slug;
   }
+
+  String setNameScreen(String slug) {
+    currentScreen = navigation.indexWhere((element) => element.slug == slug);
+
+    return navigation[currentScreen].slug;
+  }
 }

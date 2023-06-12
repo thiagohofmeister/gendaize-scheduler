@@ -24,7 +24,9 @@ class ScheduledCreateModel {
       },
       'customerId': customerId,
       'headquarterId': headquarterId,
-      'serviceId': serviceId
+      'serviceId': serviceId,
+      'startAt': startAt.toIso8601String(),
+      'userId': userId
     };
   }
 }

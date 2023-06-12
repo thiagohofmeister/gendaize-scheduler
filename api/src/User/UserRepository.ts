@@ -1,4 +1,5 @@
 import { SelectQueryBuilder } from 'typeorm'
+import { FilterDefault } from '../Shared/Models/Interfaces/FilterDefault'
 import { TypeOrmMysqlRepositoryContract } from '../Shared/Modules/Repositories/TypeOrmMysqlRepositoryContract'
 import { EncryptUtils } from '../Shared/Utils/EncryptUtils'
 import { User } from './Models/User'
@@ -12,7 +13,7 @@ export class UserRepository extends TypeOrmMysqlRepositoryContract<User, UserDao
   protected customToFindOneByPrimaryColumn(
     query: SelectQueryBuilder<UserDao>
   ): SelectQueryBuilder<UserDao> {
-    return query.innerJoin('UserDao.userOrganizations', 'organizations')
+    return query.innerJoinAndSelect('UserDao.userOrganizations', 'organizations')
   }
 
   async findOneByAuthData(login: string, password: string): Promise<User> {
@@ -32,6 +33,21 @@ export class UserRepository extends TypeOrmMysqlRepositoryContract<User, UserDao
     return this.getOne({ where: { documentNumber } })
   }
 
+  protected customToFindAll(
+    query: SelectQueryBuilder<UserDao>,
+    filter?: FilterDefault
+  ): SelectQueryBuilder<UserDao> {
+    if (this.organizationId) {
+      query.where('organization.id = :organizationId', {
+        organizationId: this.organizationId
+      })
+    }
+
+    return query
+      .innerJoin('UserDao.userOrganizations', 'userOrganizations')
+      .innerJoin('userOrganizations.organization', 'organization')
+  }
+  x
   getRepository() {
     return this.getManager().getRepository(UserDao)
   }

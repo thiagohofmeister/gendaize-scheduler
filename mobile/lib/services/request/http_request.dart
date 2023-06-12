@@ -17,7 +17,7 @@ class HttpRequest<T> {
   HttpRequest(this.resource);
 
   String getBaseUrl() {
-    return 'http://192.168.0.7:3001';
+    return 'http://192.168.68.121:3001';
   }
 
   HttpRequest<T> createInstance({bool isLogged = true}) {

@@ -3,6 +3,7 @@ import { AuthenticationCreateDto } from '../Authentication/Dto/AuthenticationCre
 import { BaseService } from '../Base/BaseService'
 import { Organization } from '../Organization/Models/Organization'
 import { UnauthorizedException } from '../Shared/Models/Exceptions/UnauthorizedException'
+import { FilterDefault } from '../Shared/Models/Interfaces/FilterDefault'
 import { ServiceDecorator } from '../Shared/Utils/DecoratorUtils'
 import { UserOrganizationStatusEnum } from '../UserOrganization/Enums/UserOrganizationStatusEnum'
 import { UserOrganization } from '../UserOrganization/Models/UserOrganization'
@@ -21,6 +22,10 @@ export class UserService extends BaseService {
     private readonly validator: UserValidator
   ) {
     super(dataSource)
+  }
+
+  async get(filter: FilterDefault) {
+    return this.repository.findAll(filter)
   }
 
   async getById(id: string) {

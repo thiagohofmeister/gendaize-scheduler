@@ -20,7 +20,7 @@ export class CustomerRepository extends TypeOrmMysqlRepositoryContract<Customer,
     query: SelectQueryBuilder<CustomerDao>,
     filter?: FilterDefault
   ): SelectQueryBuilder<CustomerDao> {
-    return query.orderBy('CustomerDao.name')
+    return query.leftJoinAndSelect('CustomerDao.addresses', 'addresses').orderBy('CustomerDao.name')
   }
 
   async findOneByAuthData(login: string, password: string): Promise<Customer> {

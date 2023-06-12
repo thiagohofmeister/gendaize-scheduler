@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/components/customer_data.dart';
 import 'package:mobile/components/inputs/date_picker_input.dart';
 import 'package:mobile/components/inputs/time_picker_input.dart';
 import 'package:mobile/components/template/data_label.dart';
@@ -14,7 +13,10 @@ import 'package:mobile/models/service_model.dart';
 import 'package:mobile/models/user_model.dart';
 import 'package:mobile/services/scheduled_service.dart';
 import 'package:mobile/store/customer_store.dart';
+import 'package:mobile/store/headquarter_store.dart';
+import 'package:mobile/store/navigation_store.dart';
 import 'package:mobile/store/service_store.dart';
+import 'package:mobile/store/user_store.dart';
 import 'package:provider/provider.dart';
 
 class ScheduleScreen extends StatefulWidget {
@@ -29,6 +31,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
 
   UserModel? _selectedUser;
   CustomerModel? _selectedCustomer;
+  int? _selectedCustomerAddressIndex;
   AddressModel? _selectedCustomerAddress;
   ServiceModel? _selectedService;
   HeadquarterModel? _selectedHeadquarter;
@@ -37,6 +40,14 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   bool isSaving = false;
 
   Future<void> fetchAmount() async {
+    if (_selectedCustomer == null ||
+        _selectedService == null ||
+        _selectedCustomerAddress == null ||
+        _selectedHeadquarter == null ||
+        _selectedUser == null) {
+      return;
+    }
+
     AmountModel price = await ScheduledService().createCalculatePrice(
       ScheduledCreateCalculateAmountModel(
         customerId: _selectedCustomer!.id,
@@ -79,15 +90,29 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
       userId: _selectedUser!.id,
     );
 
-    // ScheduledService().create(scheduleCreate: scheduleCreate).then((_) {
-    //   Navigator.pushReplacementNamed(context, 'calendar');
-    // });
+    print(scheduledCreate.toMap());
+
+    ScheduledService().create(scheduledCreate).then((_) {
+      Provider.of<NavigationStore>(context, listen: false)
+          .setNameScreen('calendar');
+      Navigator.pushReplacementNamed(context, 'calendar');
+    });
+
+    setState(() {
+      isSaving = false;
+    });
+  }
+
+  void fetchInitialData() async {
+    Provider.of<ServiceStore>(context, listen: false).initialFetch();
+    Provider.of<HeadquarterStore>(context, listen: false).initialFetch();
+    Provider.of<UserStore>(context, listen: false).initialFetch();
   }
 
   @override
   void initState() {
     super.initState();
-    Provider.of<ServiceStore>(context, listen: false).initialFetch();
+    fetchInitialData();
   }
 
   @override
@@ -101,7 +126,17 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
       _selectedCustomer = Provider.of<CustomerStore>(context, listen: false)
           .items
           .firstWhere((i) => i.id == customerFromArgs.id);
+
+      if (_selectedCustomer!.addresses.length == 1) {
+        selectCustomerAddress(0);
+      }
     }
+  }
+
+  void selectCustomerAddress(int? index) {
+    _selectedCustomerAddressIndex = index;
+    _selectedCustomerAddress =
+        index != null ? _selectedCustomer!.addresses[index] : null;
   }
 
   @override
@@ -152,6 +187,10 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
 
                               setState(() {
                                 _selectedCustomer = customer;
+
+                                if (customer.addresses.length == 1) {
+                                  selectCustomerAddress(0);
+                                }
                               });
                             },
                             items: store.items.map((CustomerModel customer) {
@@ -169,12 +208,124 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                       ),
                       _selectedCustomer != null
                           ? Padding(
-                              padding: const EdgeInsets.only(top: 15.0),
-                              child: CustomerData(
-                                customer: _selectedCustomer!,
+                              padding: const EdgeInsets.only(top: 16.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text('Selecione o endereço do cliente'),
+                                  ListView.builder(
+                                    shrinkWrap: true,
+                                    itemCount:
+                                        _selectedCustomer!.addresses.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return RadioListTile(
+                                        title: Text(_selectedCustomer!
+                                            .addresses[index]
+                                            .getFullAddress()),
+                                        value: index,
+                                        groupValue:
+                                            _selectedCustomerAddressIndex,
+                                        onChanged: (int? index) {
+                                          setState(() {
+                                            if (_selectedCustomer!
+                                                    .addresses.length ==
+                                                1) {
+                                              selectCustomerAddress(index);
+                                            }
+                                          });
+                                        },
+                                      );
+                                    },
+                                  )
+                                ],
                               ),
                             )
                           : Container(),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 16.0),
+                        child: Consumer<UserStore>(
+                          builder: (context, store, child) {
+                            if (store.total == 1) {
+                              _selectedUser = store.items.first;
+                              return Container();
+                            }
+
+                            return DropdownButtonFormField(
+                              value: _selectedUser,
+                              validator: (value) {
+                                if (value == null) {
+                                  return 'Selecione o profissional';
+                                }
+
+                                return null;
+                              },
+                              onChanged: (UserModel? user) {
+                                if (user == null) {
+                                  return;
+                                }
+
+                                setState(() {
+                                  _selectedUser = user;
+                                });
+                              },
+                              items: store.items.map((UserModel user) {
+                                return DropdownMenuItem<UserModel>(
+                                  value: user,
+                                  child: Text(user.name),
+                                );
+                              }).toList(),
+                              decoration: const InputDecoration(
+                                labelText: "Selecione o profissional",
+                                border: OutlineInputBorder(),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 16.0),
+                        child: Consumer<HeadquarterStore>(
+                          builder: (context, store, child) {
+                            if (store.total == 1) {
+                              _selectedHeadquarter = store.items.first;
+                              return Container();
+                            }
+
+                            return DropdownButtonFormField(
+                              value: _selectedHeadquarter,
+                              validator: (value) {
+                                if (value == null) {
+                                  return 'Selecione a filial';
+                                }
+
+                                return null;
+                              },
+                              onChanged: (HeadquarterModel? headquarter) {
+                                if (headquarter == null) {
+                                  return;
+                                }
+
+                                setState(() {
+                                  _selectedHeadquarter = headquarter;
+                                });
+                              },
+                              items: store.items
+                                  .map((HeadquarterModel headquarter) {
+                                return DropdownMenuItem<HeadquarterModel>(
+                                  value: headquarter,
+                                  child: Text(headquarter.name),
+                                );
+                              }).toList(),
+                              decoration: const InputDecoration(
+                                labelText: "Selecione a filial",
+                                border: OutlineInputBorder(),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
                       Padding(
                         padding: const EdgeInsets.only(top: 16.0),
                         child: Consumer<ServiceStore>(
@@ -194,7 +345,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                               }
                               setState(() {
                                 _selectedService = value;
-                                // fetchAmount();
+                                fetchAmount();
                               });
                             },
                             items: store.items

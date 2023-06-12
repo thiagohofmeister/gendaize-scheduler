@@ -30,11 +30,11 @@ abstract class ListStoreContract<Item> extends StoreContract {
       return;
     }
 
-    _fetch(params: params);
+    await _fetch(params: params);
   }
 
   refetch({Map<String, String>? params}) async {
-    _fetch(params: params, notifyOnStarting: true);
+    await _fetch(params: params, notifyOnStarting: true);
   }
 
   Future<ResponseList<Item>> getAll({Map<String, String>? params});

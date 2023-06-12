@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:mobile/models/amount_model.dart';
 import 'package:mobile/models/response_list.dart';
 import 'package:mobile/models/scheduled_create_calculate_amount_model.dart';
+import 'package:mobile/models/scheduled_create_model.dart';
 import 'package:mobile/models/scheduled_model.dart';
 import 'package:mobile/services/request/http_request.dart';
 import 'package:mobile/services/request/http_response_model.dart';
@@ -47,6 +48,7 @@ class ScheduledService extends ServiceContract {
     HttpResponseModel response = await httpRequest
         .createInstance()
         .withPayload(jsonEncode(data.toMap()))
+        .withEndpoint('calculate-amount')
         .post();
 
     if (response.isError()) {
@@ -54,5 +56,18 @@ class ScheduledService extends ServiceContract {
     }
 
     return AmountModel.fromMap(jsonDecode(response.body));
+  }
+
+  Future<ScheduledModel> create(ScheduledCreateModel data) async {
+    HttpResponseModel response = await httpRequest
+        .createInstance()
+        .withPayload(jsonEncode(data.toMap()))
+        .post();
+
+    if (response.isError()) {
+      throw Exception(response.body);
+    }
+
+    return ScheduledModel.fromMap(jsonDecode(response.body));
   }
 }
