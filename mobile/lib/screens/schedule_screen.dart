@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mobile/components/inputs/date_picker_input.dart';
 import 'package:mobile/components/inputs/time_picker_input.dart';
 import 'package:mobile/components/template/data_label.dart';
-import 'package:mobile/components/template/nav_drawer.dart';
 import 'package:mobile/models/address_model.dart';
 import 'package:mobile/models/amount_model.dart';
 import 'package:mobile/models/customer_model.dart';
@@ -90,8 +89,6 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
       userId: _selectedUser!.id,
     );
 
-    print(scheduledCreate.toMap());
-
     ScheduledService().create(scheduledCreate).then((_) {
       Provider.of<NavigationStore>(context, listen: false)
           .setNameScreen('calendar');
@@ -154,7 +151,6 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
           ),
         ],
       ),
-      drawer: const NavDrawer(),
       body: SingleChildScrollView(
         child: isSaving ||
                 Provider.of<CustomerStore>(context, listen: true).isLoading

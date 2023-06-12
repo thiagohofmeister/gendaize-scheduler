@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:mobile/components/dialogs/choose_contact_from_device_dialog.dart';
 import 'package:mobile/components/dialogs/search_zipcode_dialog.dart';
-import 'package:mobile/components/template/nav_bottom.dart';
-import 'package:mobile/components/template/nav_drawer.dart';
 import 'package:mobile/models/customer_address_create_model.dart';
 import 'package:mobile/models/customer_create_model.dart';
 import 'package:mobile/services/customer_service.dart';
@@ -62,8 +60,6 @@ class _CustomerAddScreenState extends State<CustomerAddScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const NavDrawer(),
-      bottomNavigationBar: const NavBottom(),
       appBar: AppBar(
         title: const Text("Cadastrar cliente"),
         actions: [
