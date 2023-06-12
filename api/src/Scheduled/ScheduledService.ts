@@ -46,7 +46,7 @@ export class ScheduledService extends BaseService {
 
   async createCalculateAmount(
     data: ScheduledCreateCalculateAmountDto
-  ): Promise<ScheduledCalculateAmount> {
+  ): Promise<ScheduledCalculateAmount[]> {
     await this.validator.validateCreateCalculatePricePayload(data)
 
     const headquarter = await this.headquarterService.getById(data.headquarterId)
@@ -61,21 +61,31 @@ export class ScheduledService extends BaseService {
       throw new InvalidDataException(`Customer with id ${data.customerId} not found.`)
     }
 
-    const service = await this.serviceService.getById(data.serviceId)
-
-    if (!service) {
-      throw new InvalidDataException(`Service with id ${data.serviceId} not found.`)
-    }
-
     const customerStartAddress = customer.getAddress(data.customerAddressesId.start)
     const distance =
       customerStartAddress
         .getDistances()
         .find(distance => distance.headquarterId === headquarter.getId())?.distance || 0
 
-    const price = this.calculateAmount(service, distance)
+    return Promise.all(
+      data.services.map(async ({ id: serviceId }) => {
+        const service = await this.serviceService.getById(serviceId)
 
-    return new ScheduledCalculateAmount(price.subtotal, price.taxes, price.discount, price.total)
+        if (!service) {
+          throw new InvalidDataException(`Service with id ${serviceId} not found.`)
+        }
+
+        const price = this.calculateAmount(service, distance)
+
+        return new ScheduledCalculateAmount(
+          price.subtotal,
+          price.taxes,
+          price.discount,
+          price.total,
+          service
+        )
+      })
+    )
   }
 
   async create(data: ScheduledCreateDto) {

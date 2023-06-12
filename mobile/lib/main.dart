@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/screens/budget_screen.dart';
 import 'package:mobile/screens/calendar_screen.dart';
 import 'package:mobile/screens/customer_add_screen.dart';
 import 'package:mobile/screens/customers_screen.dart';
@@ -59,6 +60,7 @@ class MyApp extends StatelessWidget {
         'home': (context) => const HomeScreen(),
         'calendar': (context) => const CalendarScreen(),
         'schedule': (context) => const ScheduleScreen(),
+        'budget': (context) => const BudgetScreen(),
         'customers': (context) => const CustomersScreen(),
         'customer-add': (context) => const CustomerAddScreen(),
       },

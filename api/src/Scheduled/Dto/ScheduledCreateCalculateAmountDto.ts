@@ -4,6 +4,8 @@ export interface ScheduledCreateCalculateAmountDto {
     end: string
   }
   customerId: string
-  serviceId: string
+  services: {
+    id: string
+  }[]
   headquarterId: string
 }

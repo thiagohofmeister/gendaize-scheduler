@@ -6,6 +6,8 @@ PODS:
     - Flutter
   - permission_handler_apple (9.1.0):
     - Flutter
+  - share (0.0.1):
+    - Flutter
   - shared_preferences_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -17,6 +19,7 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - maps_launcher (from `.symlinks/plugins/maps_launcher/ios`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
+  - share (from `.symlinks/plugins/share/ios`)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
 
@@ -29,6 +32,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/maps_launcher/ios"
   permission_handler_apple:
     :path: ".symlinks/plugins/permission_handler_apple/ios"
+  share:
+    :path: ".symlinks/plugins/share/ios"
   shared_preferences_foundation:
     :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
   url_launcher_ios:
@@ -39,6 +44,7 @@ SPEC CHECKSUMS:
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   maps_launcher: 2e5b6a2d664ec6c27f82ffa81b74228d770ab203
   permission_handler_apple: 8f116445eff3c0e7c65ad60f5fef5490aa94b4e4
+  share: 0b2c3e82132f5888bccca3351c504d0003b3b410
   shared_preferences_foundation: e2dae3258e06f44cc55f49d42024fd8dd03c590c
   url_launcher_ios: 08a3dfac5fb39e8759aeb0abbd5d9480f30fc8b4
 

@@ -1,72 +1,70 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/components/inputs/date_picker_input.dart';
-import 'package:mobile/components/inputs/time_picker_input.dart';
 import 'package:mobile/components/template/data_label.dart';
 import 'package:mobile/models/address_model.dart';
 import 'package:mobile/models/amount_model.dart';
 import 'package:mobile/models/customer_model.dart';
 import 'package:mobile/models/headquarter_model.dart';
 import 'package:mobile/models/scheduled_create_calculate_amount_model.dart';
-import 'package:mobile/models/scheduled_create_model.dart';
 import 'package:mobile/models/service_model.dart';
-import 'package:mobile/models/user_model.dart';
 import 'package:mobile/services/scheduled_service.dart';
 import 'package:mobile/store/customer_store.dart';
 import 'package:mobile/store/headquarter_store.dart';
-import 'package:mobile/store/navigation_store.dart';
 import 'package:mobile/store/service_store.dart';
 import 'package:mobile/store/user_store.dart';
 import 'package:provider/provider.dart';
+import 'package:share/share.dart';
 
-class ScheduleScreen extends StatefulWidget {
-  const ScheduleScreen({Key? key}) : super(key: key);
+class BudgetScreen extends StatefulWidget {
+  const BudgetScreen({Key? key}) : super(key: key);
 
   @override
-  State<ScheduleScreen> createState() => _ScheduleScreenState();
+  State<BudgetScreen> createState() => _BudgetScreenState();
 }
 
-class _ScheduleScreenState extends State<ScheduleScreen> {
+class _BudgetScreenState extends State<BudgetScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  UserModel? _selectedUser;
+  bool isLoadingAmount = false;
   CustomerModel? _selectedCustomer;
-  int? _selectedCustomerAddressIndex;
   AddressModel? _selectedCustomerAddress;
-  ServiceModel? _selectedService;
+  final List<ServiceModel> _selectedServices = [];
   HeadquarterModel? _selectedHeadquarter;
-  DateTime _selectedDateTime = DateTime.now();
-  AmountModel? _price;
+  List<AmountModel>? _amounts;
   bool isSaving = false;
 
   Future<void> fetchAmount() async {
     if (_selectedCustomer == null ||
-        _selectedService == null ||
+        _selectedServices.isEmpty ||
         _selectedCustomerAddress == null ||
-        _selectedHeadquarter == null ||
-        _selectedUser == null) {
+        _selectedHeadquarter == null) {
       return;
     }
+
+    setState(() {
+      isLoadingAmount = true;
+    });
 
     List<AmountModel> prices = await ScheduledService().createCalculatePrice(
       ScheduledCreateCalculateAmountModel(
         customerId: _selectedCustomer!.id,
-        services: [_selectedService!.id],
+        services: _selectedServices.map((service) => service.id).toList(),
         customerAddressesIdStart: _selectedCustomerAddress!.id!,
         headquarterId: _selectedHeadquarter!.id,
       ),
     );
 
     setState(() {
-      _price = prices.first;
+      _amounts = prices;
+      isLoadingAmount = false;
     });
   }
 
-  void toSchedule() {
+  void toSchedule() async {
     setState(() {
       isSaving = true;
     });
 
-    if (!_formKey.currentState!.validate()) {
+    if (!_formKey.currentState!.validate() || _amounts == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Preencha todos os campos!'),
@@ -80,20 +78,15 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
       return;
     }
 
-    ScheduledCreateModel scheduledCreate = ScheduledCreateModel(
-      customerId: _selectedCustomer!.id,
-      serviceId: _selectedService!.id,
-      customerAddressesIdStart: _selectedCustomerAddress!.id!,
-      headquarterId: _selectedHeadquarter!.id,
-      startAt: _selectedDateTime,
-      userId: _selectedUser!.id,
-    );
+    print(_amounts!.first.getTotal());
 
-    ScheduledService().create(scheduledCreate).then((_) {
-      Provider.of<NavigationStore>(context, listen: false)
-          .setNameScreen('calendar');
-      Navigator.pushReplacementNamed(context, 'calendar');
+    String message = "Segue os valores dos serviços:\n\n";
+
+    _amounts!.forEach((amount) {
+      message += "${amount.service!.name}: ${amount.getTotal()}";
     });
+
+    Share.share(message);
 
     setState(() {
       isSaving = false;
@@ -125,27 +118,25 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
           .firstWhere((i) => i.id == customerFromArgs.id);
 
       if (_selectedCustomer!.addresses.length == 1) {
-        selectCustomerAddress(
-          _selectedCustomer!.addresses.firstOrNull,
-        );
+        selectCustomerAddress(_selectedCustomer!.addresses.firstOrNull);
       }
     }
   }
 
-  void selectCustomerAddress(AddressModel? address) {
-    _selectedCustomerAddress = address;
+  void selectCustomerAddress(AddressModel? index) {
+    _selectedCustomerAddress = index;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Agendamento"),
+        title: const Text("Orçamento"),
         actions: [
           MenuItemButton(
             onPressed: toSchedule,
             child: const Text(
-              "Agendar",
+              "Copiar",
               style: TextStyle(color: Colors.black),
             ),
           ),
@@ -185,9 +176,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                                 _selectedCustomer = customer;
 
                                 if (customer.addresses.length == 1) {
-                                  selectCustomerAddress(
-                                    customer.addresses.firstOrNull,
-                                  );
+                                  selectCustomerAddress(null);
                                 }
                               });
                             },
@@ -218,9 +207,9 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                                       title: Text(address.getFullAddress()),
                                       value: address,
                                       groupValue: _selectedCustomerAddress,
-                                      onChanged: (AddressModel? address) {
+                                      onChanged: (AddressModel? index) {
                                         setState(() {
-                                          selectCustomerAddress(address);
+                                          selectCustomerAddress(index);
                                         });
                                       },
                                     );
@@ -229,47 +218,6 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                               ),
                             )
                           : Container(),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 16.0),
-                        child: Consumer<UserStore>(
-                          builder: (context, store, child) {
-                            if (store.total == 1) {
-                              _selectedUser = store.items.first;
-                              return Container();
-                            }
-
-                            return DropdownButtonFormField(
-                              value: _selectedUser,
-                              validator: (value) {
-                                if (value == null) {
-                                  return 'Selecione o profissional';
-                                }
-
-                                return null;
-                              },
-                              onChanged: (UserModel? user) {
-                                if (user == null) {
-                                  return;
-                                }
-
-                                setState(() {
-                                  _selectedUser = user;
-                                });
-                              },
-                              items: store.items.map((UserModel user) {
-                                return DropdownMenuItem<UserModel>(
-                                  value: user,
-                                  child: Text(user.name),
-                                );
-                              }).toList(),
-                              decoration: const InputDecoration(
-                                labelText: "Selecione o profissional",
-                                border: OutlineInputBorder(),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
                       Padding(
                         padding: const EdgeInsets.only(top: 16.0),
                         child: Consumer<HeadquarterStore>(
@@ -294,7 +242,9 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                                 }
 
                                 setState(() {
+                                  _amounts = [];
                                   _selectedHeadquarter = headquarter;
+                                  fetchAmount();
                                 });
                               },
                               items: store.items
@@ -314,101 +264,109 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 16.0),
-                        child: Consumer<ServiceStore>(
-                            builder: (context, store, child) {
-                          return DropdownButtonFormField(
-                            value: _selectedService,
-                            validator: (value) {
-                              if (value == null) {
-                                return 'Selecione o serviço';
-                              }
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text('Selecione os serviços'),
+                            ...Provider.of<ServiceStore>(context, listen: true)
+                                .items
+                                .map((service) {
+                              return ListTile(
+                                title: Text(service.name),
+                                trailing: Checkbox(
+                                  value: _selectedServices.contains(service),
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      _amounts = [];
 
-                              return null;
-                            },
-                            onChanged: (ServiceModel? value) {
-                              if (value == null) {
-                                return;
-                              }
-                              setState(() {
-                                _selectedService = value;
-                                fetchAmount();
-                              });
-                            },
-                            items: store.items
-                                .map(
-                                  (option) => DropdownMenuItem(
-                                    value: option,
-                                    child: Text(option.name),
-                                  ),
-                                )
-                                .toList(),
-                            decoration: const InputDecoration(
-                              labelText: "Escolha o serviço",
-                              border: OutlineInputBorder(),
-                            ),
-                          );
-                        }),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 16, bottom: 16),
-                        child: DatePickerInput(
-                          label: 'Data da aula',
-                          date: _selectedDateTime,
-                          onChange: (DateTime date) {
-                            setState(() {
-                              _selectedDateTime = date;
-                            });
-                          },
+                                      if (value == true) {
+                                        _selectedServices.add(service);
+                                      } else {
+                                        _selectedServices.remove(service);
+                                      }
+
+                                      fetchAmount();
+                                    });
+                                  },
+                                ),
+                              );
+                            })
+                          ],
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 16),
-                        child: TimePickerInput(
-                          label: 'Hora da aula',
-                          date: _selectedDateTime,
-                          onChange: (DateTime date) {
-                            setState(() {
-                              _selectedDateTime = date;
-                            });
-                          },
-                        ),
-                      ),
-                      _selectedService != null && _price != null
+                      _selectedServices.isNotEmpty &&
+                              _amounts != null &&
+                              _amounts!.isNotEmpty
                           ? Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 8.0),
-                                  child: DataLabel(
-                                    label: 'Duração',
-                                    info: _selectedService!.getDuration(),
+                                  const Padding(
+                                    padding: EdgeInsets.only(bottom: 8.0),
+                                    child: Text('Valores'),
                                   ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 8.0),
-                                  child: DataLabel(
-                                    label: 'Valor aula',
-                                    info: _selectedService!.getAmount(),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 8.0),
-                                  child: DataLabel(
-                                    label: 'Taxa de deslocamento',
-                                    info: _price!.taxes > 0
-                                        ? _price!.getTaxes()
-                                        : 'Grátis',
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 8.0),
-                                  child: DataLabel(
-                                    label: 'Total',
-                                    info: _price!.getTotal(),
-                                  ),
-                                ),
-                              ],
-                            )
+                                  ..._amounts!.map((amount) {
+                                    ServiceModel service = _selectedServices
+                                        .firstWhere((service) =>
+                                            service.id == amount.service!.id);
+
+                                    return Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 8.0),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 8.0),
+                                            child: DataLabel(
+                                              label: 'Serviço',
+                                              info: service.name,
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 8.0),
+                                            child: DataLabel(
+                                              label: 'Duração',
+                                              info: service.getDuration(),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 8.0),
+                                            child: DataLabel(
+                                              label: 'Valor aula',
+                                              info: amount.getSubtotal(),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 8.0),
+                                            child: DataLabel(
+                                              label: 'Taxa de deslocamento',
+                                              info: amount.taxes > 0
+                                                  ? amount.getTaxes()
+                                                  : 'Grátis',
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 8.0),
+                                            child: DataLabel(
+                                              label: 'Total',
+                                              info: amount.getTotal(),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  }).toList(),
+                                ])
                           : Container(),
                     ],
                   ),

@@ -2,13 +2,13 @@ class ScheduledCreateCalculateAmountModel {
   String customerAddressesIdStart;
   String customerId;
   String headquarterId;
-  String serviceId;
+  List<String> services;
 
   ScheduledCreateCalculateAmountModel({
     required this.customerAddressesIdStart,
     required this.customerId,
     required this.headquarterId,
-    required this.serviceId,
+    required this.services,
   });
 
   Map<String, dynamic> toMap() {
@@ -18,7 +18,7 @@ class ScheduledCreateCalculateAmountModel {
       },
       'customerId': customerId,
       'headquarterId': headquarterId,
-      'serviceId': serviceId
+      'services': services.map((service) => ({'id': service})).toList(),
     };
   }
 }

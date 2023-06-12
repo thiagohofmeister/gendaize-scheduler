@@ -29,7 +29,13 @@ export class ScheduledValidator extends BaseValidator {
         end: Joi.string()
       }).required(),
       customerId: Joi.string().required(),
-      serviceId: Joi.string().required(),
+      services: Joi.array()
+        .items(
+          Joi.object({
+            id: Joi.string().required()
+          })
+        )
+        .required(),
       headquarterId: Joi.string().required()
     })
   }

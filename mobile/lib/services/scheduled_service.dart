@@ -43,7 +43,7 @@ class ScheduledService extends ServiceContract {
     return true;
   }
 
-  Future<AmountModel> createCalculatePrice(
+  Future<List<AmountModel>> createCalculatePrice(
       ScheduledCreateCalculateAmountModel data) async {
     HttpResponseModel response = await httpRequest
         .createInstance()
@@ -55,7 +55,7 @@ class ScheduledService extends ServiceContract {
       throw Exception(response.body);
     }
 
-    return AmountModel.fromMap(jsonDecode(response.body));
+    return AmountModel.fromList(jsonDecode(response.body));
   }
 
   Future<ScheduledModel> create(ScheduledCreateModel data) async {

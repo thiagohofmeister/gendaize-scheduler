@@ -29,9 +29,16 @@ class CustomerItem extends StatelessWidget {
                     },
                     icon: const Icon(Icons.timer_sharp),
                   ),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.of(context)
+                          .pushNamed('budget', arguments: customer);
+                    },
+                    icon: const Icon(Icons.monetization_on),
+                  ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),
