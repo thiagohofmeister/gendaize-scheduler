@@ -17,7 +17,7 @@ class HttpRequest<T> {
   HttpRequest(this.resource);
 
   String getBaseUrl() {
-    return 'http://192.168.1.150:3001';
+    return 'https://api-scheduler.gendaize.com.br';
   }
 
   HttpRequest<T> createInstance({bool isLogged = true}) {

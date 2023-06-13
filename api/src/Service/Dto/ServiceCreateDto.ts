@@ -7,6 +7,7 @@ export interface ServiceCreateDto {
   price: number
   type: ServiceTypeEnum
   sameTimeQuantity: number
+  duration: number
   users: ServiceUpdateUserDto[]
   taxes: ServiceUpdateTaxDto[]
 }

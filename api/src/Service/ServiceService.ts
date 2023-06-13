@@ -35,6 +35,7 @@ export class ServiceService extends BaseService {
       data.price,
       data.type,
       data.sameTimeQuantity,
+      data.duration,
       organization
     )
 

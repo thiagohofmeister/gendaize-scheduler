@@ -30,6 +30,7 @@ export class ServiceValidator extends BaseValidator {
       price: Joi.number().required(),
       type: Joi.valid(...Object.keys(ServiceTypeEnum)).required(),
       sameTimeQuantity: Joi.number().required(),
+      duration: Joi.number().required(),
       users: this.updateUsersSchema,
       taxes: this.updateTaxesSchema
     })
