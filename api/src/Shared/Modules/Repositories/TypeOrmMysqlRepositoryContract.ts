@@ -65,12 +65,14 @@ export abstract class TypeOrmMysqlRepositoryContract<
 
   public async findAll<TFilter extends FilterDefault>(
     filter: TFilter,
-    bypassorganizationId: boolean = false
+    bypassorganizationId: boolean = false,
+    withoutPaginators: boolean = false
   ): Promise<ListResponseModel<TDomainEntity>> {
-    const query = this.applyPaginator(
-      filter,
-      this.customToFindAll(this.getRepository().createQueryBuilder(), filter)
-    )
+    let query = this.customToFindAll(this.getRepository().createQueryBuilder(), filter)
+
+    if (!withoutPaginators) {
+      query = this.applyPaginator(filter, query)
+    }
 
     if (this.hasColumn('organizationId') && !bypassorganizationId) {
       query.andWhere(`${this.getTableName()}.organization_id = :organizationId`, {

@@ -145,7 +145,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
           MenuItemButton(
             onPressed: toSchedule,
             child: const Text(
-              "Agendar",
+              "Concluir",
               style: TextStyle(color: Colors.black),
             ),
           ),

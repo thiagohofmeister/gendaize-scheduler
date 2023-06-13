@@ -20,6 +20,8 @@ abstract class ListStoreContract<Item> extends StoreContract {
     items = response.items;
     total = response.total;
 
+    afterFetchAll();
+
     setLoading(false);
 
     notifyListeners();
@@ -42,4 +44,6 @@ abstract class ListStoreContract<Item> extends StoreContract {
   hasNoData() {
     return items.isEmpty;
   }
+
+  Future<void> afterFetchAll() async {}
 }

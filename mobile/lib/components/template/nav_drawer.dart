@@ -19,6 +19,20 @@ class NavDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
+            leading: const Icon(Icons.home),
+            title: const Text('Início'),
+            onTap: () {
+              Navigator.pushReplacementNamed(context, 'home');
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.business),
+            title: const Text('Filiais'),
+            onTap: () {
+              Navigator.pushReplacementNamed(context, 'headquarters');
+            },
+          ),
+          ListTile(
             leading: const Icon(Icons.logout),
             title: const Text('Desconectar'),
             onTap: () {

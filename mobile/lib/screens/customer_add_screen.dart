@@ -66,7 +66,7 @@ class _CustomerAddScreenState extends State<CustomerAddScreen> {
           MenuItemButton(
             onPressed: onSave,
             child: const Text(
-              "Salvar",
+              "Concluir",
               style: TextStyle(color: Colors.black),
             ),
           ),

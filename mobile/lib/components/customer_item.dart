@@ -13,6 +13,7 @@ class CustomerItem extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Card(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
               padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),

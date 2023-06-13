@@ -5,14 +5,21 @@ import 'package:mobile/store/list_store_contract.dart';
 
 class LocationStore extends ListStoreContract<LocationModel> {
   LocationStore() : super();
+  List<String> states = [];
+  List<String> cities = [];
 
   @override
   Future<ResponseList<LocationModel>> getAll({Map<String, String>? params}) {
     return LocationService().fetchAll(params);
   }
 
-  List<String> getStates() {
-    return items.map((item) => item.state).toSet().toList();
+  @override
+  Future<void> afterFetchAll() async {
+    fillStates();
+  }
+
+  void fillStates() {
+    states = items.map((item) => item.state).toSet().toList();
   }
 
   List<String> getCities(String state) {

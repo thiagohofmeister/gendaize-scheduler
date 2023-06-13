@@ -29,7 +29,7 @@ export class LocationService extends BaseService {
   }
 
   public async get(): Promise<ListResponseModel<Location>> {
-    return this.repository.findAll({})
+    return this.repository.findAll({}, false, true)
   }
 
   public async getOneById(id: string): Promise<Location> {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/components/lists/has_no_data.dart';
 import 'package:mobile/components/scheduled_item.dart';
 import 'package:mobile/components/template/nav_bottom.dart';
 import 'package:mobile/components/template/nav_drawer.dart';
@@ -33,19 +34,19 @@ class _CalendarScreenState extends State<CalendarScreen> {
   String getMessageEmpty() {
     switch (periodity) {
       case "TODAY":
-        return 'hoje.';
+        return 'hoje';
 
       case "TOMORROW":
-        return 'amanhã.';
+        return 'amanhã';
 
       case "WEEK":
-        return 'esta semana.';
+        return 'esta semana';
 
       case "MONTH":
-        return 'este mês.';
+        return 'este mês';
 
       default:
-        return 'este período.';
+        return 'este período';
     }
   }
 
@@ -59,6 +60,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: const Text('Agenda'),
         actions: [
           PopupMenuButton<String>(
             icon: const Icon(Icons.filter_list),
@@ -102,25 +104,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
           }
 
           if (store.hasNoData()) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Você não possui nenhuma agenda para ${getMessageEmpty()}',
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const Text(
-                    'Tente alterar o período.',
-                    style: TextStyle(
-                      fontSize: 16,
-                    ),
-                  ),
-                ],
-              ),
+            return HasNoData(
+              message:
+                  'Você não possui nenhuma agenda para ${getMessageEmpty()}',
+              subMessage: 'Tente alterar o período.',
             );
           }
 

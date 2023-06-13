@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/components/customer_item.dart';
+import 'package:mobile/components/lists/has_no_data.dart';
 import 'package:mobile/components/template/nav_bottom.dart';
 import 'package:mobile/components/template/nav_drawer.dart';
 import 'package:mobile/store/customer_store.dart';
@@ -36,21 +37,28 @@ class _CustomersScreenState extends State<CustomersScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text('Clientes'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, 'customer-add').then(
+                (value) {
+                  if (value == true) {
+                    _fetch(isRefetch: true);
+                  }
+                },
+              );
+            },
+            icon: const Icon(
+              Icons.add,
+              color: Colors.black,
+            ),
+          )
+        ],
+      ),
       drawer: const NavDrawer(),
       bottomNavigationBar: const NavBottom(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, 'customer-add').then(
-            (value) {
-              if (value == true) {
-                _fetch(isRefetch: true);
-              }
-            },
-          );
-        },
-        child: const Icon(Icons.add),
-      ),
       body: Consumer<CustomerStore>(
         builder: (context, store, child) {
           if (store.isLoading) {
@@ -60,8 +68,8 @@ class _CustomersScreenState extends State<CustomersScreen> {
           }
 
           if (store.hasNoData()) {
-            return const Center(
-              child: Text('Você não possui nenhum cliente.'),
+            return HasNoData(
+              message: 'Você não possui nenhum cliente.',
             );
           }
 

@@ -29,18 +29,20 @@ export class HeadquarterValidator extends BaseValidator {
         complement: Joi.string().allow(null),
         zipCode: Joi.string().required()
       }).required(),
-      schedules: Joi.array().items(
-        Joi.object({
-          day: Joi.number().required(),
-          schedules: Joi.array().items(
-            Joi.object({
-              start: Joi.number().required(),
-              end: Joi.number().required()
-            })
-          )
-        })
-      ),
-      locations: this.updateLocationsSchema
+      schedules: Joi.array()
+        .items(
+          Joi.object({
+            day: Joi.number().required(),
+            schedules: Joi.array().items(
+              Joi.object({
+                start: Joi.number().required(),
+                end: Joi.number().required()
+              })
+            )
+          })
+        )
+        .allow(null),
+      locations: this.updateLocationsSchema.optional().allow(null)
     })
   }
 

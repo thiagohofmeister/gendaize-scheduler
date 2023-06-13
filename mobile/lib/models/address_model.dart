@@ -33,6 +33,24 @@ class AddressModel {
     return list.map((item) => AddressModel.fromMap(item)).toList();
   }
 
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> map = {
+      'zipCode': zipCode,
+      'state': state,
+      'city': city,
+      'district': district,
+      'street': street,
+      'number': number,
+      'complement': complement,
+    };
+
+    if (id != null) {
+      map['id'] = id;
+    }
+
+    return map;
+  }
+
   String getFullAddress() {
     String comp =
         complement != null && complement!.isNotEmpty ? ' - $complement' : '';

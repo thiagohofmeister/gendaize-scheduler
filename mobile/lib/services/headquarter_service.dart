@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:mobile/models/headquarter_create_model.dart';
 import 'package:mobile/models/headquarter_model.dart';
 import 'package:mobile/models/response_list.dart';
 import 'package:mobile/services/request/http_request.dart';
@@ -28,5 +29,18 @@ class HeadquarterService extends ServiceContract {
       items: result,
       total: jsonDecode(response.body)['total'],
     );
+  }
+
+  Future<HeadquarterModel> create(HeadquarterCreateModel data) async {
+    HttpResponseModel response = await httpRequest
+        .createInstance()
+        .withPayload(jsonEncode(data.toMap()))
+        .post();
+
+    if (response.isError()) {
+      throw Exception(response.body);
+    }
+
+    return HeadquarterModel.fromMap(jsonDecode(response.body));
   }
 }

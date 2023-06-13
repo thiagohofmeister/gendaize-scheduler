@@ -4,6 +4,8 @@ import 'package:mobile/screens/calendar_screen.dart';
 import 'package:mobile/screens/customer_add_screen.dart';
 import 'package:mobile/screens/customers_screen.dart';
 import 'package:mobile/screens/home_screen.dart';
+import 'package:mobile/screens/manager/headquarter_add_screen.dart';
+import 'package:mobile/screens/manager/headquarters_screen.dart';
 import 'package:mobile/screens/schedule_screen.dart';
 import 'package:mobile/screens/sign_in_screen.dart';
 import 'package:mobile/screens/sign_up_screen.dart';
@@ -63,6 +65,8 @@ class MyApp extends StatelessWidget {
         'budget': (context) => const BudgetScreen(),
         'customers': (context) => const CustomersScreen(),
         'customer-add': (context) => const CustomerAddScreen(),
+        'headquarters': (context) => const HeadquartersScreen(),
+        'headquarter-add': (context) => const HeadquarterAddScreen(),
       },
     );
   }
