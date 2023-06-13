@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/components/lists/has_no_data.dart';
-import 'package:mobile/components/scheduled_item.dart';
 import 'package:mobile/components/template/nav_drawer.dart';
+import 'package:mobile/screens/scheduled/components/scheduled_item.dart';
 import 'package:mobile/store/scheduled_store.dart';
 import 'package:provider/provider.dart';
 
-class CalendarScreen extends StatefulWidget {
-  const CalendarScreen({Key? key}) : super(key: key);
+class ScheduledsScreen extends StatefulWidget {
+  const ScheduledsScreen({Key? key}) : super(key: key);
 
   @override
-  State<CalendarScreen> createState() => _CalendarScreenState();
+  State<ScheduledsScreen> createState() => _ScheduledsScreenState();
 }
 
-class _CalendarScreenState extends State<CalendarScreen> {
+class _ScheduledsScreenState extends State<ScheduledsScreen> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
 

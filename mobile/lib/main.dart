@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/screens/budget_screen.dart';
-import 'package:mobile/screens/calendar_screen.dart';
-import 'package:mobile/screens/customer/customer_add_screen.dart';
-import 'package:mobile/screens/customer/customers_screen.dart';
-import 'package:mobile/screens/main_screen.dart';
-import 'package:mobile/screens/headquarter/headquarter_add_screen.dart';
-import 'package:mobile/screens/headquarter/headquarters_screen.dart';
-import 'package:mobile/screens/schedule_screen.dart';
 import 'package:mobile/screens/authentication/sign_in_screen.dart';
 import 'package:mobile/screens/authentication/sign_up_screen.dart';
+import 'package:mobile/screens/customer/customer_add_screen.dart';
+import 'package:mobile/screens/customer/customers_screen.dart';
+import 'package:mobile/screens/headquarter/headquarter_add_screen.dart';
+import 'package:mobile/screens/headquarter/headquarters_screen.dart';
+import 'package:mobile/screens/main_screen.dart';
+import 'package:mobile/screens/scheduled/scheduled_add_screen.dart';
+import 'package:mobile/screens/scheduled/scheduleds_screen.dart';
+import 'package:mobile/screens/service/service_budget_screen.dart';
 import 'package:mobile/screens/splash_screen.dart';
 import 'package:mobile/store/authentication_store.dart';
 import 'package:mobile/store/customer_store.dart';
@@ -60,9 +60,9 @@ class MyApp extends StatelessWidget {
         'signin': (context) => const SignInScreen(),
         'signup': (context) => const SignUpScreen(),
         'main': (context) => const MainScreen(),
-        'calendar': (context) => const CalendarScreen(),
-        'schedule': (context) => const ScheduleScreen(),
-        'budget': (context) => const BudgetScreen(),
+        'calendar': (context) => const ScheduledsScreen(),
+        'schedule': (context) => const ScheduledAddScreen(),
+        'budget': (context) => const ServiceBudgetScreen(),
         'customers': (context) => const CustomersScreen(),
         'customer-add': (context) => const CustomerAddScreen(),
         'headquarters': (context) => const HeadquartersScreen(),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/components/customer_item.dart';
 import 'package:mobile/components/lists/has_no_data.dart';
 import 'package:mobile/components/template/nav_drawer.dart';
+import 'package:mobile/screens/customer/components/customer_item.dart';
 import 'package:mobile/store/customer_store.dart';
 import 'package:provider/provider.dart';
 
@@ -62,7 +62,7 @@ class _CustomersScreenState extends State<CustomersScreen> {
           }
 
           if (store.hasNoData()) {
-            return HasNoData(
+            return const HasNoData(
               message: 'Você não possui nenhum cliente.',
             );
           }
