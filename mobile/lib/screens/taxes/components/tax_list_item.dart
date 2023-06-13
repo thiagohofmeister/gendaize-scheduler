@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:mobile/components/template/data_label.dart';
 import 'package:mobile/models/headquarter/headquarter_model.dart';
 
-class HeadquarterItem extends StatelessWidget {
+class TaxListItem extends StatelessWidget {
   final HeadquarterModel headquarter;
 
-  const HeadquarterItem({Key? key, required this.headquarter})
-      : super(key: key);
+  const TaxListItem({Key? key, required this.headquarter}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

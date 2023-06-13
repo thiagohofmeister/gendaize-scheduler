@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/components/lists/has_no_data.dart';
 import 'package:mobile/components/template/nav_drawer.dart';
-import 'package:mobile/screens/customer/components/customer_item.dart';
+import 'package:mobile/screens/customer/components/customer_list_item.dart';
 import 'package:mobile/store/customer_store.dart';
 import 'package:provider/provider.dart';
 
@@ -75,7 +75,7 @@ class _CustomerListScreenState extends State<CustomerListScreen> {
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (context, index) =>
-                        CustomerItem(customer: store.items[index]),
+                        CustomerListItem(customer: store.items[index]),
                     childCount: store.items.length,
                   ),
                 ),

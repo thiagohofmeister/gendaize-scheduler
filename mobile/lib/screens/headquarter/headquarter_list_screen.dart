@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/components/lists/has_no_data.dart';
 import 'package:mobile/components/template/nav_drawer.dart';
-import 'package:mobile/screens/headquarter/components/headquarter_item.dart';
+import 'package:mobile/screens/headquarter/components/headquarter_list_item.dart';
 import 'package:mobile/store/headquarter_store.dart';
 import 'package:provider/provider.dart';
 
@@ -81,7 +81,7 @@ class _HeadquarterListScreenState extends State<HeadquarterListScreen> {
                   SliverList(
                     delegate: SliverChildBuilderDelegate(
                       (context, index) =>
-                          HeadquarterItem(headquarter: store.items[index]),
+                          HeadquarterListItem(headquarter: store.items[index]),
                       childCount: store.items.length,
                     ),
                   ),

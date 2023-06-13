@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:mobile/models/customer/customer_model.dart';
 import 'package:mobile/screens/customer/components/customer_data.dart';
 
-class CustomerItem extends StatelessWidget {
+class CustomerListItem extends StatelessWidget {
   final CustomerModel customer;
 
-  const CustomerItem({Key? key, required this.customer}) : super(key: key);
+  const CustomerListItem({Key? key, required this.customer}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

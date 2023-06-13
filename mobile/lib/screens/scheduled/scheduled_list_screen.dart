@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/components/lists/has_no_data.dart';
 import 'package:mobile/components/template/nav_drawer.dart';
-import 'package:mobile/screens/scheduled/components/scheduled_item.dart';
+import 'package:mobile/screens/scheduled/components/scheduled_list_item.dart';
 import 'package:mobile/store/scheduled_store.dart';
 import 'package:provider/provider.dart';
 
