@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:mobile/models/authentication_model.dart';
+import 'package:mobile/models/authentication/authentication_model.dart';
 import 'package:mobile/services/request/http_request.dart';
 import 'package:mobile/services/request/http_response_model.dart';
 import 'package:mobile/services/service_contract.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/components/template/data_label.dart';
-import 'package:mobile/models/customer_model.dart';
+import 'package:mobile/models/customer/customer_model.dart';
 
 class CustomerData extends StatelessWidget {
   const CustomerData({super.key, required this.customer});

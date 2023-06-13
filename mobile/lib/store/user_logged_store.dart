@@ -1,4 +1,4 @@
-import 'package:mobile/models/user_model.dart';
+import 'package:mobile/models/user/user_model.dart';
 import 'package:mobile/store/store_contract.dart';
 
 import '../services/user_service.dart';

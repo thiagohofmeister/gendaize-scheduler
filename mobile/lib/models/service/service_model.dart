@@ -1,6 +1,6 @@
 import 'package:mobile/utils/parse_utils.dart';
 
-import 'enums/service_type.dart';
+import '../enums/service_type.dart';
 
 class ServiceModel {
   String id;

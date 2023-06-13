@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/components/template/data_label.dart';
-import 'package:mobile/models/address_model.dart';
-import 'package:mobile/models/amount_model.dart';
-import 'package:mobile/models/customer_model.dart';
-import 'package:mobile/models/headquarter_model.dart';
-import 'package:mobile/models/scheduled_create_calculate_amount_model.dart';
-import 'package:mobile/models/service_model.dart';
+import 'package:mobile/models/shared/address_model.dart';
+import 'package:mobile/models/shared/amount_model.dart';
+import 'package:mobile/models/customer/customer_model.dart';
+import 'package:mobile/models/headquarter/headquarter_model.dart';
+import 'package:mobile/models/scheduled/scheduled_create_calculate_amount_model.dart';
+import 'package:mobile/models/service/service_model.dart';
 import 'package:mobile/services/scheduled_service.dart';
 import 'package:mobile/store/customer_store.dart';
 import 'package:mobile/store/headquarter_store.dart';

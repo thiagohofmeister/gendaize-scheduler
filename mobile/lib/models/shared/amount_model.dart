@@ -1,4 +1,4 @@
-import 'package:mobile/models/service_model.dart';
+import 'package:mobile/models/service/service_model.dart';
 import 'package:mobile/utils/parse_utils.dart';
 
 class AmountModel {

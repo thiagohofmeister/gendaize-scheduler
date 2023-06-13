@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/components/template/data_label.dart';
-import 'package:mobile/models/headquarter_model.dart';
+import 'package:mobile/models/headquarter/headquarter_model.dart';
 
 class HeadquarterItem extends StatelessWidget {
   final HeadquarterModel headquarter;

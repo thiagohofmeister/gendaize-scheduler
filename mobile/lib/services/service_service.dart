@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:mobile/models/response_list.dart';
-import 'package:mobile/models/service_model.dart';
+import 'package:mobile/models/shared/response_list.dart';
+import 'package:mobile/models/service/service_model.dart';
 import 'package:mobile/services/request/http_request.dart';
 import 'package:mobile/services/request/http_response_model.dart';
 import 'package:mobile/services/service_contract.dart';

@@ -1,9 +1,9 @@
 import 'dart:convert';
 
-import 'package:mobile/models/location_get_address_model.dart';
-import 'package:mobile/models/location_model.dart';
-import 'package:mobile/models/response_list.dart';
-import 'package:mobile/models/zipcode_model.dart';
+import 'package:mobile/models/location/location_get_address_model.dart';
+import 'package:mobile/models/location/location_model.dart';
+import 'package:mobile/models/shared/response_list.dart';
+import 'package:mobile/models/location/zipcode_model.dart';
 import 'package:mobile/services/request/http_request.dart';
 import 'package:mobile/services/request/http_response_model.dart';
 import 'package:mobile/services/service_contract.dart';

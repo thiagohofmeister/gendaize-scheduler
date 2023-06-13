@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/models/location_get_address_model.dart';
-import 'package:mobile/models/zipcode_model.dart';
+import 'package:mobile/models/location/location_get_address_model.dart';
+import 'package:mobile/models/location/zipcode_model.dart';
 import 'package:mobile/services/location_service.dart';
 import 'package:mobile/store/organization_store.dart';
 import 'package:provider/provider.dart';

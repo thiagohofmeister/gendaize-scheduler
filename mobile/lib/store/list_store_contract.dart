@@ -1,4 +1,4 @@
-import 'package:mobile/models/response_list.dart';
+import 'package:mobile/models/shared/response_list.dart';
 import 'package:mobile/store/store_contract.dart';
 
 abstract class ListStoreContract<Item> extends StoreContract {

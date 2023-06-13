@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/models/navigation_model.dart';
+import 'package:mobile/models/shared/navigation_model.dart';
 import 'package:mobile/screens/calendar_screen.dart';
-import 'package:mobile/screens/customers_screen.dart';
+import 'package:mobile/screens/customer/customers_screen.dart';
 import 'package:mobile/screens/home_screen.dart';
 
 class NavigationStore extends ChangeNotifier {

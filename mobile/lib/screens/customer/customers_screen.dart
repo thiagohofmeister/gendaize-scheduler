@@ -38,7 +38,18 @@ class _CustomersScreenState extends State<CustomersScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Clientes'),
-        actions: [],
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, 'customer-add').then((value) {
+                if (value == true) {
+                  _fetch(isRefetch: true);
+                }
+              });
+            },
+            icon: const Icon(Icons.add),
+          )
+        ],
       ),
       drawer: const NavDrawer(),
       //bottomNavigationBar: const NavBottom(),

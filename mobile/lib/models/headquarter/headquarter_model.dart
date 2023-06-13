@@ -1,4 +1,4 @@
-import 'package:mobile/models/address_model.dart';
+import 'package:mobile/models/shared/address_model.dart';
 
 class HeadquarterModel {
   String id;

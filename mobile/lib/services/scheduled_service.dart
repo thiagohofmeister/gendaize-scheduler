@@ -1,10 +1,10 @@
 import 'dart:convert';
 
-import 'package:mobile/models/amount_model.dart';
-import 'package:mobile/models/response_list.dart';
-import 'package:mobile/models/scheduled_create_calculate_amount_model.dart';
-import 'package:mobile/models/scheduled_create_model.dart';
-import 'package:mobile/models/scheduled_model.dart';
+import 'package:mobile/models/shared/amount_model.dart';
+import 'package:mobile/models/shared/response_list.dart';
+import 'package:mobile/models/scheduled/scheduled_create_calculate_amount_model.dart';
+import 'package:mobile/models/scheduled/scheduled_create_model.dart';
+import 'package:mobile/models/scheduled/scheduled_model.dart';
 import 'package:mobile/services/request/http_request.dart';
 import 'package:mobile/services/request/http_response_model.dart';
 import 'package:mobile/services/service_contract.dart';

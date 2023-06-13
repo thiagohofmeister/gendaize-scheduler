@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:mobile/models/enums/organization_type.dart';
-import 'package:mobile/models/register_model.dart';
+import 'package:mobile/models/register/register_model.dart';
 
 class OrganizationStep extends StatefulWidget {
   final Function previousStep;

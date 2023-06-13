@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
-import 'package:mobile/models/address_model.dart';
-import 'package:mobile/models/headquarter_create_model.dart';
+import 'package:mobile/models/shared/address_model.dart';
+import 'package:mobile/models/headquarter/headquarter_create_model.dart';
 import 'package:mobile/services/headquarter_service.dart';
 import 'package:mobile/store/location_store.dart';
 import 'package:provider/provider.dart';

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:mobile/components/dialogs/choose_contact_from_device_dialog.dart';
 import 'package:mobile/components/dialogs/search_zipcode_dialog.dart';
-import 'package:mobile/models/customer_address_create_model.dart';
-import 'package:mobile/models/customer_create_model.dart';
+import 'package:mobile/models/customer/customer_address_create_model.dart';
+import 'package:mobile/models/customer/customer_create_model.dart';
 import 'package:mobile/services/customer_service.dart';
 
 class CustomerAddScreen extends StatefulWidget {

@@ -1,4 +1,4 @@
-import 'package:mobile/models/location_model.dart';
+import 'package:mobile/models/location/location_model.dart';
 import 'package:mobile/services/organization_service.dart';
 import 'package:mobile/store/store_contract.dart';
 

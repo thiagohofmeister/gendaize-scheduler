@@ -1,5 +1,5 @@
-import 'package:mobile/models/address_model.dart';
-import 'package:mobile/models/headquarter_schedule_model.dart';
+import 'package:mobile/models/shared/address_model.dart';
+import 'package:mobile/models/headquarter/headquarter_schedule_model.dart';
 
 class HeadquarterCreateModel {
   String name;

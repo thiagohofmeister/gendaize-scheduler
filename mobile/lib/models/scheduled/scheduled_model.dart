@@ -1,9 +1,9 @@
-import 'package:mobile/models/amount_model.dart';
-import 'package:mobile/models/customer_model.dart';
-import 'package:mobile/models/headquarter_model.dart';
-import 'package:mobile/models/scheduled_addresses_model.dart';
-import 'package:mobile/models/service_model.dart';
-import 'package:mobile/models/user_model.dart';
+import 'package:mobile/models/shared/amount_model.dart';
+import 'package:mobile/models/customer/customer_model.dart';
+import 'package:mobile/models/headquarter/headquarter_model.dart';
+import 'package:mobile/models/scheduled/scheduled_addresses_model.dart';
+import 'package:mobile/models/service/service_model.dart';
+import 'package:mobile/models/user/user_model.dart';
 import 'package:mobile/utils/parse_utils.dart';
 
 class ScheduledModel {

@@ -1,5 +1,5 @@
-import 'package:mobile/models/headquarter_model.dart';
-import 'package:mobile/models/response_list.dart';
+import 'package:mobile/models/headquarter/headquarter_model.dart';
+import 'package:mobile/models/shared/response_list.dart';
 import 'package:mobile/services/headquarter_service.dart';
 import 'package:mobile/store/list_store_contract.dart';
 

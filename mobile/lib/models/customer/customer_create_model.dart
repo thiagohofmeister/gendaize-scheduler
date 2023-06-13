@@ -1,4 +1,4 @@
-import 'package:mobile/models/customer_address_create_model.dart';
+import 'package:mobile/models/customer/customer_address_create_model.dart';
 
 class CustomerCreateModel {
   String name;

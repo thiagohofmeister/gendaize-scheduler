@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:mobile/models/customer_create_model.dart';
-import 'package:mobile/models/customer_model.dart';
-import 'package:mobile/models/response_list.dart';
+import 'package:mobile/models/customer/customer_create_model.dart';
+import 'package:mobile/models/customer/customer_model.dart';
+import 'package:mobile/models/shared/response_list.dart';
 import 'package:mobile/services/request/http_request.dart';
 import 'package:mobile/services/request/http_response_model.dart';
 import 'package:mobile/services/service_contract.dart';

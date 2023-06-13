@@ -3,7 +3,7 @@ import 'package:maps_launcher/maps_launcher.dart';
 import 'package:mobile/components/confirmation_dialog.dart';
 import 'package:mobile/components/template/data_label.dart';
 import 'package:mobile/models/enums/service_type.dart';
-import 'package:mobile/models/scheduled_model.dart';
+import 'package:mobile/models/scheduled/scheduled_model.dart';
 import 'package:mobile/store/scheduled_store.dart';
 import 'package:provider/provider.dart';
 

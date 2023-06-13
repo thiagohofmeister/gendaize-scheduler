@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/components/template/nav_bottom.dart';
 import 'package:mobile/components/template/nav_drawer.dart';
-import 'package:mobile/models/user_model.dart';
+import 'package:mobile/models/user/user_model.dart';
 import 'package:mobile/store/navigation_store.dart';
 import 'package:mobile/store/user_logged_store.dart';
 import 'package:provider/provider.dart';
