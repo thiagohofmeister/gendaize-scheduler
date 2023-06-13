@@ -5,14 +5,14 @@ import 'package:mobile/screens/headquarter/components/headquarter_item.dart';
 import 'package:mobile/store/headquarter_store.dart';
 import 'package:provider/provider.dart';
 
-class HeadquartersScreen extends StatefulWidget {
-  const HeadquartersScreen({Key? key}) : super(key: key);
+class TaxListScreen extends StatefulWidget {
+  const TaxListScreen({Key? key}) : super(key: key);
 
   @override
-  State<HeadquartersScreen> createState() => _HeadquartersScreenState();
+  State<TaxListScreen> createState() => _TaxListScreenState();
 }
 
-class _HeadquartersScreenState extends State<HeadquartersScreen> {
+class _TaxListScreenState extends State<TaxListScreen> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
 

@@ -5,14 +5,14 @@ import 'package:mobile/screens/scheduled/components/scheduled_item.dart';
 import 'package:mobile/store/scheduled_store.dart';
 import 'package:provider/provider.dart';
 
-class ScheduledsScreen extends StatefulWidget {
-  const ScheduledsScreen({Key? key}) : super(key: key);
+class ScheduledListScreen extends StatefulWidget {
+  const ScheduledListScreen({Key? key}) : super(key: key);
 
   @override
-  State<ScheduledsScreen> createState() => _ScheduledsScreenState();
+  State<ScheduledListScreen> createState() => _ScheduledListScreenState();
 }
 
-class _ScheduledsScreenState extends State<ScheduledsScreen> {
+class _ScheduledListScreenState extends State<ScheduledListScreen> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
 

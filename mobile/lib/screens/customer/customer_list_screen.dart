@@ -5,14 +5,14 @@ import 'package:mobile/screens/customer/components/customer_item.dart';
 import 'package:mobile/store/customer_store.dart';
 import 'package:provider/provider.dart';
 
-class CustomersScreen extends StatefulWidget {
-  const CustomersScreen({Key? key}) : super(key: key);
+class CustomerListScreen extends StatefulWidget {
+  const CustomerListScreen({Key? key}) : super(key: key);
 
   @override
-  State<CustomersScreen> createState() => _CustomersScreenState();
+  State<CustomerListScreen> createState() => _CustomerListScreenState();
 }
 
-class _CustomersScreenState extends State<CustomersScreen> {
+class _CustomerListScreenState extends State<CustomerListScreen> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
 

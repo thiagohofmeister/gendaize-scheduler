@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/models/shared/navigation_model.dart';
-import 'package:mobile/screens/scheduled/scheduleds_screen.dart';
-import 'package:mobile/screens/customer/customers_screen.dart';
+import 'package:mobile/screens/customer/customer_list_screen.dart';
 import 'package:mobile/screens/home_screen.dart';
+import 'package:mobile/screens/scheduled/scheduled_list_screen.dart';
 
 class NavigationStore extends ChangeNotifier {
   List<NavigationModel> navigation = [
@@ -15,14 +15,14 @@ class NavigationStore extends ChangeNotifier {
     NavigationModel(
       icon: Icons.calendar_today,
       label: 'Agenda',
-      slug: 'calendar',
-      widget: const ScheduledsScreen(),
+      slug: 'scheduled-list',
+      widget: const ScheduledListScreen(),
     ),
     NavigationModel(
       icon: Icons.people,
       label: 'Clientes',
-      slug: 'customers',
-      widget: const CustomersScreen(),
+      slug: 'customer-list',
+      widget: const CustomerListScreen(),
     ),
   ];
 

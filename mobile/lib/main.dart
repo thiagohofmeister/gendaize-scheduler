@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:mobile/screens/authentication/sign_in_screen.dart';
 import 'package:mobile/screens/authentication/sign_up_screen.dart';
 import 'package:mobile/screens/customer/customer_add_screen.dart';
-import 'package:mobile/screens/customer/customers_screen.dart';
+import 'package:mobile/screens/customer/customer_list_screen.dart';
 import 'package:mobile/screens/headquarter/headquarter_add_screen.dart';
-import 'package:mobile/screens/headquarter/headquarters_screen.dart';
+import 'package:mobile/screens/headquarter/headquarter_list_screen.dart';
 import 'package:mobile/screens/main_screen.dart';
 import 'package:mobile/screens/scheduled/scheduled_add_screen.dart';
-import 'package:mobile/screens/scheduled/scheduleds_screen.dart';
+import 'package:mobile/screens/scheduled/scheduled_list_screen.dart';
 import 'package:mobile/screens/service/service_budget_screen.dart';
 import 'package:mobile/screens/splash_screen.dart';
+import 'package:mobile/screens/taxes/tax_add_screen.dart';
+import 'package:mobile/screens/taxes/tax_list_screen.dart';
 import 'package:mobile/store/authentication_store.dart';
 import 'package:mobile/store/customer_store.dart';
 import 'package:mobile/store/headquarter_store.dart';
@@ -60,13 +62,15 @@ class MyApp extends StatelessWidget {
         'signin': (context) => const SignInScreen(),
         'signup': (context) => const SignUpScreen(),
         'main': (context) => const MainScreen(),
-        'calendar': (context) => const ScheduledsScreen(),
-        'schedule': (context) => const ScheduledAddScreen(),
-        'budget': (context) => const ServiceBudgetScreen(),
-        'customers': (context) => const CustomersScreen(),
+        'scheduled-list': (context) => const ScheduledListScreen(),
+        'scheduled-add': (context) => const ScheduledAddScreen(),
+        'service-budget': (context) => const ServiceBudgetScreen(),
+        'customer-list': (context) => const CustomerListScreen(),
         'customer-add': (context) => const CustomerAddScreen(),
-        'headquarters': (context) => const HeadquartersScreen(),
+        'headquarter-list': (context) => const HeadquarterListScreen(),
         'headquarter-add': (context) => const HeadquarterAddScreen(),
+        'tax-list': (context) => const TaxListScreen(),
+        'tax-add': (context) => const TaxAddScreen(),
       },
     );
   }

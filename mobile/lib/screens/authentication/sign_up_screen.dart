@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/models/register/register_model.dart';
-import 'package:mobile/screens/sign_up_steps/organization_step.dart';
-import 'package:mobile/screens/sign_up_steps/user_step.dart';
+import 'package:mobile/screens/authentication/sign_up_steps/organization_step.dart';
+import 'package:mobile/screens/authentication/sign_up_steps/user_step.dart';
 import 'package:mobile/services/register_service.dart';
 
 class SignUpScreen extends StatefulWidget {

@@ -35,7 +35,7 @@ class NavDrawer extends StatelessWidget {
             onTap: () {
               Navigator.pushNamedAndRemoveUntil(
                 context,
-                'headquarters',
+                'headquarter-list',
                 (route) => true,
               );
             },

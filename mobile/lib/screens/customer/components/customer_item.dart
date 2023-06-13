@@ -33,7 +33,7 @@ class CustomerItem extends StatelessWidget {
                   IconButton(
                     onPressed: () {
                       Navigator.of(context)
-                          .pushNamed('budget', arguments: customer);
+                          .pushNamed('service-budget', arguments: customer);
                     },
                     icon: const Icon(Icons.monetization_on),
                   ),

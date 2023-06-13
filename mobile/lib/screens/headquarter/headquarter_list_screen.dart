@@ -5,14 +5,14 @@ import 'package:mobile/screens/headquarter/components/headquarter_item.dart';
 import 'package:mobile/store/headquarter_store.dart';
 import 'package:provider/provider.dart';
 
-class HeadquartersScreen extends StatefulWidget {
-  const HeadquartersScreen({Key? key}) : super(key: key);
+class HeadquarterListScreen extends StatefulWidget {
+  const HeadquarterListScreen({Key? key}) : super(key: key);
 
   @override
-  State<HeadquartersScreen> createState() => _HeadquartersScreenState();
+  State<HeadquarterListScreen> createState() => _HeadquarterListScreenState();
 }
 
-class _HeadquartersScreenState extends State<HeadquartersScreen> {
+class _HeadquarterListScreenState extends State<HeadquarterListScreen> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
 
@@ -68,7 +68,7 @@ class _HeadquartersScreenState extends State<HeadquartersScreen> {
             }
 
             if (store.hasNoData()) {
-              return HasNoData(
+              return const HasNoData(
                 message: 'Você não possui nenhuma filial cadastrada',
               );
             }

@@ -90,8 +90,7 @@ class _ScheduledAddScreenState extends State<ScheduledAddScreen> {
 
     ScheduledService().create(scheduledCreate).then((_) {
       Provider.of<NavigationStore>(context, listen: false)
-          .setNameScreen('calendar');
-      Navigator.pushReplacementNamed(context, 'calendar');
+          .setNameScreen('scheduled-list');
     });
 
     setState(() {

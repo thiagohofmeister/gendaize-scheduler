@@ -6,14 +6,14 @@ import 'package:mobile/services/headquarter_service.dart';
 import 'package:mobile/store/location_store.dart';
 import 'package:provider/provider.dart';
 
-class HeadquarterAddScreen extends StatefulWidget {
-  const HeadquarterAddScreen({Key? key}) : super(key: key);
+class TaxAddScreen extends StatefulWidget {
+  const TaxAddScreen({Key? key}) : super(key: key);
 
   @override
-  State<HeadquarterAddScreen> createState() => _HeadquarterAddScreenState();
+  State<TaxAddScreen> createState() => _TaxAddScreenState();
 }
 
-class _HeadquarterAddScreenState extends State<HeadquarterAddScreen> {
+class _TaxAddScreenState extends State<TaxAddScreen> {
   final _formKey = GlobalKey<FormState>();
   bool isSaving = false;
 
