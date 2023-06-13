@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/components/customer_item.dart';
 import 'package:mobile/components/lists/has_no_data.dart';
-import 'package:mobile/components/template/nav_bottom.dart';
 import 'package:mobile/components/template/nav_drawer.dart';
 import 'package:mobile/store/customer_store.dart';
 import 'package:provider/provider.dart';
@@ -39,26 +38,10 @@ class _CustomersScreenState extends State<CustomersScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Clientes'),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.pushNamed(context, 'customer-add').then(
-                (value) {
-                  if (value == true) {
-                    _fetch(isRefetch: true);
-                  }
-                },
-              );
-            },
-            icon: const Icon(
-              Icons.add,
-              color: Colors.black,
-            ),
-          )
-        ],
+        actions: [],
       ),
       drawer: const NavDrawer(),
-      bottomNavigationBar: const NavBottom(),
+      //bottomNavigationBar: const NavBottom(),
       body: Consumer<CustomerStore>(
         builder: (context, store, child) {
           if (store.isLoading) {

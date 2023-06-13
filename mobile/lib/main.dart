@@ -3,7 +3,7 @@ import 'package:mobile/screens/budget_screen.dart';
 import 'package:mobile/screens/calendar_screen.dart';
 import 'package:mobile/screens/customer_add_screen.dart';
 import 'package:mobile/screens/customers_screen.dart';
-import 'package:mobile/screens/home_screen.dart';
+import 'package:mobile/screens/main_screen.dart';
 import 'package:mobile/screens/manager/headquarter_add_screen.dart';
 import 'package:mobile/screens/manager/headquarters_screen.dart';
 import 'package:mobile/screens/schedule_screen.dart';
@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
         'splash': (context) => const SplashScreen(),
         'signin': (context) => const SignInScreen(),
         'signup': (context) => const SignUpScreen(),
-        'home': (context) => const HomeScreen(),
+        'main': (context) => const MainScreen(),
         'calendar': (context) => const CalendarScreen(),
         'schedule': (context) => const ScheduleScreen(),
         'budget': (context) => const BudgetScreen(),

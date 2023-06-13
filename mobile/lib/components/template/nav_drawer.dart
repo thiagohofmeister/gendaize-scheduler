@@ -22,7 +22,7 @@ class NavDrawer extends StatelessWidget {
             leading: const Icon(Icons.home),
             title: const Text('Início'),
             onTap: () {
-              Navigator.pushReplacementNamed(context, 'home');
+              Navigator.pushReplacementNamed(context, 'main');
             },
           ),
           ListTile(

@@ -10,26 +10,31 @@ class NavBottom extends StatelessWidget {
   Widget build(BuildContext context) {
     int currentIndex = Provider.of<NavigationStore>(
       context,
-      listen: false,
-    ).currentScreen;
+      listen: true,
+    ).currentScreenIndex;
 
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       items: Provider.of<NavigationStore>(context, listen: false)
           .navigation
-          .map((nav) =>
-              BottomNavigationBarItem(icon: Icon(nav.icon), label: nav.label))
+          .map(
+            (nav) => BottomNavigationBarItem(
+              icon: Icon(nav.icon),
+              label: nav.label,
+            ),
+          )
           .toList(),
       currentIndex: currentIndex,
       onTap: (index) {
-        String routeName = Provider.of<NavigationStore>(
+        print(index);
+        Provider.of<NavigationStore>(
           context,
           listen: false,
         ).setScreen(index);
 
-        if (currentIndex != index) {
-          Navigator.pushReplacementNamed(context, routeName);
-        }
+        // if (currentIndex != index) {
+        //   Navigator.pushReplacementNamed(context, routeName);
+        // }
       },
     );
   }

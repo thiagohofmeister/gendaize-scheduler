@@ -30,7 +30,7 @@ class _SplashScreenState extends State<SplashScreen> {
           isLoading = false;
         });
 
-        Navigator.pushReplacementNamed(context, 'home');
+        Navigator.pushReplacementNamed(context, 'main');
       }).catchError((onError) {
         Navigator.pushReplacementNamed(context, 'signin');
       });

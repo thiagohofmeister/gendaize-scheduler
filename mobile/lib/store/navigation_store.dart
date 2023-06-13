@@ -1,26 +1,51 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/models/navigation_model.dart';
+import 'package:mobile/screens/calendar_screen.dart';
+import 'package:mobile/screens/customers_screen.dart';
+import 'package:mobile/screens/home_screen.dart';
 
 class NavigationStore extends ChangeNotifier {
-  int currentScreen = 0;
   List<NavigationModel> navigation = [
-    NavigationModel(icon: Icons.home, label: 'Início', slug: 'home'),
     NavigationModel(
-        icon: Icons.calendar_today, label: 'Agenda', slug: 'calendar'),
-    NavigationModel(icon: Icons.people, label: 'Clientes', slug: 'customers'),
+      icon: Icons.home,
+      label: 'Início',
+      slug: 'main',
+      widget: const HomeScreen(),
+    ),
+    NavigationModel(
+      icon: Icons.calendar_today,
+      label: 'Agenda',
+      slug: 'calendar',
+      widget: const CalendarScreen(),
+    ),
+    NavigationModel(
+      icon: Icons.people,
+      label: 'Clientes',
+      slug: 'customers',
+      widget: const CustomersScreen(),
+    ),
   ];
+
+  int currentScreenIndex = 0;
+  late NavigationModel currentScreen = navigation[currentScreenIndex];
 
   NavigationStore() : super();
 
   String setScreen(int screen) {
-    currentScreen = screen;
+    currentScreenIndex = screen;
+    currentScreen = navigation[screen];
+
+    notifyListeners();
 
     return navigation[screen].slug;
   }
 
   String setNameScreen(String slug) {
-    currentScreen = navigation.indexWhere((element) => element.slug == slug);
+    currentScreenIndex =
+        navigation.indexWhere((element) => element.slug == slug);
 
-    return navigation[currentScreen].slug;
+    notifyListeners();
+
+    return navigation[currentScreenIndex].slug;
   }
 }

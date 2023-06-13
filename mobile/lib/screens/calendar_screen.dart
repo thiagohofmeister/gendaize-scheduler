@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/components/lists/has_no_data.dart';
 import 'package:mobile/components/scheduled_item.dart';
-import 'package:mobile/components/template/nav_bottom.dart';
 import 'package:mobile/components/template/nav_drawer.dart';
 import 'package:mobile/store/scheduled_store.dart';
 import 'package:provider/provider.dart';
@@ -94,7 +93,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
         ],
       ),
       drawer: const NavDrawer(),
-      bottomNavigationBar: const NavBottom(),
+      // bottomNavigationBar: const NavBottom(),
       body: Consumer<ScheduledStore>(
         builder: (context, store, child) {
           if (store.isLoading) {
