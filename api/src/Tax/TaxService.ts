@@ -1,6 +1,7 @@
 import { DataSource } from 'typeorm'
 import { BaseService } from '../Base/BaseService'
 import { Organization } from '../Organization/Models/Organization'
+import { FilterDefault } from '../Shared/Models/Interfaces/FilterDefault'
 import { ServiceDecorator } from '../Shared/Utils/DecoratorUtils'
 import { TaxCreateDto } from './Dto/TaxCreateDto'
 import { Tax } from './Models/Tax'
@@ -19,6 +20,10 @@ export class TaxService extends BaseService {
 
   async getById(id: string) {
     return this.repository.findOneByPrimaryColumn(id)
+  }
+
+  async get(filter: FilterDefault) {
+    return this.repository.findAll(filter, false, true)
   }
 
   async create(organization: Organization, data: TaxCreateDto) {

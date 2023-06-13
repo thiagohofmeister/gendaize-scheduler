@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_masked_text2/flutter_masked_text2.dart';
-import 'package:mobile/models/shared/address_model.dart';
-import 'package:mobile/models/headquarter/headquarter_create_model.dart';
-import 'package:mobile/services/headquarter_service.dart';
-import 'package:mobile/store/location_store.dart';
-import 'package:provider/provider.dart';
+import 'package:mobile/models/enums/tax_type.dart';
+import 'package:mobile/models/enums/tax_value_type.dart';
+import 'package:mobile/models/tax/tax_create_model.dart';
+import 'package:mobile/services/tax_service.dart';
 
 class TaxAddScreen extends StatefulWidget {
   const TaxAddScreen({Key? key}) : super(key: key);
@@ -17,31 +15,12 @@ class _TaxAddScreenState extends State<TaxAddScreen> {
   final _formKey = GlobalKey<FormState>();
   bool isSaving = false;
 
-  String? stateSelected;
-  String? citySelected;
+  TaxType? taxTypeSelected;
+  TaxValueType? taxValueTypeSelected;
 
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController addressZipCodeController =
-      MaskedTextController(mask: '00000-000');
-  final TextEditingController addressCityController = TextEditingController();
-  final TextEditingController addressDistrictController =
-      TextEditingController();
-  final TextEditingController addressStreetController = TextEditingController();
-  final TextEditingController addressNumberController = TextEditingController();
-  final TextEditingController addressComplementController =
-      TextEditingController();
-
-  Future<void> getStates() async {
-    LocationStore provider = Provider.of<LocationStore>(context, listen: false);
-
-    await provider.initialFetch();
-
-    setState(() {
-      if (provider.states.length == 1) {
-        stateSelected = provider.states.firstOrNull;
-      }
-    });
-  }
+  final TextEditingController labelController = TextEditingController();
+  final TextEditingController valueController = TextEditingController();
+  final TextEditingController valueDetailsController = TextEditingController();
 
   void onSave() {
     setState(() {
@@ -62,19 +41,15 @@ class _TaxAddScreenState extends State<TaxAddScreen> {
       return;
     }
 
-    HeadquarterCreateModel data = HeadquarterCreateModel(
-      name: nameController.text,
-      address: AddressModel(
-        zipCode: addressZipCodeController.text,
-        state: stateSelected!,
-        city: citySelected!,
-        district: addressDistrictController.text,
-        street: addressStreetController.text,
-        number: addressNumberController.text,
-      ),
+    TaxCreateModel data = TaxCreateModel(
+      label: labelController.text,
+      value: valueController.text,
+      type: taxTypeSelected!,
+      valueType: taxValueTypeSelected!,
+      valueDetails: valueDetailsController.text,
     );
 
-    HeadquarterService().create(data).then((_) {
+    TaxService().create(data).then((_) {
       Navigator.pop(context, true);
     });
 
@@ -84,20 +59,10 @@ class _TaxAddScreenState extends State<TaxAddScreen> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    getStates();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    LocationStore locationStore = Provider.of<LocationStore>(context);
-
-    print(locationStore.states);
-
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Cadastrar filial"),
+        title: const Text("Cadastrar taxa"),
         actions: [
           MenuItemButton(
             onPressed: onSave,
@@ -134,52 +99,35 @@ class _TaxAddScreenState extends State<TaxAddScreen> {
                             border: OutlineInputBorder(),
                             hintText: 'Nome',
                           ),
-                          controller: nameController,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: TextFormField(
-                          validator: (value) {
-                            if (value != null && value.isEmpty) {
-                              return 'Preencha o CEP';
-                            }
-                            return null;
-                          },
-                          decoration: const InputDecoration(
-                            isDense: true,
-                            border: OutlineInputBorder(),
-                            hintText: 'CEP',
-                          ),
-                          controller: addressZipCodeController,
+                          controller: labelController,
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(bottom: 16.0),
                         child: DropdownButtonFormField(
-                          value: stateSelected,
+                          value: taxTypeSelected,
                           validator: (value) {
                             if (value == null) {
-                              return 'Selecione o estado';
+                              return 'Selecione o tipo de taxa';
                             }
 
                             return null;
                           },
-                          onChanged: (String? state) {
+                          onChanged: (TaxType? taxType) {
                             setState(() {
-                              stateSelected = state;
+                              taxTypeSelected = taxType;
                             });
                           },
-                          items: locationStore.states.map((String state) {
-                            return DropdownMenuItem<String>(
-                                value: state,
-                                child: Text(
-                                  state,
-                                  overflow: TextOverflow.ellipsis,
-                                ));
+                          items: TaxType.values.map((TaxType taxType) {
+                            return DropdownMenuItem<TaxType>(
+                              value: taxType,
+                              child: Text(
+                                taxType.getLabel(),
+                              ),
+                            );
                           }).toList(),
                           decoration: const InputDecoration(
-                            labelText: "UF",
+                            labelText: "Tipo de taxa",
                             border: OutlineInputBorder(),
                           ),
                         ),
@@ -187,33 +135,30 @@ class _TaxAddScreenState extends State<TaxAddScreen> {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 16.0),
                         child: DropdownButtonFormField(
-                          value: citySelected,
+                          value: taxValueTypeSelected,
                           validator: (value) {
                             if (value == null) {
-                              return 'Selecione a cidade';
+                              return 'Selecione o tipo do valor da taxa';
                             }
 
                             return null;
                           },
-                          onChanged: (String? state) {
+                          onChanged: (TaxValueType? taxValueType) {
                             setState(() {
-                              citySelected = state;
+                              taxValueTypeSelected = taxValueType;
                             });
                           },
-                          items: stateSelected != null
-                              ? locationStore
-                                  .getCities(stateSelected!)
-                                  .map((String city) {
-                                  return DropdownMenuItem<String>(
-                                      value: city,
-                                      child: Text(
-                                        city,
-                                        overflow: TextOverflow.ellipsis,
-                                      ));
-                                }).toList()
-                              : null,
+                          items: TaxValueType.values
+                              .map((TaxValueType taxValueType) {
+                            return DropdownMenuItem<TaxValueType>(
+                              value: taxValueType,
+                              child: Text(
+                                taxValueType.getLabel(),
+                              ),
+                            );
+                          }).toList(),
                           decoration: const InputDecoration(
-                            labelText: "Cidade",
+                            labelText: "Tipo do valor da taxa",
                             border: OutlineInputBorder(),
                           ),
                         ),
@@ -223,61 +168,37 @@ class _TaxAddScreenState extends State<TaxAddScreen> {
                         child: TextFormField(
                           validator: (value) {
                             if (value != null && value.isEmpty) {
-                              return 'Preencha o bairro';
+                              return 'Preencha o valor';
                             }
                             return null;
                           },
                           decoration: const InputDecoration(
                             isDense: true,
                             border: OutlineInputBorder(),
-                            hintText: 'Bairro',
+                            hintText: 'Valor',
                           ),
-                          controller: addressDistrictController,
+                          controller: valueController,
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: TextFormField(
-                          validator: (value) {
-                            if (value != null && value.isEmpty) {
-                              return 'Preencha a rua';
-                            }
-                            return null;
-                          },
-                          decoration: const InputDecoration(
-                            isDense: true,
-                            border: OutlineInputBorder(),
-                            hintText: 'Rua',
-                          ),
-                          controller: addressStreetController,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: TextFormField(
-                          validator: (value) {
-                            if (value != null && value.isEmpty) {
-                              return 'Preencha o número';
-                            }
-                            return null;
-                          },
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: 'Número',
-                          ),
-                          controller: addressNumberController,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: TextField(
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: 'Complemento',
-                          ),
-                          controller: addressComplementController,
-                        ),
-                      ),
+                      taxValueTypeSelected == TaxValueType.distance
+                          ? Padding(
+                              padding: const EdgeInsets.only(bottom: 16.0),
+                              child: TextFormField(
+                                validator: (value) {
+                                  if (value != null && value.isEmpty) {
+                                    return 'Preencha os metros';
+                                  }
+                                  return null;
+                                },
+                                decoration: const InputDecoration(
+                                  isDense: true,
+                                  border: OutlineInputBorder(),
+                                  hintText: 'A cada X metros',
+                                ),
+                                controller: valueDetailsController,
+                              ),
+                            )
+                          : Container(),
                     ],
                   ),
                 ),

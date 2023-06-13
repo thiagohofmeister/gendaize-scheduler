@@ -35,7 +35,7 @@ class CustomerListItem extends StatelessWidget {
                       Navigator.of(context)
                           .pushNamed('service-budget', arguments: customer);
                     },
-                    icon: const Icon(Icons.monetization_on),
+                    icon: const Icon(Icons.paid),
                   ),
                 ],
               ),

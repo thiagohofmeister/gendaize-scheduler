@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/components/lists/has_no_data.dart';
 import 'package:mobile/components/template/nav_drawer.dart';
-import 'package:mobile/screens/headquarter/components/headquarter_list_item.dart';
-import 'package:mobile/store/headquarter_store.dart';
+import 'package:mobile/screens/taxes/components/tax_list_item.dart';
+import 'package:mobile/store/tax_store.dart';
 import 'package:provider/provider.dart';
 
 class TaxListScreen extends StatefulWidget {
@@ -17,7 +17,7 @@ class _TaxListScreenState extends State<TaxListScreen> {
       GlobalKey<RefreshIndicatorState>();
 
   Future<void> _fetch({bool isRefetch = true}) async {
-    final dataProvider = Provider.of<HeadquarterStore>(context, listen: false);
+    final dataProvider = Provider.of<TaxStore>(context, listen: false);
 
     if (isRefetch) {
       dataProvider.refetch();
@@ -37,11 +37,11 @@ class _TaxListScreenState extends State<TaxListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Filiais'),
+        title: const Text('Taxas'),
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.pushNamed(context, 'headquarter-add').then(
+              Navigator.pushNamed(context, 'tax-add').then(
                 (value) {
                   if (value == true) {
                     _fetch(isRefetch: true);
@@ -59,7 +59,7 @@ class _TaxListScreenState extends State<TaxListScreen> {
       drawer: const NavDrawer(),
       body: Padding(
         padding: const EdgeInsets.only(bottom: 40.0),
-        child: Consumer<HeadquarterStore>(
+        child: Consumer<TaxStore>(
           builder: (context, store, child) {
             if (store.isLoading) {
               return const Center(
@@ -68,8 +68,8 @@ class _TaxListScreenState extends State<TaxListScreen> {
             }
 
             if (store.hasNoData()) {
-              return HasNoData(
-                message: 'Você não possui nenhuma filial cadastrada',
+              return const HasNoData(
+                message: 'Você não possui nenhuma taxa cadastrada',
               );
             }
 
@@ -80,8 +80,7 @@ class _TaxListScreenState extends State<TaxListScreen> {
                 slivers: [
                   SliverList(
                     delegate: SliverChildBuilderDelegate(
-                      (context, index) =>
-                          HeadquarterListItem(headquarter: store.items[index]),
+                      (context, index) => TaxListItem(tax: store.items[index]),
                       childCount: store.items.length,
                     ),
                   ),

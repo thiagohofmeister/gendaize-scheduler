@@ -16,7 +16,11 @@ export class TaxValidator extends BaseValidator {
       type: Joi.valid(...Object.keys(TaxTypeEnum)).required(),
       valueType: Joi.valid(...Object.keys(TaxValueTypeEnum)).required(),
       value: Joi.number().required(),
-      valueDetails: Joi.number().allow(null)
+      valueDetails: Joi.when('valueType', {
+        is: TaxValueTypeEnum.DISTANCE,
+        then: Joi.number().required(),
+        otherwise: Joi.forbidden()
+      })
     })
   }
 

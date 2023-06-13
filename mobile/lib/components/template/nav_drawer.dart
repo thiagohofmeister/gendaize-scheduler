@@ -41,6 +41,17 @@ class NavDrawer extends StatelessWidget {
             },
           ),
           ListTile(
+            leading: const Icon(Icons.attach_money),
+            title: const Text('Taxas'),
+            onTap: () {
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                'tax-list',
+                (route) => true,
+              );
+            },
+          ),
+          ListTile(
             leading: const Icon(Icons.logout),
             title: const Text('Desconectar'),
             onTap: () {

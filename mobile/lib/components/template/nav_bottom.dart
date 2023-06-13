@@ -26,7 +26,6 @@ class NavBottom extends StatelessWidget {
           .toList(),
       currentIndex: currentIndex,
       onTap: (index) {
-        print(index);
         Provider.of<NavigationStore>(
           context,
           listen: false,
