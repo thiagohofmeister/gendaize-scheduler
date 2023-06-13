@@ -22,14 +22,22 @@ class NavDrawer extends StatelessWidget {
             leading: const Icon(Icons.home),
             title: const Text('Início'),
             onTap: () {
-              Navigator.pushReplacementNamed(context, 'main');
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                'main',
+                (route) => true,
+              );
             },
           ),
           ListTile(
             leading: const Icon(Icons.business),
             title: const Text('Filiais'),
             onTap: () {
-              Navigator.pushReplacementNamed(context, 'headquarters');
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                'headquarters',
+                (route) => true,
+              );
             },
           ),
           ListTile(
@@ -37,7 +45,11 @@ class NavDrawer extends StatelessWidget {
             title: const Text('Desconectar'),
             onTap: () {
               Provider.of<AuthenticationStore>(context, listen: false).logout();
-              Navigator.pushReplacementNamed(context, 'signin');
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                'signin',
+                (route) => true,
+              );
             },
           ),
         ],
