@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class HasNoData extends StatelessWidget {
-  String message;
-  String? subMessage;
+  final String message;
+  final String? subMessage;
 
-  HasNoData({Key? key, required this.message, this.subMessage})
+  const HasNoData({Key? key, required this.message, this.subMessage})
       : super(key: key);
 
   @override

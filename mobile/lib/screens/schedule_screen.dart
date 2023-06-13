@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:mobile/components/inputs/date_picker_input.dart';
 import 'package:mobile/components/inputs/time_picker_input.dart';
 import 'package:mobile/components/template/data_label.dart';
-import 'package:mobile/models/shared/address_model.dart';
-import 'package:mobile/models/shared/amount_model.dart';
 import 'package:mobile/models/customer/customer_model.dart';
 import 'package:mobile/models/headquarter/headquarter_model.dart';
 import 'package:mobile/models/scheduled/scheduled_create_calculate_amount_model.dart';
 import 'package:mobile/models/scheduled/scheduled_create_model.dart';
 import 'package:mobile/models/service/service_model.dart';
+import 'package:mobile/models/shared/address_model.dart';
+import 'package:mobile/models/shared/amount_model.dart';
 import 'package:mobile/models/user/user_model.dart';
 import 'package:mobile/services/scheduled_service.dart';
 import 'package:mobile/store/customer_store.dart';
@@ -30,7 +30,6 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
 
   UserModel? _selectedUser;
   CustomerModel? _selectedCustomer;
-  int? _selectedCustomerAddressIndex;
   AddressModel? _selectedCustomerAddress;
   ServiceModel? _selectedService;
   HeadquarterModel? _selectedHeadquarter;
