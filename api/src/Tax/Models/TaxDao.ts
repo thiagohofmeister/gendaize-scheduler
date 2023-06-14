@@ -84,7 +84,7 @@ export class TaxDao implements DaoModel {
       this.label,
       this.type,
       this.valueType,
-      this.valueType === TaxValueTypeEnum.PERCENT ? this.value : this.value / 100,
+      this.value / 100,
       this.valueDetails,
       this.organization?.toDomain(),
       this.id

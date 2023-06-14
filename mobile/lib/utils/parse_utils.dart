@@ -37,6 +37,6 @@ class ParseUtils {
   }
 
   static fromMoneyToDouble(String text) {
-    return double.parse(text.replaceAll('R\$ ', '').replaceAll(',', '.')) * 100;
+    return double.parse(text.replaceAll('R\$ ', '').replaceAll(',', '.'));
   }
 }

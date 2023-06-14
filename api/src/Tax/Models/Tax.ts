@@ -78,7 +78,7 @@ export class Tax implements DomainModel, ResponseModel {
       this.getLabel(),
       this.getType(),
       this.getValueType(),
-      this.getValueType() == TaxValueTypeEnum.PERCENT ? this.getValue() : this.getValue() * 100,
+      this.getValue() * 100,
       this.getValueDetails(),
       this.getOrganization()?.toDao()
     )

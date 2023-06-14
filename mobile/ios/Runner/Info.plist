@@ -58,5 +58,7 @@
     <string>sms</string>
     <string>tel</string>
   </array>
+  <key>ITSEncryptionExportComplianceCode</key>
+  <string>NO</string>
 </dict>
 </plist>

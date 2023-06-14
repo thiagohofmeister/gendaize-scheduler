@@ -30,7 +30,7 @@ class TaxCreateModel {
       'type': type.name.toUpperCase(),
       'valueType': valueType.name.toUpperCase(),
       'value': valueType == TaxValueType.percent
-          ? value
+          ? value.replaceAll('%', '')
           : ParseUtils.fromMoneyToDouble(value),
     };
 

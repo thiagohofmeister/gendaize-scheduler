@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:mobile/models/enums/tax_type.dart';
 import 'package:mobile/models/enums/tax_value_type.dart';
 import 'package:mobile/models/tax/tax_create_model.dart';
@@ -19,7 +20,17 @@ class _TaxAddScreenState extends State<TaxAddScreen> {
   TaxValueType? taxValueTypeSelected;
 
   final TextEditingController labelController = TextEditingController();
-  final TextEditingController valueController = TextEditingController();
+  final TextEditingController valueController = MoneyMaskedTextController(
+    decimalSeparator: '.',
+    precision: 2,
+    rightSymbol: '%',
+  );
+
+  final TextEditingController priceController = MoneyMaskedTextController(
+    decimalSeparator: ',',
+    precision: 2,
+    leftSymbol: 'R\$ ',
+  );
   final TextEditingController valueDetailsController = TextEditingController();
 
   void onSave() {
@@ -43,9 +54,11 @@ class _TaxAddScreenState extends State<TaxAddScreen> {
 
     TaxCreateModel data = TaxCreateModel(
       label: labelController.text,
-      value: valueController.text,
-      type: taxTypeSelected!,
+      value: taxValueTypeSelected == TaxValueType.percent
+          ? valueController.text
+          : priceController.text,
       valueType: taxValueTypeSelected!,
+      type: taxTypeSelected!,
       valueDetails: valueDetailsController.text,
     );
 
@@ -177,7 +190,10 @@ class _TaxAddScreenState extends State<TaxAddScreen> {
                             border: OutlineInputBorder(),
                             hintText: 'Valor',
                           ),
-                          controller: valueController,
+                          controller:
+                              taxValueTypeSelected == TaxValueType.percent
+                                  ? valueController
+                                  : priceController,
                         ),
                       ),
                       taxValueTypeSelected == TaxValueType.distance
