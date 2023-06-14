@@ -1,5 +1,6 @@
 import 'package:mobile/models/enums/tax_type.dart';
 import 'package:mobile/models/enums/tax_value_type.dart';
+import 'package:mobile/utils/parse_utils.dart';
 
 class TaxCreateModel {
   String label;
@@ -24,12 +25,19 @@ class TaxCreateModel {
         valueDetails = map['valueDetails'];
 
   Map<String, dynamic> toMap() {
-    return {
+    Map<String, dynamic> map = {
       'label': label,
       'type': type.name.toUpperCase(),
       'valueType': valueType.name.toUpperCase(),
-      'value': value,
-      'valueDetails': valueDetails,
+      'value': valueType == TaxValueType.percent
+          ? value
+          : ParseUtils.fromMoneyToDouble(value),
     };
+
+    if (valueType == TaxValueType.distance) {
+      map['valueDetails'] = valueDetails;
+    }
+
+    return map;
   }
 }

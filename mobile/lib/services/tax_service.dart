@@ -31,7 +31,6 @@ class TaxService extends ServiceContract {
   }
 
   Future<TaxModel> create(TaxCreateModel data) async {
-    print(jsonEncode(data.toMap()));
     HttpResponseModel response = await httpRequest
         .createInstance()
         .withPayload(jsonEncode(data.toMap()))

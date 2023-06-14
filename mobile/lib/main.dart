@@ -8,10 +8,12 @@ import 'package:mobile/screens/headquarter/headquarter_list_screen.dart';
 import 'package:mobile/screens/main_screen.dart';
 import 'package:mobile/screens/scheduled/scheduled_add_screen.dart';
 import 'package:mobile/screens/scheduled/scheduled_list_screen.dart';
+import 'package:mobile/screens/service/service_add_screen.dart';
 import 'package:mobile/screens/service/service_budget_screen.dart';
+import 'package:mobile/screens/service/service_list_screen.dart';
 import 'package:mobile/screens/splash_screen.dart';
-import 'package:mobile/screens/taxes/tax_add_screen.dart';
-import 'package:mobile/screens/taxes/tax_list_screen.dart';
+import 'package:mobile/screens/tax/tax_add_screen.dart';
+import 'package:mobile/screens/tax/tax_list_screen.dart';
 import 'package:mobile/store/authentication_store.dart';
 import 'package:mobile/store/customer_store.dart';
 import 'package:mobile/store/headquarter_store.dart';
@@ -73,6 +75,8 @@ class MyApp extends StatelessWidget {
         'headquarter-add': (context) => const HeadquarterAddScreen(),
         'tax-list': (context) => const TaxListScreen(),
         'tax-add': (context) => const TaxAddScreen(),
+        'service-list': (context) => const ServiceListScreen(),
+        'service-add': (context) => const ServiceAddScreen(),
       },
     );
   }

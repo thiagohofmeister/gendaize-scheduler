@@ -9,4 +9,13 @@ extension ServiceTypeExtension on ServiceType {
 
     return map[value]!;
   }
+
+  getLabel() {
+    Map<ServiceType, String> map = {
+      ServiceType.external: 'Externo',
+      ServiceType.internal: 'Interno',
+    };
+
+    return map[this];
+  }
 }

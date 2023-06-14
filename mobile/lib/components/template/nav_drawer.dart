@@ -52,6 +52,17 @@ class NavDrawer extends StatelessWidget {
             },
           ),
           ListTile(
+            leading: const Icon(Icons.category),
+            title: const Text('Serviços'),
+            onTap: () {
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                'service-list',
+                (route) => true,
+              );
+            },
+          ),
+          ListTile(
             leading: const Icon(Icons.logout),
             title: const Text('Desconectar'),
             onTap: () {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/components/lists/has_no_data.dart';
 import 'package:mobile/components/template/nav_drawer.dart';
-import 'package:mobile/screens/taxes/components/tax_list_item.dart';
+import 'package:mobile/screens/tax/components/tax_list_item.dart';
 import 'package:mobile/store/tax_store.dart';
 import 'package:provider/provider.dart';
 

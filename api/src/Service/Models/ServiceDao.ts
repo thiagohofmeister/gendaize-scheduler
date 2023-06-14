@@ -90,7 +90,7 @@ export class ServiceDao implements DaoModel {
   toDomain() {
     const domain = new Service(
       this.name,
-      this.price,
+      this.price / 100,
       this.type,
       this.sameTimeQuantity,
       this.duration,

@@ -101,7 +101,7 @@ export class Service implements DomainModel, ResponseModel {
     const entity = new ServiceDao(
       this.getId(),
       this.getName(),
-      this.getPrice(),
+      this.getPrice() * 100,
       this.getType(),
       this.getSameTimeQuantity(),
       this.getDuration(),
