@@ -50,10 +50,10 @@ export class Tax implements DomainModel, ResponseModel {
   public getFinalValue(subtotal: number, distance: number): number {
     switch (this.valueType) {
       case TaxValueTypeEnum.DISTANCE:
-        return (this.value / 100) * Math.floor(distance / this.getValueDetails()) + subtotal
+        return this.value * Math.floor(distance / this.getValueDetails())
 
       case TaxValueTypeEnum.FIXED:
-        return this.value / 100 + subtotal
+        return this.value
 
       case TaxValueTypeEnum.PERCENT:
         return (subtotal * this.value) / 100

@@ -1,4 +1,5 @@
 import { SelectQueryBuilder } from 'typeorm'
+import { FilterDefault } from '../Shared/Models/Interfaces/FilterDefault'
 import { TypeOrmMysqlRepositoryContract } from '../Shared/Modules/Repositories/TypeOrmMysqlRepositoryContract'
 import { Headquarter } from './Models/Headquarter'
 import { HeadquarterDao } from './Models/HeadquarterDao'
@@ -9,6 +10,13 @@ export class HeadquarterRepository extends TypeOrmMysqlRepositoryContract<
 > {
   protected customToFindOneByPrimaryColumn(
     query: SelectQueryBuilder<HeadquarterDao>
+  ): SelectQueryBuilder<HeadquarterDao> {
+    return query.leftJoinAndSelect('HeadquarterDao.locations', 'locations')
+  }
+
+  protected customToFindAll(
+    query: SelectQueryBuilder<HeadquarterDao>,
+    filter?: FilterDefault
   ): SelectQueryBuilder<HeadquarterDao> {
     return query.leftJoinAndSelect('HeadquarterDao.locations', 'locations')
   }
