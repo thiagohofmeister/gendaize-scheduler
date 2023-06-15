@@ -13,9 +13,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Setup flyctl
-        uses: superfly/flyctl-action@v1
+     - name: Setup flyctl
+        uses: fly-app/flyctl-github-action@v1
         with:
+          version: latest
           api-token: ${{ secrets.FLY_API_TOKEN }}
 
       - name: Change to project directory
