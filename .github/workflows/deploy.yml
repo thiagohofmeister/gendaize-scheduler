@@ -8,20 +8,12 @@ on:
 
 jobs:
   deploy:
+    name: Deploy app
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Setup flyctl
-        uses: fly-app/flyctl-github-action@v1
-        with:
-          version: latest
-          api-token: ${{ secrets.FLY_API_TOKEN }}
-
-      - name: Change to project directory
-        run: cd api
-
-      - name: Deploy to fly.io
-        run: flyctl deploy --config fly.toml
+      - uses: actions/checkout@v3
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - run: cd api
+      - run: flyctl deploy --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
