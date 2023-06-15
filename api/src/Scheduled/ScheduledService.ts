@@ -41,7 +41,7 @@ export class ScheduledService extends BaseService {
   }
 
   async get(filter: FilterDefault): Promise<ListResponseModel<Scheduled>> {
-    return this.repository.findAll(filter)
+    return this.repository.findAll(filter, false, true)
   }
 
   async createCalculateAmount(

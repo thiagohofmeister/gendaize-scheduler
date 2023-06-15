@@ -25,7 +25,7 @@ export class UserService extends BaseService {
   }
 
   async get(filter: FilterDefault) {
-    return this.repository.findAll(filter)
+    return this.repository.findAll(filter, false, true)
   }
 
   async getById(id: string) {

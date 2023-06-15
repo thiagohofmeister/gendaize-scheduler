@@ -51,7 +51,7 @@ export class ServiceService extends BaseService {
   }
 
   async get(filter: FilterDefault): Promise<ListResponseModel<Service>> {
-    return this.repository.findAll(filter)
+    return this.repository.findAll(filter, false, true)
   }
 
   async getById(id: string): Promise<Service> {
