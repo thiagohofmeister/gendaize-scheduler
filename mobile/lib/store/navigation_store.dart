@@ -43,6 +43,7 @@ class NavigationStore extends ChangeNotifier {
   String setNameScreen(String slug) {
     currentScreenIndex =
         navigation.indexWhere((element) => element.slug == slug);
+    currentScreen = navigation[currentScreenIndex];
 
     notifyListeners();
 

@@ -17,7 +17,11 @@ class HttpRequest<T> {
   HttpRequest(this.resource);
 
   String getBaseUrl() {
-    return 'http://192.168.68.121:3001';
+    if (const String.fromEnvironment('ENV') == 'prod') {
+      return 'https://api-scheduler.gendaize.com.br';
+    }
+
+    return 'http://localhost:3001';
   }
 
   HttpRequest<T> createInstance({bool isLogged = true}) {

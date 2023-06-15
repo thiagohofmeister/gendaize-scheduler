@@ -18,7 +18,8 @@ class _CustomerAddScreenState extends State<CustomerAddScreen> {
   bool isSaving = false;
 
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _phoneController =
+      MaskedTextController(mask: '(00) 00000-0000');
   final TextEditingController _zipCodeController =
       MaskedTextController(mask: '00000-000');
   final TextEditingController _numberController = TextEditingController();
@@ -118,6 +119,7 @@ class _CustomerAddScreenState extends State<CustomerAddScreen> {
                                 },
                                 child: const Icon(Icons.contacts_sharp)),
                           ),
+                          keyboardType: TextInputType.name,
                           controller: _nameController,
                         ),
                       ),
@@ -130,6 +132,7 @@ class _CustomerAddScreenState extends State<CustomerAddScreen> {
                             }
                             return null;
                           },
+                          keyboardType: TextInputType.phone,
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
                             hintText: 'Telefone',
@@ -162,6 +165,7 @@ class _CustomerAddScreenState extends State<CustomerAddScreen> {
                                 },
                                 child: const Icon(Icons.search),
                               )),
+                          keyboardType: TextInputType.number,
                           controller: _zipCodeController,
                         ),
                       ),

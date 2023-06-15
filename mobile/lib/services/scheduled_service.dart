@@ -1,10 +1,10 @@
 import 'dart:convert';
 
-import 'package:mobile/models/shared/amount_model.dart';
-import 'package:mobile/models/shared/response_list.dart';
 import 'package:mobile/models/scheduled/scheduled_create_calculate_amount_model.dart';
 import 'package:mobile/models/scheduled/scheduled_create_model.dart';
 import 'package:mobile/models/scheduled/scheduled_model.dart';
+import 'package:mobile/models/shared/amount_model.dart';
+import 'package:mobile/models/shared/response_list.dart';
 import 'package:mobile/services/request/http_request.dart';
 import 'package:mobile/services/request/http_response_model.dart';
 import 'package:mobile/services/service_contract.dart';
@@ -34,7 +34,8 @@ class ScheduledService extends ServiceContract {
   }
 
   Future<bool> delete(String id) async {
-    HttpResponseModel response = await httpRequest.createInstance().delete();
+    HttpResponseModel response =
+        await httpRequest.createInstance().withEndpoint(id).delete();
 
     if (response.isError()) {
       throw Exception(response.body);

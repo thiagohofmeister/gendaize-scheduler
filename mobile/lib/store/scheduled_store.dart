@@ -13,7 +13,7 @@ class ScheduledStore extends ListStoreContract {
   Future<bool> delete(String id) async {
     bool result = await ScheduledService().delete(id);
 
-    await refetch();
+    // await refetch();
 
     return result;
   }

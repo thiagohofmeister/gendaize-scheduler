@@ -95,6 +95,7 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
   void initState() {
     super.initState();
     fetchUsers();
+    fetchTaxes();
   }
 
   @override

@@ -117,8 +117,9 @@ class _ScheduledListScreenState extends State<ScheduledListScreen> {
               slivers: [
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
-                    (context, index) =>
-                        ScheduledItem(scheduled: store.items[index]),
+                    (context, index) => ScheduledItem(
+                      scheduled: store.items[index],
+                    ),
                     childCount: store.items.length,
                   ),
                 ),

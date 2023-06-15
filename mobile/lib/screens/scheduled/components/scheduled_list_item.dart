@@ -10,7 +10,10 @@ import 'package:provider/provider.dart';
 class ScheduledItem extends StatelessWidget {
   final ScheduledModel scheduled;
 
-  const ScheduledItem({Key? key, required this.scheduled}) : super(key: key);
+  const ScheduledItem({
+    Key? key,
+    required this.scheduled,
+  }) : super(key: key);
 
   Future<void> openConfirmMap(BuildContext context) async {
     if (await showConfirmationDialog(
@@ -33,7 +36,10 @@ class ScheduledItem extends StatelessWidget {
         return;
       }
 
-      Provider.of<ScheduledStore>(context, listen: false).delete(id).then(
+      ScheduledStore scheduledStore =
+          Provider.of<ScheduledStore>(context, listen: false);
+
+      scheduledStore.delete(id).then(
         (value) {
           if (value) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -41,6 +47,8 @@ class ScheduledItem extends StatelessWidget {
                 content: Text('Agendamento cancelado!'),
               ),
             );
+
+            scheduledStore.refetch();
           }
         },
       );

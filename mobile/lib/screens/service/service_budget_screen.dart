@@ -6,10 +6,12 @@ import 'package:mobile/models/scheduled/scheduled_create_calculate_amount_model.
 import 'package:mobile/models/service/service_model.dart';
 import 'package:mobile/models/shared/address_model.dart';
 import 'package:mobile/models/shared/amount_model.dart';
+import 'package:mobile/models/user/user_model.dart';
 import 'package:mobile/services/scheduled_service.dart';
 import 'package:mobile/store/customer_store.dart';
 import 'package:mobile/store/headquarter_store.dart';
 import 'package:mobile/store/service_store.dart';
+import 'package:mobile/store/user_logged_store.dart';
 import 'package:mobile/store/user_store.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
@@ -78,11 +80,19 @@ class _ServiceBudgetScreenState extends State<ServiceBudgetScreen> {
       return;
     }
 
-    String message = "Segue os valores dos serviços:\n\n";
+    UserModel user = Provider.of<UserLoggedStore>(context, listen: false).user!;
 
-    _amounts!.forEach((amount) {
-      message += "${amount.service!.name}: ${amount.getTotal()}";
-    });
+    String message = "Olá ${_selectedCustomer!.name}!\n\n"
+        "Temos as seguintes opções e seus respectivos valores:\n";
+
+    int count = 1;
+    for (AmountModel amount in _amounts!) {
+      message += "$count - ${amount.service!.name}: ${amount.getTotal()}\n";
+      count++;
+    }
+
+    message += "\nQuaisquer dúvidas fico a disposição!\n\n"
+        "Atenciosamente,\n${user.name}";
 
     Share.share(message);
 

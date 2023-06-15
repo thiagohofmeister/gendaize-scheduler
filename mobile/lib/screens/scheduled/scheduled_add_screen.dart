@@ -13,7 +13,6 @@ import 'package:mobile/models/user/user_model.dart';
 import 'package:mobile/services/scheduled_service.dart';
 import 'package:mobile/store/customer_store.dart';
 import 'package:mobile/store/headquarter_store.dart';
-import 'package:mobile/store/navigation_store.dart';
 import 'package:mobile/store/service_store.dart';
 import 'package:mobile/store/user_store.dart';
 import 'package:provider/provider.dart';
@@ -89,8 +88,10 @@ class _ScheduledAddScreenState extends State<ScheduledAddScreen> {
     );
 
     ScheduledService().create(scheduledCreate).then((_) {
-      Provider.of<NavigationStore>(context, listen: false)
-          .setNameScreen('scheduled-list');
+      Navigator.pop(
+        context,
+        'scheduled-list',
+      );
     });
 
     setState(() {
