@@ -2,6 +2,7 @@ import { DataSource, EntityManager } from 'typeorm'
 import { BaseService } from '../Base/BaseService'
 import { LocationRepository } from '../Location/LocationRepository'
 import { Organization } from '../Organization/Models/Organization'
+import { DataNotFoundException } from '../Shared/Models/Exceptions/DataNotFoundException'
 import { InvalidDataException } from '../Shared/Models/Exceptions/InvalidDataException'
 import { ErrorReason } from '../Shared/Models/Interfaces/ErrorReason'
 import { FilterDefault } from '../Shared/Models/Interfaces/FilterDefault'
@@ -62,6 +63,10 @@ export class HeadquarterService extends BaseService {
       await this.validator.validateUpdateLocationsPayload(data)
 
       const headquarter = await this.setManager(manager).getById(id)
+
+      if (!headquarter) {
+        throw new DataNotFoundException()
+      }
 
       const errorReasons: ErrorReason[] = []
 
