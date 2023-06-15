@@ -18,7 +18,7 @@ jobs:
         uses: superfly/flyctl-actions/setup-flyctl@master
 
       - name: Change to project directory
-        run: cd api
+        run: cd ./api
 
       - name: Deploy
         run: flyctl deploy --config fly.toml -a gendaize-scheduler
