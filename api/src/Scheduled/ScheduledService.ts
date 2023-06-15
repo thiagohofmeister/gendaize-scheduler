@@ -10,6 +10,7 @@ import { InvalidDataException } from '../Shared/Models/Exceptions/InvalidDataExc
 import { FilterDefault } from '../Shared/Models/Interfaces/FilterDefault'
 import { ListResponseModel } from '../Shared/Models/Interfaces/ListResponseModel'
 import { ServiceDecorator } from '../Shared/Utils/DecoratorUtils'
+import { TaxTypeEnum } from '../Tax/Enums/TaxTypeEnum'
 import { User } from '../User/Models/User'
 import { UserService } from '../User/UserService'
 import { ScheduledCreateCalculateAmountDto } from './Dto/ScheduledCreateCalculateAmountDto'
@@ -179,6 +180,8 @@ export class ScheduledService extends BaseService {
     let taxes = 0
 
     service.getTaxes()?.forEach(tax => {
+      if (tax.getType() === TaxTypeEnum.CANCELLATION) return
+
       taxes += tax.getFinalValue(service.getPrice(), distance)
     })
 
