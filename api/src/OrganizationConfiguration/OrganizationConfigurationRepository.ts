@@ -1,6 +1,8 @@
+import { SelectQueryBuilder } from 'typeorm'
 import { TypeOrmMysqlRepositoryContract } from '../Shared/Modules/Repositories/TypeOrmMysqlRepositoryContract'
 import { OrganizationConfiguration } from './Models/OrganizationConfiguration'
 import { OrganizationConfigurationDao } from './Models/OrganizationConfigurationDao'
+import { OrganizationDao } from '../Organization/Models/OrganizationDao'
 
 export class OrganizationConfigurationRepository extends TypeOrmMysqlRepositoryContract<
   OrganizationConfiguration,

@@ -79,13 +79,17 @@ export abstract class TypeOrmMysqlRepositoryContract<
         organizationId: this.organizationId
       })
     } else if (this.hasColumn('headquarter') && !bypassorganizationId) {
-      if (!this.hasRelation('headquarter')) {
-        query.leftJoin(`${this.getTableName()}.headquarter`, 'headquarter')
-      }
-
-      query.andWhere(`headquarter.organization_id = :organizationId`, {
-        organizationId: this.organizationId
-      })
+      query
+        .leftJoin(`${this.getTableName()}.headquarter`, 'headquarter')
+        .andWhere(`headquarter.organization_id = :organizationId`, {
+          organizationId: this.organizationId
+        })
+    } else if (this.hasColumn('organization') && !bypassorganizationId) {
+      query
+        .leftJoin(`${this.getTableName()}.organization`, 'organization')
+        .andWhere(`organization.id = :organizationId`, {
+          organizationId: this.organizationId
+        })
     }
 
     return this.getMany(query)
@@ -111,6 +115,14 @@ export abstract class TypeOrmMysqlRepositoryContract<
       }
 
       query.andWhere(`headquarter.organization_id = :organizationId`, {
+        organizationId: this.organizationId
+      })
+    } else if (this.hasColumn('organization') && !bypassorganizationId) {
+      if (!this.hasRelation('organization')) {
+        query.leftJoin(`${this.getTableName()}.organization`, 'organization')
+      }
+
+      query.andWhere(`organization.id = :organizationId`, {
         organizationId: this.organizationId
       })
     }

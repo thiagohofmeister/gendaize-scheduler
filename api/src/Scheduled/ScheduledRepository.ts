@@ -27,7 +27,6 @@ export class ScheduledRepository extends TypeOrmMysqlRepositoryContract<Schedule
     return query
       .leftJoinAndSelect('ScheduledDao.customer', 'customer')
       .leftJoinAndSelect('ScheduledDao.user', 'user')
-      .leftJoinAndSelect('ScheduledDao.headquarter', 'headquarter')
       .leftJoinAndSelect('ScheduledDao.service', 'service')
   }
 
@@ -86,7 +85,6 @@ export class ScheduledRepository extends TypeOrmMysqlRepositoryContract<Schedule
     return query
       .leftJoinAndSelect('ScheduledDao.customer', 'customer')
       .leftJoinAndSelect('ScheduledDao.user', 'user')
-      .leftJoinAndSelect('ScheduledDao.headquarter', 'headquarter')
       .leftJoinAndSelect('ScheduledDao.service', 'service')
       .orderBy('ScheduledDao.startAt')
   }

@@ -1,4 +1,5 @@
 import { SelectQueryBuilder } from 'typeorm'
+import { OrganizationDao } from '../Organization/Models/OrganizationDao'
 import { FilterDefault } from '../Shared/Models/Interfaces/FilterDefault'
 import { TypeOrmMysqlRepositoryContract } from '../Shared/Modules/Repositories/TypeOrmMysqlRepositoryContract'
 import { EncryptUtils } from '../Shared/Utils/EncryptUtils'
@@ -47,7 +48,7 @@ export class UserRepository extends TypeOrmMysqlRepositoryContract<User, UserDao
       .innerJoin('UserDao.userOrganizations', 'userOrganizations')
       .innerJoin('userOrganizations.organization', 'organization')
   }
-  x
+
   getRepository() {
     return this.getManager().getRepository(UserDao)
   }

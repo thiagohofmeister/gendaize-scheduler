@@ -4,6 +4,7 @@ import { TypeOrmMysqlRepositoryContract } from '../Shared/Modules/Repositories/T
 import { EncryptUtils } from '../Shared/Utils/EncryptUtils'
 import { Customer } from './Models/Customer'
 import { CustomerDao } from './Models/CustomerDao'
+import { OrganizationDao } from '../Organization/Models/OrganizationDao'
 
 export class CustomerRepository extends TypeOrmMysqlRepositoryContract<Customer, CustomerDao> {
   protected async beforeSave(entity: Customer): Promise<void> {

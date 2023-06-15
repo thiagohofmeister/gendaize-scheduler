@@ -1,4 +1,5 @@
 import { SelectQueryBuilder } from 'typeorm'
+import { OrganizationDao } from '../Organization/Models/OrganizationDao'
 import { FilterDefault } from '../Shared/Models/Interfaces/FilterDefault'
 import { TypeOrmMysqlRepositoryContract } from '../Shared/Modules/Repositories/TypeOrmMysqlRepositoryContract'
 import { Headquarter } from './Models/Headquarter'
