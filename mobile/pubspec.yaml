@@ -47,6 +47,7 @@ dependencies:
   maps_launcher: ^2.2.0
   contacts_service: ^0.6.3
   permission_handler: ^10.2.0
+  async: ^2.6.1
 
 dev_dependencies:
   flutter_test:

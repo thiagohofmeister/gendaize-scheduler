@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:mobile/models/location/location_get_address_model.dart';
 import 'package:mobile/models/location/location_model.dart';
-import 'package:mobile/models/shared/response_list.dart';
 import 'package:mobile/models/location/zipcode_model.dart';
+import 'package:mobile/models/shared/response_list.dart';
 import 'package:mobile/services/request/http_request.dart';
 import 'package:mobile/services/request/http_response_model.dart';
 import 'package:mobile/services/service_contract.dart';
@@ -28,7 +28,8 @@ class LocationService extends ServiceContract {
 
   Future<ResponseList<LocationModel>> fetchAll(
       Map<String, String>? params) async {
-    HttpResponseModel response = await httpRequest.createInstance().get();
+    HttpResponseModel response =
+        await httpRequest.createInstance().withParams(params).get();
 
     if (response.isError()) {
       throw Exception(response.body);

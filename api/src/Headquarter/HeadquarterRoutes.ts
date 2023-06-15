@@ -11,6 +11,7 @@ export class HeadquarterRoutes extends BaseRoute<HeadquarterController> {
     return [
       new AuthRouteDto(this.getFullEndpoint(), HttpMethodEnum.POST, controller.post),
       new AuthRouteDto(this.getFullEndpoint(), HttpMethodEnum.GET, controller.get),
+      new AuthRouteDto(this.getFullEndpoint(':id'), HttpMethodEnum.GET, controller.getOneById),
       new AuthRouteDto(
         this.getFullEndpoint(':id/locations'),
         HttpMethodEnum.PUT,

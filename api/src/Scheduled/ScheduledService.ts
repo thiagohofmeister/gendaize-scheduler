@@ -50,7 +50,7 @@ export class ScheduledService extends BaseService {
   ): Promise<ScheduledCalculateAmount[]> {
     await this.validator.validateCreateCalculatePricePayload(data)
 
-    const headquarter = await this.headquarterService.getById(data.headquarterId)
+    const headquarter = await this.headquarterService.getOneById(data.headquarterId)
 
     if (!headquarter) {
       throw new InvalidDataException(`Headquarter with id ${data.headquarterId} not found.`)
@@ -92,7 +92,7 @@ export class ScheduledService extends BaseService {
   async create(data: ScheduledCreateDto) {
     await this.validator.validateCreatePayload(data)
 
-    const headquarter = await this.headquarterService.getById(data.headquarterId)
+    const headquarter = await this.headquarterService.getOneById(data.headquarterId)
 
     if (!headquarter) {
       throw new InvalidDataException(`Headquarter with id ${data.headquarterId} not found.`)

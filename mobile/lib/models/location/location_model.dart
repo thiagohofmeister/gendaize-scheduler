@@ -13,4 +13,16 @@ class LocationModel {
       : id = map['id'],
         state = map['state'],
         city = map['city'];
+
+  static List<LocationModel> fromList(List<dynamic> list) {
+    return list.map((item) => LocationModel.fromMap(item)).toList();
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'state': state,
+      'city': city,
+    };
+  }
 }

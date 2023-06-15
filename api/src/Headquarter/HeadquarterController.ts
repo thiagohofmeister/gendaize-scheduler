@@ -10,6 +10,7 @@ export class HeadquarterController extends BaseController {
     this.post = this.post.bind(this)
     this.get = this.get.bind(this)
     this.putLocations = this.putLocations.bind(this)
+    this.getOneById = this.getOneById.bind(this)
   }
 
   async post(req: CoreRequest, res: Response, next: NextFunction) {
@@ -28,6 +29,15 @@ export class HeadquarterController extends BaseController {
       res,
       next,
       this.getServiceFactory(req).buildService('Headquarter').get(req.query),
+      ResponseTypeEnum.OK
+    )
+  }
+
+  async getOneById(req: CoreRequest, res: Response, next: NextFunction) {
+    return this.responseHandler(
+      res,
+      next,
+      this.getServiceFactory(req).buildService('Headquarter').getOneById(req.params.id),
       ResponseTypeEnum.OK
     )
   }

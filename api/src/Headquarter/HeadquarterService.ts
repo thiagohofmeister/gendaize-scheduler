@@ -54,7 +54,7 @@ export class HeadquarterService extends BaseService {
     return this.repository.findAll(filter, false, true)
   }
 
-  async getById(id: string): Promise<Headquarter> {
+  async getOneById(id: string): Promise<Headquarter> {
     return this.repository.findOneByPrimaryColumn(id)
   }
 
@@ -62,7 +62,7 @@ export class HeadquarterService extends BaseService {
     return this.transactionalFn(async manager => {
       await this.validator.validateUpdateLocationsPayload(data)
 
-      const headquarter = await this.setManager(manager).getById(id)
+      const headquarter = await this.setManager(manager).getOneById(id)
 
       if (!headquarter) {
         throw new DataNotFoundException()

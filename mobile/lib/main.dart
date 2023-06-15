@@ -3,7 +3,9 @@ import 'package:mobile/screens/authentication/sign_in_screen.dart';
 import 'package:mobile/screens/authentication/sign_up_screen.dart';
 import 'package:mobile/screens/customer/customer_add_screen.dart';
 import 'package:mobile/screens/customer/customer_list_screen.dart';
+import 'package:mobile/screens/headquarter/headquarter_add_location_screen.dart';
 import 'package:mobile/screens/headquarter/headquarter_add_screen.dart';
+import 'package:mobile/screens/headquarter/headquarter_list_locations_screen.dart';
 import 'package:mobile/screens/headquarter/headquarter_list_screen.dart';
 import 'package:mobile/screens/main_screen.dart';
 import 'package:mobile/screens/scheduled/scheduled_add_screen.dart';
@@ -73,6 +75,10 @@ class MyApp extends StatelessWidget {
         'customer-add': (context) => const CustomerAddScreen(),
         'headquarter-list': (context) => const HeadquarterListScreen(),
         'headquarter-add': (context) => const HeadquarterAddScreen(),
+        'headquarter-list-locations': (context) =>
+            const HeadquarterListLocationsScreen(),
+        'headquarter-add-location': (context) =>
+            const HeadquarterAddLocationScreen(),
         'tax-list': (context) => const TaxListScreen(),
         'tax-add': (context) => const TaxAddScreen(),
         'service-list': (context) => const ServiceListScreen(),

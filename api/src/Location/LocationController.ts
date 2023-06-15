@@ -17,7 +17,7 @@ export class LocationController extends BaseController {
     await this.responseHandler(
       res,
       next,
-      this.getServiceFactory(req).buildService('Location').get(),
+      this.getServiceFactory(req).buildService('Location').get(req.query),
       ResponseTypeEnum.OK
     )
   }

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/components/template/data_label.dart';
-import 'package:mobile/models/headquarter/headquarter_model.dart';
+import 'package:mobile/models/location/location_model.dart';
 
 class HeadquarterListItem extends StatelessWidget {
-  final HeadquarterModel headquarter;
+  final LocationModel location;
 
-  const HeadquarterListItem({Key? key, required this.headquarter})
+  const HeadquarterListItem({Key? key, required this.location})
       : super(key: key);
 
   @override
@@ -19,30 +19,17 @@ class HeadquarterListItem extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
               child: DataLabel(
-                label: 'Nome',
-                info: headquarter.name,
+                label: 'Estado',
+                info: location.state,
               ),
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
               child: DataLabel(
-                label: 'Endereço',
-                info: headquarter.address.getFullAddress(),
+                label: 'Cidade',
+                info: location.city,
               ),
             ),
-            Row(
-              children: [
-                IconButton(
-                    onPressed: () {
-                      Navigator.pushNamed(
-                        context,
-                        'headquarter-list-locations',
-                        arguments: headquarter,
-                      );
-                    },
-                    icon: const Icon(Icons.map))
-              ],
-            )
           ],
         ),
       ),

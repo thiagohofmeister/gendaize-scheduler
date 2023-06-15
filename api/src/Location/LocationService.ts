@@ -1,6 +1,7 @@
 import { DataSource } from 'typeorm'
 import { BaseService } from '../Base/BaseService'
 import { HeadquarterService } from '../Headquarter/HeadquarterService'
+import { FilterDefault } from '../Shared/Models/Interfaces/FilterDefault'
 import { ListResponseModel } from '../Shared/Models/Interfaces/ListResponseModel'
 import { ServiceDecorator } from '../Shared/Utils/DecoratorUtils'
 import { CalculateDistanceDto } from './Dto/CalculateDistanceDto'
@@ -28,8 +29,8 @@ export class LocationService extends BaseService {
     return this.viaCepProvider.getZipCodeByAddress(body)
   }
 
-  public async get(): Promise<ListResponseModel<Location>> {
-    return this.repository.findAll({}, false, true)
+  public async get(filter: FilterDefault): Promise<ListResponseModel<Location>> {
+    return this.repository.findAll(filter, false, true)
   }
 
   public async getOneById(id: string): Promise<Location> {
