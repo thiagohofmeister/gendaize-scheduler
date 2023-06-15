@@ -79,14 +79,15 @@ export abstract class TypeOrmMysqlRepositoryContract<
         organizationId: this.organizationId
       })
     } else if (this.hasColumn('headquarter') && !bypassorganizationId) {
+      console.log('ADICIONA HEADQUARTER', this.getTableName())
       query
-        .leftJoin(`${this.getTableName()}.headquarter`, 'headquarter')
+        .leftJoinAndSelect(`${this.getTableName()}.headquarter`, 'headquarter')
         .andWhere(`headquarter.organization_id = :organizationId`, {
           organizationId: this.organizationId
         })
     } else if (this.hasColumn('organization') && !bypassorganizationId) {
       query
-        .leftJoin(`${this.getTableName()}.organization`, 'organization')
+        .leftJoinAndSelect(`${this.getTableName()}.organization`, 'organization')
         .andWhere(`organization.id = :organizationId`, {
           organizationId: this.organizationId
         })
