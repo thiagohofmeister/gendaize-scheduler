@@ -7,7 +7,7 @@ export class Postgres {
 
   public async createDataSource() {
     if (!!Postgres.dataSource) {
-      console.log('Postgres instance already exists.')
+      console.error('Postgres instance already exists.')
       return
     }
 

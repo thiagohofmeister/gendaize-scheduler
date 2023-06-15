@@ -79,7 +79,6 @@ export abstract class TypeOrmMysqlRepositoryContract<
         organizationId: this.organizationId
       })
     } else if (this.hasColumn('headquarter') && !bypassorganizationId) {
-      console.log('ADICIONA HEADQUARTER', this.getTableName())
       query
         .leftJoinAndSelect(`${this.getTableName()}.headquarter`, 'headquarter')
         .andWhere(`headquarter.organization_id = :organizationId`, {
