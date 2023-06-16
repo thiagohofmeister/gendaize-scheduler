@@ -82,7 +82,7 @@ class _ServiceBudgetScreenState extends State<ServiceBudgetScreen> {
 
     UserModel user = Provider.of<UserLoggedStore>(context, listen: false).user!;
 
-    String message = "Olá ${_selectedCustomer!.name}!\n\n"
+    String message = "Olá!\n\n"
         "Temos as seguintes opções e seus respectivos valores:\n";
 
     int count = 1;

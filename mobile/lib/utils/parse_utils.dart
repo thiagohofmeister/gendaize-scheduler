@@ -39,4 +39,22 @@ class ParseUtils {
   static fromMoneyToDouble(String text) {
     return double.parse(text.replaceAll('R\$ ', '').replaceAll(',', '.'));
   }
+
+  static String toPhoneString(String? phone) {
+    if (phone == null) {
+      return '';
+    }
+
+    if (phone.startsWith('+55')) {
+      phone = phone.substring(3);
+    }
+
+    phone = phone.replaceAll(RegExp(r'\D'), '');
+
+    if (phone.substring(3).length != 9) {
+      phone = '${phone.substring(0, 2)}9${phone.substring(2)}';
+    }
+
+    return phone;
+  }
 }

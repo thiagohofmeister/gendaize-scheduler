@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile/utils/parse_utils.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class ChooseContactFromDeviceDialog extends StatefulWidget {
@@ -74,7 +75,9 @@ class _ChooseContactFromDeviceDialogState
                     onTap: () {
                       Navigator.of(context).pop({
                         'name': contact.displayName ?? '',
-                        'phone': contact.phones?.first.value ?? '',
+                        'phone': ParseUtils.toPhoneString(
+                          contact.phones?.first.value,
+                        ),
                       });
                     },
                   );

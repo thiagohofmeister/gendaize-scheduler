@@ -58,7 +58,7 @@ class MyApp extends StatelessWidget {
       title: 'Gendaize Scheduler',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.deepPurple,
+          seedColor: Colors.lightBlue,
         ),
         useMaterial3: true,
       ),
