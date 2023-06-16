@@ -14,8 +14,6 @@ class CustomerStore extends ListStoreContract<CustomerModel> {
   Future<bool> delete(String id) async {
     bool result = await CustomerService().delete(id);
 
-    await refetch();
-
     return result;
   }
 }

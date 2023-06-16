@@ -32,7 +32,8 @@ class CustomerService extends ServiceContract {
   }
 
   Future<bool> delete(String id) async {
-    HttpResponseModel response = await httpRequest.createInstance().delete();
+    HttpResponseModel response =
+        await httpRequest.createInstance().withEndpoint(id).delete();
 
     if (response.isError()) {
       throw Exception(response.body);

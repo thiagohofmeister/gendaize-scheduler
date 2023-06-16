@@ -36,14 +36,17 @@ export class CustomerDao implements DaoModel {
   authentications: AuthenticationDao[]
 
   @OneToMany(() => CustomerAddressDao, customerAddress => customerAddress.customer, {
-    cascade: true
+    cascade: true,
+    onDelete: 'CASCADE'
   })
   @JoinColumn({
     name: 'customer_id'
   })
   addresses: CustomerAddressDao[]
 
-  @OneToMany(() => ScheduledDao, scheduled => scheduled.user)
+  @OneToMany(() => ScheduledDao, scheduled => scheduled.user, {
+    onDelete: 'CASCADE'
+  })
   @JoinColumn({
     name: 'customer_id'
   })
