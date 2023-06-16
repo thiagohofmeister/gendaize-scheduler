@@ -4,6 +4,7 @@ import { BaseService } from '../Base/BaseService'
 import { CustomerAddress } from '../CustomerAddress/Models/CustomerAddress'
 import { LocationService } from '../Location/LocationService'
 import { Organization } from '../Organization/Models/Organization'
+import { DataNotFoundException } from '../Shared/Models/Exceptions/DataNotFoundException'
 import { UnauthorizedException } from '../Shared/Models/Exceptions/UnauthorizedException'
 import { FilterDefault } from '../Shared/Models/Interfaces/FilterDefault'
 import { ServiceDecorator } from '../Shared/Utils/DecoratorUtils'
@@ -67,7 +68,15 @@ export class CustomerService extends BaseService {
   }
 
   async getById(id: string) {
-    return this.repository.findOneByPrimaryColumn(id)
+    const customer = await this.repository.findOneByPrimaryColumn(id)
+
+    if (customer) return customer
+
+    throw new DataNotFoundException()
+  }
+
+  async delete(id: string) {
+    await this.repository.delete(id)
   }
 
   async get(filter: FilterDefault) {

@@ -1,6 +1,7 @@
 import { DataSource } from 'typeorm'
 import { BaseService } from '../Base/BaseService'
 import { HeadquarterService } from '../Headquarter/HeadquarterService'
+import { DataNotFoundException } from '../Shared/Models/Exceptions/DataNotFoundException'
 import { FilterDefault } from '../Shared/Models/Interfaces/FilterDefault'
 import { ListResponseModel } from '../Shared/Models/Interfaces/ListResponseModel'
 import { ServiceDecorator } from '../Shared/Utils/DecoratorUtils'
@@ -34,7 +35,11 @@ export class LocationService extends BaseService {
   }
 
   public async getOneById(id: string): Promise<Location> {
-    return this.repository.findOneByPrimaryColumn(id)
+    const location = await this.repository.findOneByPrimaryColumn(id)
+
+    if (location) return location
+
+    throw new DataNotFoundException()
   }
 
   public async findOneByZipCode(zipCode: string): Promise<ZipCode> {

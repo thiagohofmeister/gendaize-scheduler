@@ -1,6 +1,7 @@
 import { DataSource } from 'typeorm'
 import { BaseService } from '../Base/BaseService'
 import { Organization } from '../Organization/Models/Organization'
+import { DataNotFoundException } from '../Shared/Models/Exceptions/DataNotFoundException'
 import { FilterDefault } from '../Shared/Models/Interfaces/FilterDefault'
 import { ServiceDecorator } from '../Shared/Utils/DecoratorUtils'
 import { TaxCreateDto } from './Dto/TaxCreateDto'
@@ -19,7 +20,11 @@ export class TaxService extends BaseService {
   }
 
   async getById(id: string) {
-    return this.repository.findOneByPrimaryColumn(id)
+    const tax = await this.repository.findOneByPrimaryColumn(id)
+
+    if (tax) return tax
+
+    throw new DataNotFoundException()
   }
 
   async get(filter: FilterDefault) {

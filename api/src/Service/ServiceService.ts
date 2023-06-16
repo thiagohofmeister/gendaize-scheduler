@@ -1,6 +1,7 @@
 import { DataSource } from 'typeorm'
 import { BaseService } from '../Base/BaseService'
 import { Organization } from '../Organization/Models/Organization'
+import { DataNotFoundException } from '../Shared/Models/Exceptions/DataNotFoundException'
 import { InvalidDataException } from '../Shared/Models/Exceptions/InvalidDataException'
 import { ErrorReason } from '../Shared/Models/Interfaces/ErrorReason'
 import { FilterDefault } from '../Shared/Models/Interfaces/FilterDefault'
@@ -55,7 +56,11 @@ export class ServiceService extends BaseService {
   }
 
   async getById(id: string): Promise<Service> {
-    return this.repository.findOneByPrimaryColumn(id)
+    const service = await this.repository.findOneByPrimaryColumn(id)
+
+    if (service) return service
+
+    throw new DataNotFoundException()
   }
 
   async updateUsers(id: string, data: ServiceUpdateUserDto[]): Promise<Service> {

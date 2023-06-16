@@ -12,6 +12,7 @@ export class CustomerController extends BaseController {
     this.post = this.post.bind(this)
     this.get = this.get.bind(this)
     this.getOneById = this.getOneById.bind(this)
+    this.delete = this.delete.bind(this)
   }
 
   async post(req: CoreRequest, res: Response, next: NextFunction) {
@@ -40,6 +41,15 @@ export class CustomerController extends BaseController {
       next,
       this.getServiceFactory(req).buildService('Customer').getById(req.params.id),
       ResponseTypeEnum.OK
+    )
+  }
+
+  async delete(req: CoreRequest, res: Response, next: NextFunction) {
+    this.responseHandler(
+      res,
+      next,
+      this.getServiceFactory(req).buildService('Customer').delete(req.params.id),
+      ResponseTypeEnum.NO_CONTENT
     )
   }
 }

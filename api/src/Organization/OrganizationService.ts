@@ -1,6 +1,7 @@
 import { DataSource, EntityManager } from 'typeorm'
 import { BaseService } from '../Base/BaseService'
 import { Location } from '../Location/Models/Location'
+import { DataNotFoundException } from '../Shared/Models/Exceptions/DataNotFoundException'
 import { ServiceDecorator } from '../Shared/Utils/DecoratorUtils'
 import { OrganizationCreateDto } from './Dto/OrganizationCreateDto'
 import { Organization } from './Models/Organization'
@@ -36,6 +37,8 @@ export class OrganizationService extends BaseService {
     const locations = []
 
     const organization = await this.repository.findOneByPrimaryColumn(id)
+
+    if (!organization) throw new DataNotFoundException()
 
     organization.getHeadquarters().forEach(headquarter => {
       headquarter.getLocations()?.forEach(location => {
