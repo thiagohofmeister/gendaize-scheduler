@@ -55,7 +55,11 @@ export class HeadquarterService extends BaseService {
   }
 
   async getOneById(id: string): Promise<Headquarter> {
-    return this.repository.findOneByPrimaryColumn(id)
+    const headquarter = this.repository.findOneByPrimaryColumn(id)
+
+    if (headquarter) return headquarter
+
+    throw new DataNotFoundException()
   }
 
   async updateLocations(id: string, data: HeadquarterUpdateLocationDto[]): Promise<Headquarter> {
