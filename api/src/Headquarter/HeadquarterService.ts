@@ -55,7 +55,7 @@ export class HeadquarterService extends BaseService {
   }
 
   async getOneById(id: string): Promise<Headquarter> {
-    const headquarter = this.repository.findOneByPrimaryColumn(id)
+    const headquarter = await this.repository.findOneByPrimaryColumn(id)
 
     if (headquarter) return headquarter
 

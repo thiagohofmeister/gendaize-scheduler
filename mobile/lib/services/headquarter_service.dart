@@ -64,8 +64,6 @@ class HeadquarterService extends ServiceContract {
       };
     }).toList());
 
-    print(payload);
-
     HttpResponseModel response = await httpRequest
         .createInstance()
         .withEndpoint('$headquarterId/locations')
