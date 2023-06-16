@@ -5,7 +5,7 @@
   <uses-permission android:name="android.permission.WRITE_CONTACTS" />
 
     <application
-        android:label="Gendaize"
+        android:label="Gendaize Scheduler"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
