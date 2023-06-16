@@ -1,0 +1,14 @@
+{
+  "name": "scheduler",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:thiagohofmeister/gendaize-scheduler.git",
+  "author": "Thiago Hofmeister <thiago.hofmeister@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "build-apk": "cd ./mobile && flutter build apk --no-tree-shake-icons --dart-define=ENV=prod",
+    "build-ipa": "cd ./mobile && flutter build ipa --dart-define=ENV=prod",
+    "build-web": "cd ./mobile && flutter build web --dart-define=ENV=prod",
+    "deploy-web": "yarn run build-web && cd ./mobile/build/web && flyctl deploy --config=../../web/fly.toml --dockerfile=../../web/Dockerfile"
+  }
+}
