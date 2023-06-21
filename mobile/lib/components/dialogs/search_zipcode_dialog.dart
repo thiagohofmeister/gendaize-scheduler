@@ -29,7 +29,7 @@ class _SearchZipcodeDialogState extends State<SearchZipcodeDialog> {
     OrganizationStore provider =
         Provider.of<OrganizationStore>(context, listen: false);
 
-    await provider.getAll();
+    await provider.getAll(context, {});
 
     setState(() {
       if (provider.states.length == 1) {
@@ -155,7 +155,7 @@ class _SearchZipcodeDialogState extends State<SearchZipcodeDialog> {
                           city: _selectedCity!,
                           street: _streetController.text);
 
-                      LocationService()
+                      LocationService(context)
                           .getZipcodeByAddress(address)
                           .then((response) {
                         setState(() {

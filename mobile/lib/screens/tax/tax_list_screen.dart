@@ -20,11 +20,11 @@ class _TaxListScreenState extends State<TaxListScreen> {
     final dataProvider = Provider.of<TaxStore>(context, listen: false);
 
     if (isRefetch) {
-      dataProvider.refetch();
+      dataProvider.refetch(context);
       return;
     }
 
-    dataProvider.initialFetch();
+    dataProvider.initialFetch(context);
   }
 
   @override

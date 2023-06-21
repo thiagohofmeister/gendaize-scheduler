@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:mobile/models/location/location_model.dart';
 import 'package:mobile/models/shared/response_list.dart';
 import 'package:mobile/services/location_service.dart';
@@ -9,8 +10,9 @@ class LocationStore extends ListStoreContract<LocationModel> {
   List<String> cities = [];
 
   @override
-  Future<ResponseList<LocationModel>> getAll({Map<String, String>? params}) {
-    return LocationService().fetchAll(params);
+  Future<ResponseList<LocationModel>> getAll(BuildContext context,
+      {Map<String, String>? params}) {
+    return LocationService(context).fetchAll(params);
   }
 
   @override

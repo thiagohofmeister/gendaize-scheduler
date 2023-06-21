@@ -23,11 +23,11 @@ class _ScheduledListScreenState extends State<ScheduledListScreen> {
     Map<String, String> params = {'periodity': periodity};
 
     if (isRefetch) {
-      dataProvider.refetch(params: params);
+      dataProvider.refetch(context, params: params);
       return;
     }
 
-    dataProvider.initialFetch(params: params);
+    dataProvider.initialFetch(context, params: params);
   }
 
   String getMessageEmpty() {

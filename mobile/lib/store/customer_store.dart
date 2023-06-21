@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:mobile/models/customer/customer_model.dart';
 import 'package:mobile/models/shared/response_list.dart';
 import 'package:mobile/services/customer_service.dart';
@@ -7,18 +8,23 @@ class CustomerStore extends ListStoreContract<CustomerModel> {
   CustomerStore() : super();
 
   @override
-  Future<ResponseList<CustomerModel>> getAll({Map<String, String>? params}) {
-    return CustomerService().fetchAll(params);
+  Future<ResponseList<CustomerModel>> getAll(BuildContext context,
+      {Map<String, String>? params}) {
+    return CustomerService(context).fetchAll(params);
   }
 
-  Future<bool> delete(String id) async {
-    bool result = await CustomerService().delete(id);
+  Future<bool> delete(BuildContext context, String id) async {
+    bool result = await CustomerService(context).delete(id);
 
     return result;
   }
 
-  Future<bool> deleteAddress(String id, String addressId) async {
-    bool result = await CustomerService().deleteAddress(id, addressId);
+  Future<bool> deleteAddress(
+    BuildContext context,
+    String id,
+    String addressId,
+  ) async {
+    bool result = await CustomerService(context).deleteAddress(id, addressId);
 
     return result;
   }

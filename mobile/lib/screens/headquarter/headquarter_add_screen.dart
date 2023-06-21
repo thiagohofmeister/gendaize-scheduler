@@ -34,7 +34,7 @@ class _HeadquarterAddScreenState extends State<HeadquarterAddScreen> {
   Future<void> getStates() async {
     LocationStore provider = Provider.of<LocationStore>(context, listen: false);
 
-    await provider.initialFetch();
+    await provider.initialFetch(context);
 
     setState(() {
       if (provider.states.length == 1) {
@@ -74,7 +74,7 @@ class _HeadquarterAddScreenState extends State<HeadquarterAddScreen> {
       ),
     );
 
-    HeadquarterService().create(data).then((_) {
+    HeadquarterService(context).create(data).then((_) {
       Navigator.pop(context, true);
     });
 

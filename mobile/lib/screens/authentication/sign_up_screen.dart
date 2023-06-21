@@ -22,7 +22,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     RegisterModel register =
         RegisterModel(organization: organization!, user: user!);
 
-    RegisterService().register(register).then(
+    RegisterService(context).register(register).then(
       (value) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(

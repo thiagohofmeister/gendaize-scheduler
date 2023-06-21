@@ -20,11 +20,11 @@ class _CustomerListScreenState extends State<CustomerListScreen> {
     final dataProvider = Provider.of<CustomerStore>(context, listen: false);
 
     if (isRefetch) {
-      dataProvider.refetch();
+      dataProvider.refetch(context);
       return;
     }
 
-    dataProvider.initialFetch();
+    dataProvider.initialFetch(context);
   }
 
   @override

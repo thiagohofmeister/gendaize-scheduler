@@ -25,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
       Provider.of<UserLoggedStore>(
         context,
         listen: false,
-      ).fetch(token).then((value) {
+      ).fetch(context, token).then((value) {
         setState(() {
           isLoading = false;
         });

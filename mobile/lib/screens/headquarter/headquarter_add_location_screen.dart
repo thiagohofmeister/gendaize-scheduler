@@ -61,7 +61,7 @@ class _HeadquarterAddLocationScreenState
       isFetching = true;
     });
 
-    HeadquarterService()
+    HeadquarterService(context)
         .updateLocations(headquarter!.id, _selectedLocations)
         .then(
       (value) {
@@ -95,7 +95,7 @@ class _HeadquarterAddLocationScreenState
     List<LocationModel> result = [];
 
     if (query.isNotEmpty) {
-      result = (await LocationService().fetchAll({'query': query}))
+      result = (await LocationService(context).fetchAll({'query': query}))
           .items
           .where((element) =>
               _selectedLocations.where((e) => e.id == element.id).firstOrNull ==

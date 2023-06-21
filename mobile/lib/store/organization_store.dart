@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:mobile/models/location/location_model.dart';
 import 'package:mobile/services/organization_service.dart';
 import 'package:mobile/store/store_contract.dart';
@@ -9,8 +10,8 @@ class OrganizationStore extends StoreContract {
 
   OrganizationStore() : super();
 
-  Future<void> getAll() async {
-    locations = await OrganizationService().fetchAll({});
+  Future<void> getAll(BuildContext context, Map<String, String>? params) async {
+    locations = await OrganizationService(context).fetchAll(params);
     fillStates();
   }
 

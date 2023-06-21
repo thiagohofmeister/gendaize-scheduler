@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:mobile/models/scheduled/scheduled_create_calculate_amount_model.dart';
 import 'package:mobile/models/scheduled/scheduled_create_model.dart';
 import 'package:mobile/models/scheduled/scheduled_model.dart';
@@ -10,7 +11,8 @@ import 'package:mobile/services/request/http_response_model.dart';
 import 'package:mobile/services/service_contract.dart';
 
 class ScheduledService extends ServiceContract {
-  ScheduledService() : super(HttpRequest('scheduled'));
+  ScheduledService(BuildContext context)
+      : super(HttpRequest(context, 'scheduled'), context);
 
   Future<ResponseList> fetchAll(Map<String, String>? params) async {
     HttpResponseModel response =

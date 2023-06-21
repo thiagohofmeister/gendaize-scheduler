@@ -39,7 +39,7 @@ class ScheduledItem extends StatelessWidget {
       ScheduledStore scheduledStore =
           Provider.of<ScheduledStore>(context, listen: false);
 
-      scheduledStore.delete(id).then(
+      scheduledStore.delete(context, id).then(
         (value) {
           if (value) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -48,7 +48,7 @@ class ScheduledItem extends StatelessWidget {
               ),
             );
 
-            scheduledStore.refetch();
+            scheduledStore.refetch(context);
           }
         },
       );

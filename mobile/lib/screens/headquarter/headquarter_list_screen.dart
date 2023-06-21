@@ -20,11 +20,11 @@ class _HeadquarterListScreenState extends State<HeadquarterListScreen> {
     final dataProvider = Provider.of<HeadquarterStore>(context, listen: false);
 
     if (isRefetch) {
-      dataProvider.refetch();
+      dataProvider.refetch(context);
       return;
     }
 
-    dataProvider.initialFetch();
+    dataProvider.initialFetch(context);
   }
 
   @override

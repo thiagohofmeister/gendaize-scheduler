@@ -19,7 +19,7 @@ class SignInScreen extends StatelessWidget {
         return;
       }
 
-      AuthenticationService()
+      AuthenticationService(context)
           .authenticate(
         userController.text,
         passwordController.text,

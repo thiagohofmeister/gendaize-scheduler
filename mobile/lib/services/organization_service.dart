@@ -1,12 +1,14 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:mobile/models/location/location_model.dart';
 import 'package:mobile/services/request/http_request.dart';
 import 'package:mobile/services/request/http_response_model.dart';
 import 'package:mobile/services/service_contract.dart';
 
 class OrganizationService extends ServiceContract {
-  OrganizationService() : super(HttpRequest('organization'));
+  OrganizationService(BuildContext context)
+      : super(HttpRequest(context, 'organization'), context);
 
   Future<List<LocationModel>> fetchAll(Map<String, String>? params) async {
     HttpResponseModel response =

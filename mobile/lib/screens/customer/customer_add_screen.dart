@@ -53,7 +53,7 @@ class _CustomerAddScreenState extends State<CustomerAddScreen> {
       ),
     );
 
-    CustomerService().create(customer).then((_) {
+    CustomerService(context).create(customer).then((_) {
       Navigator.pop(context, true);
     });
   }

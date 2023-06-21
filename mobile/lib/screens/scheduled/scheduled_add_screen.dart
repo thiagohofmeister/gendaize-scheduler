@@ -45,7 +45,8 @@ class _ScheduledAddScreenState extends State<ScheduledAddScreen> {
       return;
     }
 
-    List<AmountModel> prices = await ScheduledService().createCalculatePrice(
+    List<AmountModel> prices =
+        await ScheduledService(context).createCalculatePrice(
       ScheduledCreateCalculateAmountModel(
         customerId: _selectedCustomer!.id,
         services: [_selectedService!.id],
@@ -87,7 +88,7 @@ class _ScheduledAddScreenState extends State<ScheduledAddScreen> {
       userId: _selectedUser!.id,
     );
 
-    ScheduledService().create(scheduledCreate).then((_) {
+    ScheduledService(context).create(scheduledCreate).then((_) {
       Navigator.pop(
         context,
         'scheduled-list',
@@ -100,9 +101,9 @@ class _ScheduledAddScreenState extends State<ScheduledAddScreen> {
   }
 
   void fetchInitialData() async {
-    Provider.of<ServiceStore>(context, listen: false).initialFetch();
-    Provider.of<HeadquarterStore>(context, listen: false).initialFetch();
-    Provider.of<UserStore>(context, listen: false).initialFetch();
+    Provider.of<ServiceStore>(context, listen: false).initialFetch(context);
+    Provider.of<HeadquarterStore>(context, listen: false).initialFetch(context);
+    Provider.of<UserStore>(context, listen: false).initialFetch(context);
   }
 
   @override

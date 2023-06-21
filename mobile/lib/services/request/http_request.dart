@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_interceptor/http/http.dart';
 import 'package:mobile/services/request/http_response_model.dart';
@@ -13,12 +16,17 @@ class HttpRequest<T> {
   String? endpoint;
   T? payload;
   String resource;
+  BuildContext context;
 
-  HttpRequest(this.resource);
+  HttpRequest(this.context, this.resource);
 
   String getBaseUrl() {
     if (const String.fromEnvironment('ENV') == 'prod') {
       return 'https://api-scheduler.gendaize.com.br';
+    }
+
+    if (Platform.isAndroid) {
+      return 'http://192.168.68.109:3001';
     }
 
     return 'http://localhost:3001';
@@ -28,7 +36,7 @@ class HttpRequest<T> {
     List<InterceptorContract> interceptors = [];
 
     if (isLogged) {
-      interceptors.add(AuthorizedInterceptor());
+      interceptors.add(AuthorizedInterceptor(this.context));
     }
 
     instance = InterceptedClient.build(interceptors: interceptors);

@@ -62,7 +62,7 @@ class _TaxAddScreenState extends State<TaxAddScreen> {
       valueDetails: valueDetailsController.text,
     );
 
-    TaxService().create(data).then((_) {
+    TaxService(context).create(data).then((_) {
       Navigator.pop(context, true);
     });
 

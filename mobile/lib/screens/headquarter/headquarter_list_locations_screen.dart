@@ -32,7 +32,7 @@ class _HeadquarterListLocationsScreenState
   }
 
   Future _fetch() async {
-    HeadquarterService().fetchById(headquarter!.id).then((value) {
+    HeadquarterService(context).fetchById(headquarter!.id).then((value) {
       setState(() {
         headquarter = value;
       });

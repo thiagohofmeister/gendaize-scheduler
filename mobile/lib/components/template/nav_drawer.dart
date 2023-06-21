@@ -66,7 +66,8 @@ class NavDrawer extends StatelessWidget {
             leading: const Icon(Icons.logout),
             title: const Text('Desconectar'),
             onTap: () {
-              Provider.of<AuthenticationStore>(context, listen: false).logout();
+              Provider.of<AuthenticationStore>(context, listen: false)
+                  .logout(context);
               Navigator.pushNamedAndRemoveUntil(
                 context,
                 'signin',

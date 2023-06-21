@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:mobile/models/headquarter/headquarter_create_model.dart';
 import 'package:mobile/models/headquarter/headquarter_model.dart';
 import 'package:mobile/models/location/location_model.dart';
@@ -9,7 +10,8 @@ import 'package:mobile/services/request/http_response_model.dart';
 import 'package:mobile/services/service_contract.dart';
 
 class HeadquarterService extends ServiceContract {
-  HeadquarterService() : super(HttpRequest('headquarter'));
+  HeadquarterService(BuildContext context)
+      : super(HttpRequest(context, 'headquarter'), context);
 
   Future<ResponseList<HeadquarterModel>> fetchAll(
       Map<String, String>? params) async {

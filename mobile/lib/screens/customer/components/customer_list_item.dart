@@ -24,7 +24,7 @@ class CustomerListItem extends StatelessWidget {
       CustomerStore customerStore =
           Provider.of<CustomerStore>(context, listen: false);
 
-      customerStore.delete(id).then(
+      customerStore.delete(context, id).then(
         (value) {
           if (value) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -33,7 +33,7 @@ class CustomerListItem extends StatelessWidget {
               ),
             );
 
-            customerStore.refetch();
+            customerStore.refetch(context);
           }
         },
       );

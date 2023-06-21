@@ -1,31 +1,39 @@
+import 'package:flutter/material.dart';
 import 'package:http_interceptor/http/interceptor_contract.dart';
 import 'package:http_interceptor/models/request_data.dart';
 import 'package:http_interceptor/models/response_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthorizedInterceptor extends InterceptorContract {
-  AuthorizedInterceptor() : super();
+  BuildContext context;
+
+  AuthorizedInterceptor(this.context) : super();
 
   @override
   Future<RequestData> interceptRequest({required RequestData data}) async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    String? token = sharedPreferences.getString('token');
+    return SharedPreferences.getInstance().then((sharedPreferences) {
+      String? token = sharedPreferences.getString('token');
 
-    if (token != null) {
+      if (token == null) {
+        Navigator.pushNamedAndRemoveUntil(context, 'signin', (route) => true);
+      }
+
       data.headers.addAll({
         'authorization': 'Bearer $token',
       });
-    }
 
-    return data;
+      return data;
+    });
   }
 
   @override
   Future<ResponseData> interceptResponse({required ResponseData data}) async {
     if (data.statusCode == 401) {
-      SharedPreferences sharedPreferences =
-          await SharedPreferences.getInstance();
-      sharedPreferences.remove("token");
+      return SharedPreferences.getInstance().then((sharedPreferences) {
+        sharedPreferences.remove("token");
+        Navigator.pushNamedAndRemoveUntil(context, 'signin', (route) => true);
+        return data;
+      });
     }
 
     return data;

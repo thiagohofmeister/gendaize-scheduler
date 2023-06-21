@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:mobile/models/service/service_create_model.dart';
 import 'package:mobile/models/service/service_model.dart';
 import 'package:mobile/models/shared/response_list.dart';
@@ -8,7 +9,8 @@ import 'package:mobile/services/request/http_response_model.dart';
 import 'package:mobile/services/service_contract.dart';
 
 class ServiceService extends ServiceContract {
-  ServiceService() : super(HttpRequest('service'));
+  ServiceService(BuildContext context)
+      : super(HttpRequest(context, 'service'), context);
 
   Future<ResponseList<ServiceModel>> fetchAll(
       Map<String, String>? params) async {

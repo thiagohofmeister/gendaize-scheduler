@@ -20,11 +20,11 @@ class _ServiceListScreenState extends State<ServiceListScreen> {
     final dataProvider = Provider.of<ServiceStore>(context, listen: false);
 
     if (isRefetch) {
-      dataProvider.refetch();
+      dataProvider.refetch(context);
       return;
     }
 
-    dataProvider.initialFetch();
+    dataProvider.initialFetch(context);
   }
 
   @override

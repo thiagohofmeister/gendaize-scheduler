@@ -64,7 +64,7 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
       taxes: selectedTaxes,
     );
 
-    ServiceService().create(data).then((_) {
+    ServiceService(context).create(data).then((_) {
       Navigator.pop(context, true);
     });
 
@@ -75,7 +75,7 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
 
   Future<void> fetchUsers() async {
     UserStore userStore = Provider.of<UserStore>(context, listen: false);
-    await userStore.initialFetch();
+    await userStore.initialFetch(context);
 
     if (userStore.total == 1) {
       selectedUsers.add(userStore.items.first);
@@ -84,7 +84,7 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
 
   Future<void> fetchTaxes() async {
     TaxStore taxStore = Provider.of<TaxStore>(context, listen: false);
-    await taxStore.initialFetch();
+    await taxStore.initialFetch(context);
 
     if (taxStore.total == 1) {
       selectedTaxes.add(taxStore.items.first);

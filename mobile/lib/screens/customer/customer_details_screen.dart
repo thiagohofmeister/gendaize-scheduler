@@ -43,7 +43,7 @@ class _CustomerDetailsScreenState extends State<CustomerDetailsScreen> {
       CustomerStore customerStore =
           Provider.of<CustomerStore>(context, listen: false);
 
-      customerStore.deleteAddress(customer!.id, id).then(
+      customerStore.deleteAddress(context, customer!.id, id).then(
         (value) {
           if (value) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -52,7 +52,7 @@ class _CustomerDetailsScreenState extends State<CustomerDetailsScreen> {
               ),
             );
 
-            customerStore.refetch().then((value) {
+            customerStore.refetch(context).then((value) {
               setState(() {
                 customer =
                     customerStore.items.firstWhere((i) => i.id == customer!.id);

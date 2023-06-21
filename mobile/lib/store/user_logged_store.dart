@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:mobile/models/user/user_model.dart';
 import 'package:mobile/store/store_contract.dart';
 
@@ -8,9 +9,9 @@ class UserLoggedStore extends StoreContract {
 
   UserLoggedStore() : super();
 
-  Future<void> fetch(String token) async {
+  Future<void> fetch(BuildContext context, String token) async {
     setLoading(true);
-    user = await UserService().getLogged();
+    user = await UserService(context).getLogged();
     setLoading(false);
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:mobile/models/location/location_get_address_model.dart';
 import 'package:mobile/models/location/location_model.dart';
 import 'package:mobile/models/location/zipcode_model.dart';
@@ -9,7 +10,8 @@ import 'package:mobile/services/request/http_response_model.dart';
 import 'package:mobile/services/service_contract.dart';
 
 class LocationService extends ServiceContract {
-  LocationService() : super(HttpRequest('location'));
+  LocationService(BuildContext context)
+      : super(HttpRequest(context, 'location'), context);
 
   Future<List<ZipcodeModel>> getZipcodeByAddress(
       LocationGetAddressModel data) async {

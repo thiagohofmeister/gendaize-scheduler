@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:mobile/models/shared/response_list.dart';
 import 'package:mobile/store/store_contract.dart';
 
@@ -9,14 +10,17 @@ abstract class ListStoreContract<Item> extends StoreContract {
   int total = 0;
 
   Future<void> _fetch(
-      {Map<String, String>? params, bool notifyOnStarting = false}) async {
+    BuildContext context, {
+    Map<String, String>? params,
+    bool notifyOnStarting = false,
+  }) async {
     setLoading(true);
 
     if (notifyOnStarting) {
       notifyListeners();
     }
 
-    ResponseList<Item> response = await getAll(params: params);
+    ResponseList<Item> response = await getAll(context, params: params);
 
     items = response.items;
     total = response.total;
@@ -28,19 +32,24 @@ abstract class ListStoreContract<Item> extends StoreContract {
     notifyListeners();
   }
 
-  Future<void> initialFetch({Map<String, String>? params}) async {
+  Future<void> initialFetch(BuildContext context,
+      {Map<String, String>? params}) async {
     if (!isFirstFetch) {
       return;
     }
 
-    await _fetch(params: params);
+    await _fetch(context, params: params);
   }
 
-  Future<void> refetch({Map<String, String>? params}) async {
-    await _fetch(params: params, notifyOnStarting: true);
+  Future<void> refetch(BuildContext context,
+      {Map<String, String>? params}) async {
+    await _fetch(context, params: params, notifyOnStarting: true);
   }
 
-  Future<ResponseList<Item>> getAll({Map<String, String>? params});
+  Future<ResponseList<Item>> getAll(
+    BuildContext context, {
+    Map<String, String>? params,
+  });
 
   hasNoData() {
     return items.isEmpty;
