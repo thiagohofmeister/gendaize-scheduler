@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
+import 'package:mobile/components/template/text_form_input.dart';
 import 'package:mobile/models/enums/organization_type.dart';
 import 'package:mobile/models/register/register_model.dart';
+import 'package:mobile/screens/authentication/components/step_title.dart';
 
 class OrganizationStep extends StatefulWidget {
   final Function previousStep;
@@ -54,6 +56,9 @@ class _OrganizationStepState extends State<OrganizationStep> {
       documentType = isEnterprise
           ? OrganizationType.enterprise
           : OrganizationType.personal;
+
+      documentNumberController
+          .updateMask(isEnterprise ? '00.000.000/0000-00' : '000.000.000-00');
     });
   }
 
@@ -86,24 +91,13 @@ class _OrganizationStepState extends State<OrganizationStep> {
       key: formKey,
       child: Column(
         children: [
-          const Text('Dados do estabelecimento'),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Nome',
-              ),
-              keyboardType: TextInputType.name,
-              controller: nameController,
-              validator: (value) {
-                if (value != null && value.isEmpty) {
-                  return "Preencha o nome";
-                }
-
-                return null;
-              },
-            ),
+          const StepTitle(title: 'Dados da empresa'),
+          TextFormInput(
+            hintText: 'Nome',
+            controller: nameController,
+            isRequired: true,
+            requiredMessage: 'Preencha o nome',
+            keyboardType: TextInputType.name,
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -120,91 +114,41 @@ class _OrganizationStepState extends State<OrganizationStep> {
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              decoration: InputDecoration(
-                border: const OutlineInputBorder(),
-                hintText: isEnterprise ? 'CNPJ' : 'CPF',
-              ),
-              keyboardType: TextInputType.number,
-              controller: documentNumberController,
-              onChanged: (value) {
-                setState(() {
-                  documentNumberController.updateMask(value.length > 14
-                      ? '00.000.000/0000-00'
-                      : '000.000.000-00');
-                });
-              },
-              validator: (value) {
-                if (value != null && value.isEmpty) {
-                  return "Preencha o documento";
-                }
-
-                return null;
-              },
-            ),
+          TextFormInput(
+            hintText: isEnterprise ? 'CNPJ' : 'CPF',
+            keyboardType: TextInputType.number,
+            controller: documentNumberController,
+            isRequired: true,
+            requiredMessage:
+                isEnterprise ? 'Preencha o CNPJ' : 'Preencha o CPF',
           ),
           AnimatedOpacity(
             opacity: isEnterprise ? 1 : 0,
             duration: const Duration(milliseconds: 200),
             child: Visibility(
               visible: isEnterprise,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Razão social',
-                  ),
-                  keyboardType: TextInputType.name,
-                  controller: documentNameController,
-                  validator: (value) {
-                    if (value != null && value.isEmpty) {
-                      return "Preencha a razão social";
-                    }
-
-                    return null;
-                  },
-                ),
+              child: TextFormInput(
+                hintText: 'Razão social',
+                keyboardType: TextInputType.name,
+                controller: documentNameController,
+                isRequired: true,
+                requiredMessage: 'Preencha a razão social',
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Telefone',
-              ),
-              keyboardType: TextInputType.phone,
-              controller: phoneController,
-              validator: (value) {
-                if (value != null && value.isEmpty) {
-                  return "Preencha o telefone";
-                }
-
-                return null;
-              },
-            ),
+          TextFormInput(
+            hintText: 'Telefone',
+            keyboardType: TextInputType.phone,
+            controller: phoneController,
+            isRequired: true,
+            requiredMessage: 'Preencha o telefone',
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'E-mail',
-              ),
-              keyboardType: TextInputType.emailAddress,
-              controller: emailController,
-              validator: (value) {
-                if (value != null && value.isEmpty) {
-                  return "Preencha o e-mail";
-                }
-
-                return null;
-              },
-            ),
+          TextFormInput(
+            hintText: 'E-mail',
+            keyboardType: TextInputType.emailAddress,
+            controller: emailController,
+            isRequired: true,
+            requiredMessage: 'Preencha o e-mail',
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -213,10 +157,10 @@ class _OrganizationStepState extends State<OrganizationStep> {
               children: [
                 ElevatedButton(
                   onPressed: () => widget.previousStep(),
-                  child: Text('Voltar'),
+                  child: const Text('Voltar'),
                 ),
                 ElevatedButton(
-                    onPressed: handleSubmit, child: Text('Continuar'))
+                    onPressed: handleSubmit, child: const Text('Continuar'))
               ],
             ),
           )

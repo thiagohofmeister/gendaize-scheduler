@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/components/template/text_form_input.dart';
 import 'package:mobile/services/authentication_service.dart';
 
 class SignInScreen extends StatelessWidget {
@@ -45,40 +46,18 @@ class SignInScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 30),
               child: Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextFormField(
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'E-mail ou CPF',
-                      ),
-                      validator: (value) {
-                        if (value != null && value.isEmpty) {
-                          return "Preencha o usuário";
-                        }
-
-                        return null;
-                      },
-                      controller: userController,
-                    ),
+                  TextFormInput(
+                    hintText: 'E-mail ou CPF',
+                    controller: userController,
+                    isRequired: true,
+                    requiredMessage: 'Preencha o e-mail ou CPF',
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextFormField(
-                      obscureText: true,
-                      validator: (value) {
-                        if (value != null && value.isEmpty) {
-                          return "Preencha a senha";
-                        }
-
-                        return null;
-                      },
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Senha',
-                      ),
-                      controller: passwordController,
-                    ),
+                  TextFormInput(
+                    hintText: 'Senha',
+                    controller: passwordController,
+                    isRequired: true,
+                    requiredMessage: 'Preencha a senha',
+                    isObscured: true,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 10.0),

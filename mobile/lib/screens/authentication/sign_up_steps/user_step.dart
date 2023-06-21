@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
+import 'package:mobile/components/template/text_form_input.dart';
 import 'package:mobile/models/register/register_model.dart';
+import 'package:mobile/screens/authentication/components/step_title.dart';
 
 class UserStep extends StatefulWidget {
   final Function previousStep;
@@ -65,79 +67,35 @@ class _UserStepState extends State<UserStep> {
       key: formKey,
       child: Column(
         children: [
-          const Text('Dados do usuário'),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Nome',
-              ),
-              keyboardType: TextInputType.name,
-              controller: nameController,
-              validator: (value) {
-                if (value != null && value.isEmpty) {
-                  return "Preencha o nome";
-                }
-
-                return null;
-              },
-            ),
+          const StepTitle(title: 'Dados do usuário'),
+          TextFormInput(
+            hintText: 'Nome',
+            keyboardType: TextInputType.name,
+            controller: nameController,
+            isRequired: true,
+            requiredMessage: 'Preencha o nome',
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'CPF',
-              ),
-              keyboardType: TextInputType.number,
-              controller: documentNumberController,
-              validator: (value) {
-                if (value != null && value.isEmpty) {
-                  return "Preencha o CPF";
-                }
-
-                return null;
-              },
-            ),
+          TextFormInput(
+            hintText: 'CPF',
+            keyboardType: TextInputType.number,
+            controller: documentNumberController,
+            isRequired: true,
+            requiredMessage: 'Preencha o CPF',
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'E-mail',
-              ),
-              keyboardType: TextInputType.emailAddress,
-              controller: emailController,
-              validator: (value) {
-                if (value != null && value.isEmpty) {
-                  return "Preencha o e-mail";
-                }
-
-                return null;
-              },
-            ),
+          TextFormInput(
+            hintText: 'E-mail',
+            keyboardType: TextInputType.emailAddress,
+            controller: emailController,
+            isRequired: true,
+            requiredMessage: 'Preencha o e-mail',
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Senha',
-              ),
-              obscureText: true,
-              keyboardType: TextInputType.visiblePassword,
-              controller: passwordController,
-              validator: (value) {
-                if (value != null && value.isEmpty) {
-                  return "Preencha a senha";
-                }
-
-                return null;
-              },
-            ),
+          TextFormInput(
+            hintText: 'Senha',
+            isObscured: true,
+            keyboardType: TextInputType.visiblePassword,
+            controller: passwordController,
+            isRequired: true,
+            requiredMessage: 'Preencha a senha',
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
