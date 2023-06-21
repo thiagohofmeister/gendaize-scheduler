@@ -16,4 +16,10 @@ class CustomerStore extends ListStoreContract<CustomerModel> {
 
     return result;
   }
+
+  Future<bool> deleteAddress(String id, String addressId) async {
+    bool result = await CustomerService().deleteAddress(id, addressId);
+
+    return result;
+  }
 }

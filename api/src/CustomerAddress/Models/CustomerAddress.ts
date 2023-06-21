@@ -63,6 +63,7 @@ export class CustomerAddress implements DomainModel, ResponseModel {
 
   toView() {
     return {
+      id: this.getId(),
       state: this.getState(),
       city: this.getCity(),
       district: this.getDistrict(),
@@ -71,8 +72,7 @@ export class CustomerAddress implements DomainModel, ResponseModel {
       complement: this.getComplement(),
       zipCode: this.getZipCode(),
       distances: this.getDistances(),
-      customer: this.getCustomer()?.toView(),
-      id: this.getId()
+      customer: this.getCustomer()?.toView()
     }
   }
 

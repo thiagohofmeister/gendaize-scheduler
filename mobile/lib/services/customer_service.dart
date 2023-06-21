@@ -54,4 +54,17 @@ class CustomerService extends ServiceContract {
 
     return CustomerModel.fromMap(jsonDecode(response.body));
   }
+
+  Future<bool> deleteAddress(String id, String addressId) async {
+    HttpResponseModel response = await httpRequest
+        .createInstance()
+        .withEndpoint('$id/address/$addressId')
+        .delete();
+
+    if (response.isError()) {
+      throw Exception(response.body);
+    }
+
+    return true;
+  }
 }

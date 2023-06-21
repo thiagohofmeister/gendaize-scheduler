@@ -44,48 +44,53 @@ class CustomerListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Card(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
-              child: CustomerData(customer: customer),
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
-              child: Row(
-                children: [
-                  IconButton(
-                    onPressed: () {
-                      Navigator.of(context)
-                          .pushNamed('scheduled-add', arguments: customer)
-                          .then((value) {
-                        if (value != null) {
-                          Provider.of<NavigationStore>(
-                            context,
-                            listen: false,
-                          ).setNameScreen('scheduled-list');
-                        }
-                      });
-                    },
-                    icon: const Icon(Icons.timer_sharp),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      Navigator.of(context)
-                          .pushNamed('service-budget', arguments: customer);
-                    },
-                    icon: const Icon(Icons.paid),
-                  ),
-                  IconButton(
-                    onPressed: () => openConfirmDelete(context, customer.id),
-                    icon: const Icon(Icons.delete),
-                  ),
-                ],
+      child: InkWell(
+        onTap: () {
+          Navigator.pushNamed(context, 'customer-details', arguments: customer);
+        },
+        child: Card(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(15, 10, 15, 0),
+                child: CustomerData(customer: customer),
               ),
-            ),
-          ],
+              Padding(
+                padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+                child: Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushNamed('scheduled-add', arguments: customer)
+                            .then((value) {
+                          if (value != null) {
+                            Provider.of<NavigationStore>(
+                              context,
+                              listen: false,
+                            ).setNameScreen('scheduled-list');
+                          }
+                        });
+                      },
+                      icon: const Icon(Icons.timer_sharp),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushNamed('service-budget', arguments: customer);
+                      },
+                      icon: const Icon(Icons.paid),
+                    ),
+                    IconButton(
+                      onPressed: () => openConfirmDelete(context, customer.id),
+                      icon: const Icon(Icons.delete),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

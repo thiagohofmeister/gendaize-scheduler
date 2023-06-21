@@ -36,38 +36,40 @@ export class ScheduledRepository extends TypeOrmMysqlRepositoryContract<Schedule
   ): SelectQueryBuilder<ScheduledDao> {
     if (filter.periodity) {
       let startAt = new Date()
-      startAt.setHours(0)
-      startAt.setMinutes(0)
-      startAt.setSeconds(0)
+      startAt.setUTCHours(startAt.getUTCHours() - 3)
+      startAt.setUTCHours(0)
+      startAt.setUTCMinutes(0)
+      startAt.setUTCSeconds(0)
 
       let endAt = new Date()
-      endAt.setHours(23)
-      endAt.setMinutes(59)
-      endAt.setSeconds(59)
+      endAt.setUTCHours(startAt.getUTCHours() - 3)
+      endAt.setUTCHours(23)
+      endAt.setUTCMinutes(59)
+      endAt.setUTCSeconds(59)
 
       switch (filter.periodity) {
         case ScheduledPeriodityEnum.TOMORROW:
-          startAt.setDate(startAt.getDate() + 1)
-          endAt.setDate(endAt.getDate() + 1)
+          startAt.setUTCDate(startAt.getUTCDate() + 1)
+          endAt.setUTCDate(endAt.getUTCDate() + 1)
 
           break
 
         case ScheduledPeriodityEnum.MONTH:
-          startAt.setDate(1)
+          startAt.setUTCDate(1)
 
-          endAt.setMonth(endAt.getMonth() + 1)
-          endAt.setDate(1)
-          endAt.setHours(0)
-          endAt.setMinutes(0)
-          endAt.setSeconds(-1)
+          endAt.setUTCMonth(endAt.getUTCMonth() + 1)
+          endAt.setUTCDate(1)
+          endAt.setUTCHours(0)
+          endAt.setUTCMinutes(0)
+          endAt.setUTCSeconds(-1)
 
           break
 
         case ScheduledPeriodityEnum.WEEK:
-          startAt.setDate(startAt.getDate() - startAt.getDay())
+          startAt.setUTCDate(startAt.getUTCDate() - startAt.getUTCDay())
 
-          if (endAt.getDay() !== 6) {
-            endAt.setDate(endAt.getDate() + 6 - endAt.getDay())
+          if (endAt.getUTCDay() !== 6) {
+            endAt.setUTCDate(endAt.getUTCDate() + 6 - endAt.getUTCDay())
           }
 
           break

@@ -35,7 +35,9 @@ export class CustomerAddressDao implements DaoModel {
   @Column('json')
   distances: CustomerAddressDistance[]
 
-  @ManyToOne(() => CustomerDao, customer => customer.addresses)
+  @ManyToOne(() => CustomerDao, customer => customer.addresses, {
+    orphanedRowAction: 'delete'
+  })
   @JoinColumn({
     name: 'customer_id'
   })
