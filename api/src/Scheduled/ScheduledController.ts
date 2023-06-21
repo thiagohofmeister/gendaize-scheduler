@@ -32,6 +32,7 @@ export class ScheduledController extends BaseController {
   }
 
   async get(req: CoreRequest, res: Response, next: NextFunction) {
+    console.log('ACESSOU O GET')
     return this.responseHandler(
       res,
       next,
