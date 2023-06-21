@@ -20,8 +20,6 @@ export class AuthMiddleware {
   }
 
   public async forAll(req: CoreRequest, res: Response, next: NextFunction): Promise<void> {
-    await new Postgres().createDataSource()
-
     if (this.isPublicRequest(req)) {
       await this.formatRequest(req, UserRoleTypeEnum.PUBLIC)
     } else if (this.isGuestRequest(req)) {
