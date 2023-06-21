@@ -42,7 +42,7 @@ export class ScheduledRepository extends TypeOrmMysqlRepositoryContract<Schedule
       startAt.setUTCSeconds(0)
 
       let endAt = new Date()
-      endAt.setUTCHours(startAt.getUTCHours() - 3)
+      endAt.setUTCHours(endAt.getUTCHours() - 3)
       endAt.setUTCHours(23)
       endAt.setUTCMinutes(59)
       endAt.setUTCSeconds(59)
