@@ -8,7 +8,8 @@ abstract class ListStoreContract<Item> extends StoreContract {
   List<Item> items = [];
   int total = 0;
 
-  _fetch({Map<String, String>? params, bool notifyOnStarting = false}) async {
+  Future<void> _fetch(
+      {Map<String, String>? params, bool notifyOnStarting = false}) async {
     setLoading(true);
 
     if (notifyOnStarting) {
@@ -27,7 +28,7 @@ abstract class ListStoreContract<Item> extends StoreContract {
     notifyListeners();
   }
 
-  initialFetch({Map<String, String>? params}) async {
+  Future<void> initialFetch({Map<String, String>? params}) async {
     if (!isFirstFetch) {
       return;
     }
@@ -35,7 +36,7 @@ abstract class ListStoreContract<Item> extends StoreContract {
     await _fetch(params: params);
   }
 
-  refetch({Map<String, String>? params}) async {
+  Future<void> refetch({Map<String, String>? params}) async {
     await _fetch(params: params, notifyOnStarting: true);
   }
 

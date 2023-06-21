@@ -10,9 +10,11 @@ export class CustomerController extends BaseController {
     super()
 
     this.post = this.post.bind(this)
+    this.postAddress = this.postAddress.bind(this)
     this.get = this.get.bind(this)
     this.getOneById = this.getOneById.bind(this)
     this.delete = this.delete.bind(this)
+    this.deleteAddress = this.deleteAddress.bind(this)
   }
 
   async post(req: CoreRequest, res: Response, next: NextFunction) {
@@ -23,6 +25,26 @@ export class CustomerController extends BaseController {
         .buildService('Customer')
         .create(req.context?.organization, req.body),
       ResponseTypeEnum.CREATED
+    )
+  }
+
+  async postAddress(req: CoreRequest, res: Response, next: NextFunction) {
+    this.responseHandler(
+      res,
+      next,
+      this.getServiceFactory(req).buildService('Customer').createAddress(req.params.id, req.body),
+      ResponseTypeEnum.CREATED
+    )
+  }
+
+  async deleteAddress(req: CoreRequest, res: Response, next: NextFunction) {
+    this.responseHandler(
+      res,
+      next,
+      this.getServiceFactory(req)
+        .buildService('Customer')
+        .deleteAddress(req.params.id, req.params.addressId),
+      ResponseTypeEnum.OK
     )
   }
 

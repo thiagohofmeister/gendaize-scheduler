@@ -57,4 +57,13 @@ class ParseUtils {
 
     return phone;
   }
+
+  static String toPhone(String? phone) {
+    if (phone == null) {
+      return '';
+    }
+
+    return '(${phone.substring(0, 2)}) '
+        '${phone.substring(2, 7)}-${phone.substring(7, 11)}';
+  }
 }

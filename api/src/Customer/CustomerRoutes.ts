@@ -12,7 +12,17 @@ export class CustomerRoutes extends BaseRoute<CustomerController> {
       new AuthRouteDto(this.getFullEndpoint(), HttpMethodEnum.POST, controller.post),
       new AuthRouteDto(this.getFullEndpoint(), HttpMethodEnum.GET, controller.get),
       new AuthRouteDto(this.getFullEndpoint(':id'), HttpMethodEnum.GET, controller.getOneById),
-      new AuthRouteDto(this.getFullEndpoint(':id'), HttpMethodEnum.DELETE, controller.delete)
+      new AuthRouteDto(this.getFullEndpoint(':id'), HttpMethodEnum.DELETE, controller.delete),
+      new AuthRouteDto(
+        this.getFullEndpoint(':id/address'),
+        HttpMethodEnum.POST,
+        controller.postAddress
+      ),
+      new AuthRouteDto(
+        this.getFullEndpoint(':id/address/:addressId'),
+        HttpMethodEnum.DELETE,
+        controller.deleteAddress
+      )
     ]
   }
 }
