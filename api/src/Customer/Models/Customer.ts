@@ -67,6 +67,14 @@ export class Customer implements ResponseModel, DomainModel {
     return this
   }
 
+  public removeAddress(id: string) {
+    if (!this.addresses) this.addresses = []
+
+    this.addresses = this.addresses.filter(address => id !== address.getId())
+
+    return this
+  }
+
   public addAddress(address: CustomerAddress) {
     if (!this.addresses) this.addresses = []
 
