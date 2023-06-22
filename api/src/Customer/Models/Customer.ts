@@ -105,7 +105,7 @@ export class Customer implements ResponseModel, DomainModel {
     return {
       id: this.getId(),
       name: this.getName(),
-      phone: this.getPhone(),
+      phone: this.getPhone().replace(/\D/g, ''),
       email: this.getEmail(),
       organization: this.getOrganization()?.toView(),
       addresses: this.getAddresses()?.map(address => address.toView()) || []
@@ -116,7 +116,7 @@ export class Customer implements ResponseModel, DomainModel {
     const entity = new CustomerDao(
       this.getId(),
       this.getName(),
-      this.getPhone(),
+      this.getPhone().replace(/\D/g, ''),
       this.getEmail(),
       this.getPassword(),
       this.getOrganization()?.toDao()
