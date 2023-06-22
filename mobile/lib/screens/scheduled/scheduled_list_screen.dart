@@ -39,7 +39,7 @@ class _ScheduledListScreenState extends State<ScheduledListScreen> {
       provider: Provider.of<ScheduledStore>(context, listen: false),
       providerParams: {'periodity': periodity},
       store: Provider.of<ScheduledStore>(context, listen: true),
-      renderItem: (item) => ScheduledItem(item),
+      renderItem: (item) => ScheduledListItem(item),
       title: 'Agenda',
       noDataMessage: 'Você não possui nenhuma agenda para ${getMessageEmpty()}',
       noDataSubMessage: 'Tente alterar o período.',
