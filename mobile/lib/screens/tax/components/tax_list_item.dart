@@ -8,7 +8,7 @@ import 'package:mobile/utils/parse_utils.dart';
 class TaxListItem extends StatelessWidget {
   final TaxModel tax;
 
-  const TaxListItem({Key? key, required this.tax}) : super(key: key);
+  const TaxListItem(this.tax, {Key? key}) : super(key: key);
 
   String getValue() {
     if (tax.valueType == TaxValueType.percent) {

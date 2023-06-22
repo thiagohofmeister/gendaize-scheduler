@@ -5,7 +5,7 @@ import 'package:mobile/models/service/service_model.dart';
 class ServiceListItem extends StatelessWidget {
   final ServiceModel service;
 
-  const ServiceListItem({Key? key, required this.service}) : super(key: key);
+  const ServiceListItem(this.service, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

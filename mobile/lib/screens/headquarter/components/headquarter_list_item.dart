@@ -5,8 +5,7 @@ import 'package:mobile/models/headquarter/headquarter_model.dart';
 class HeadquarterListItem extends StatelessWidget {
   final HeadquarterModel headquarter;
 
-  const HeadquarterListItem({Key? key, required this.headquarter})
-      : super(key: key);
+  const HeadquarterListItem(this.headquarter, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

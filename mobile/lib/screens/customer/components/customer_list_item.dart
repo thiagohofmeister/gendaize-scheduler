@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 class CustomerListItem extends StatelessWidget {
   final CustomerModel customer;
 
-  const CustomerListItem({Key? key, required this.customer}) : super(key: key);
+  const CustomerListItem(this.customer, {Key? key}) : super(key: key);
 
   void openConfirmDelete(BuildContext context, String id) {
     showConfirmationDialog(

@@ -10,10 +10,7 @@ import 'package:provider/provider.dart';
 class ScheduledItem extends StatelessWidget {
   final ScheduledModel scheduled;
 
-  const ScheduledItem({
-    Key? key,
-    required this.scheduled,
-  }) : super(key: key);
+  const ScheduledItem(this.scheduled, {Key? key}) : super(key: key);
 
   Future<void> openConfirmMap(BuildContext context) async {
     if (await showConfirmationDialog(
