@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
+import 'package:mobile/components/template/dropdown_form_input/dropdown_form_input.dart';
+import 'package:mobile/components/template/screen_layout.dart';
+import 'package:mobile/components/template/screen_progress_indicator.dart';
+import 'package:mobile/components/template/text_form_input.dart';
 import 'package:mobile/models/enums/service_type.dart';
 import 'package:mobile/models/service/service_create_model.dart';
 import 'package:mobile/models/tax/tax_model.dart';
@@ -114,182 +118,118 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
         ],
       ),
       body: isSaving
-          ? const Padding(
-              padding: EdgeInsets.all(50),
-              child: Center(child: CircularProgressIndicator()),
-            )
+          ? const ScreenProgressIndicator()
           : Form(
               key: _formKey,
-              child: SingleChildScrollView(
-                child: Container(
-                  padding: const EdgeInsets.all(30),
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: TextFormField(
-                          validator: (value) {
-                            if (value != null && value.isEmpty) {
-                              return 'Preencha o nome';
-                            }
-                            return null;
-                          },
-                          decoration: const InputDecoration(
-                            isDense: true,
-                            border: OutlineInputBorder(),
-                            hintText: 'Nome',
-                          ),
-                          controller: nameController,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: DropdownButtonFormField(
-                          value: serviceTypeSelected,
-                          validator: (value) {
-                            if (value == null) {
-                              return 'Selecione a forma de atendimento';
-                            }
-
-                            return null;
-                          },
-                          onChanged: (ServiceType? type) {
-                            setState(() {
-                              serviceTypeSelected = type;
-                            });
-                          },
-                          items: ServiceType.values.map((ServiceType type) {
-                            return DropdownMenuItem<ServiceType>(
-                              value: type,
-                              child: Text(
-                                type.getLabel(),
-                              ),
-                            );
-                          }).toList(),
-                          decoration: const InputDecoration(
-                            labelText: "Forma de atendimento",
-                            border: OutlineInputBorder(),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: TextFormField(
-                          validator: (value) {
-                            if (value != null && value.isEmpty) {
-                              return 'Preencha o preço';
-                            }
-                            return null;
-                          },
-                          decoration: const InputDecoration(
-                            isDense: true,
-                            border: OutlineInputBorder(),
-                            hintText: 'Preço',
-                          ),
-                          controller: priceController,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: TextFormField(
-                          validator: (value) {
-                            if (value != null && value.isEmpty) {
-                              return 'Preencha a duração';
-                            }
-                            return null;
-                          },
-                          decoration: const InputDecoration(
-                            isDense: true,
-                            border: OutlineInputBorder(),
-                            hintText: 'Duração',
-                          ),
-                          controller: durationController,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: TextFormField(
-                          validator: (value) {
-                            if (value != null && value.isEmpty) {
-                              return 'Preencha a quantidade simultânea';
-                            }
-                            return null;
-                          },
-                          decoration: const InputDecoration(
-                            isDense: true,
-                            border: OutlineInputBorder(),
-                            hintText: 'Quantidade simultânea',
-                          ),
-                          controller: sameTimeQuantityController,
-                        ),
-                      ),
-                      Provider.of<UserStore>(context, listen: true).total > 1
-                          ? Padding(
-                              padding: const EdgeInsets.only(top: 16.0),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text('Selecione os profissionais'),
-                                  ...Provider.of<UserStore>(
-                                    context,
-                                    listen: true,
-                                  ).items.map((user) {
-                                    return ListTile(
-                                      title: Text(user.name),
-                                      trailing: Checkbox(
-                                        value: selectedUsers.contains(user),
-                                        onChanged: (bool? value) {
-                                          setState(() {
-                                            if (value == true) {
-                                              selectedUsers.add(user);
-                                            } else {
-                                              selectedUsers.remove(user);
-                                            }
-                                          });
-                                        },
-                                      ),
-                                    );
-                                  })
-                                ],
-                              ),
-                            )
-                          : Container(),
-                      Provider.of<TaxStore>(context, listen: true).total > 0
-                          ? Padding(
-                              padding: const EdgeInsets.only(top: 16.0),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text('Selecione as taxas'),
-                                  ...Provider.of<TaxStore>(
-                                    context,
-                                    listen: true,
-                                  ).items.map((tax) {
-                                    return ListTile(
-                                      title: Text(tax.label),
-                                      trailing: Checkbox(
-                                        value: selectedTaxes.contains(tax),
-                                        onChanged: (bool? value) {
-                                          setState(() {
-                                            if (value == true) {
-                                              selectedTaxes.add(tax);
-                                            } else {
-                                              selectedTaxes.remove(tax);
-                                            }
-                                          });
-                                        },
-                                      ),
-                                    );
-                                  })
-                                ],
-                              ),
-                            )
-                          : Container(),
-                    ],
+              child: ScreenLayout(
+                children: [
+                  TextFormInput(
+                    hintText: 'Nome',
+                    controller: nameController,
+                    isRequired: true,
+                    requiredMessage: 'Preencha o nome',
                   ),
-                ),
+                  DropdownFormInput(
+                    value: serviceTypeSelected,
+                    isRequired: true,
+                    requiredMessage: 'Selecione a forma de atendimento',
+                    labelText: 'Selecione a forma de atendimento',
+                    onChanged: (ServiceType? type) {
+                      setState(() {
+                        serviceTypeSelected = type;
+                      });
+                    },
+                    items: ServiceType.values,
+                    renderLabel: (ServiceType? type) => Text(
+                      type!.getLabel(),
+                    ),
+                  ),
+                  TextFormInput(
+                    isDense: true,
+                    hintText: 'Preço',
+                    isRequired: true,
+                    requiredMessage: 'Preencha o preço',
+                    controller: priceController,
+                  ),
+                  TextFormInput(
+                    isDense: true,
+                    hintText: 'Duração',
+                    isRequired: true,
+                    requiredMessage: 'Preencha a duração',
+                    controller: durationController,
+                  ),
+                  TextFormInput(
+                    isDense: true,
+                    hintText: 'Quantidade simultânea',
+                    controller: sameTimeQuantityController,
+                    isRequired: true,
+                    requiredMessage: 'Preencha a quantidade simultânea',
+                  ),
+                  Provider.of<UserStore>(context, listen: true).total > 1
+                      ? Padding(
+                          padding: const EdgeInsets.only(top: 16.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text('Selecione os profissionais'),
+                              ...Provider.of<UserStore>(
+                                context,
+                                listen: true,
+                              ).items.map((user) {
+                                return ListTile(
+                                  title: Text(user.name),
+                                  trailing: Checkbox(
+                                    value: selectedUsers.contains(user),
+                                    onChanged: (bool? value) {
+                                      setState(() {
+                                        if (value == true) {
+                                          selectedUsers.add(user);
+                                        } else {
+                                          selectedUsers.remove(user);
+                                        }
+                                      });
+                                    },
+                                  ),
+                                );
+                              })
+                            ],
+                          ),
+                        )
+                      : Container(),
+                  Provider.of<TaxStore>(context, listen: true).total > 0
+                      ? Padding(
+                          padding: const EdgeInsets.only(top: 16.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text('Selecione as taxas'),
+                              ...Provider.of<TaxStore>(
+                                context,
+                                listen: true,
+                              ).items.map((tax) {
+                                return ListTile(
+                                  title: Text(tax.label),
+                                  trailing: Checkbox(
+                                    value: selectedTaxes.contains(tax),
+                                    onChanged: (bool? value) {
+                                      setState(() {
+                                        if (value == true) {
+                                          selectedTaxes.add(tax);
+                                        } else {
+                                          selectedTaxes.remove(tax);
+                                        }
+                                      });
+                                    },
+                                  ),
+                                );
+                              })
+                            ],
+                          ),
+                        )
+                      : Container(),
+                ],
               ),
             ),
     );

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
+import 'package:mobile/components/template/dropdown_form_input/dropdown_form_input.dart';
+import 'package:mobile/components/template/screen_layout.dart';
+import 'package:mobile/components/template/screen_progress_indicator.dart';
+import 'package:mobile/components/template/text_form_input.dart';
 import 'package:mobile/models/enums/tax_type.dart';
 import 'package:mobile/models/enums/tax_value_type.dart';
 import 'package:mobile/models/tax/tax_create_model.dart';
@@ -87,136 +91,68 @@ class _TaxAddScreenState extends State<TaxAddScreen> {
         ],
       ),
       body: isSaving
-          ? const Padding(
-              padding: EdgeInsets.all(50),
-              child: Center(child: CircularProgressIndicator()),
-            )
+          ? const ScreenProgressIndicator()
           : Form(
               key: _formKey,
               child: SingleChildScrollView(
-                child: Container(
-                  padding: const EdgeInsets.all(30),
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: TextFormField(
-                          validator: (value) {
-                            if (value != null && value.isEmpty) {
-                              return 'Preencha o nome';
-                            }
-                            return null;
-                          },
-                          decoration: const InputDecoration(
+                child: ScreenLayout(
+                  children: [
+                    TextFormInput(
+                      isDense: true,
+                      hintText: 'Nome',
+                      controller: labelController,
+                      isRequired: true,
+                      requiredMessage: 'Preencha o nome',
+                    ),
+                    DropdownFormInput(
+                      value: taxTypeSelected,
+                      isRequired: true,
+                      requiredMessage: 'Selecione o tipo de taxa',
+                      onChanged: (TaxType? taxType) {
+                        setState(() {
+                          taxTypeSelected = taxType;
+                        });
+                      },
+                      items: TaxType.values,
+                      renderLabel: (TaxType? taxType) => Text(
+                        taxType!.getLabel(),
+                      ),
+                      labelText: "Tipo de taxa",
+                    ),
+                    DropdownFormInput(
+                      value: taxValueTypeSelected,
+                      onChanged: (TaxValueType? taxValueType) {
+                        setState(() {
+                          taxValueTypeSelected = taxValueType;
+                        });
+                      },
+                      isRequired: true,
+                      requiredMessage: 'Selecione o tipo do valor da taxa',
+                      items: TaxValueType.values,
+                      renderLabel: (TaxValueType valueType) => Text(
+                        valueType.getLabel(),
+                      ),
+                      labelText: "Tipo do valor da taxa",
+                    ),
+                    TextFormInput(
+                      isDense: true,
+                      hintText: 'Valor',
+                      isRequired: true,
+                      requiredMessage: 'Preencha o valor',
+                      controller: taxValueTypeSelected == TaxValueType.percent
+                          ? valueController
+                          : priceController,
+                    ),
+                    taxValueTypeSelected == TaxValueType.distance
+                        ? TextFormInput(
                             isDense: true,
-                            border: OutlineInputBorder(),
-                            hintText: 'Nome',
-                          ),
-                          controller: labelController,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: DropdownButtonFormField(
-                          value: taxTypeSelected,
-                          validator: (value) {
-                            if (value == null) {
-                              return 'Selecione o tipo de taxa';
-                            }
-
-                            return null;
-                          },
-                          onChanged: (TaxType? taxType) {
-                            setState(() {
-                              taxTypeSelected = taxType;
-                            });
-                          },
-                          items: TaxType.values.map((TaxType taxType) {
-                            return DropdownMenuItem<TaxType>(
-                              value: taxType,
-                              child: Text(
-                                taxType.getLabel(),
-                              ),
-                            );
-                          }).toList(),
-                          decoration: const InputDecoration(
-                            labelText: "Tipo de taxa",
-                            border: OutlineInputBorder(),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: DropdownButtonFormField(
-                          value: taxValueTypeSelected,
-                          validator: (value) {
-                            if (value == null) {
-                              return 'Selecione o tipo do valor da taxa';
-                            }
-
-                            return null;
-                          },
-                          onChanged: (TaxValueType? taxValueType) {
-                            setState(() {
-                              taxValueTypeSelected = taxValueType;
-                            });
-                          },
-                          items: TaxValueType.values
-                              .map((TaxValueType taxValueType) {
-                            return DropdownMenuItem<TaxValueType>(
-                              value: taxValueType,
-                              child: Text(
-                                taxValueType.getLabel(),
-                              ),
-                            );
-                          }).toList(),
-                          decoration: const InputDecoration(
-                            labelText: "Tipo do valor da taxa",
-                            border: OutlineInputBorder(),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: TextFormField(
-                          validator: (value) {
-                            if (value != null && value.isEmpty) {
-                              return 'Preencha o valor';
-                            }
-                            return null;
-                          },
-                          decoration: const InputDecoration(
-                            isDense: true,
-                            border: OutlineInputBorder(),
-                            hintText: 'Valor',
-                          ),
-                          controller:
-                              taxValueTypeSelected == TaxValueType.percent
-                                  ? valueController
-                                  : priceController,
-                        ),
-                      ),
-                      taxValueTypeSelected == TaxValueType.distance
-                          ? Padding(
-                              padding: const EdgeInsets.only(bottom: 16.0),
-                              child: TextFormField(
-                                validator: (value) {
-                                  if (value != null && value.isEmpty) {
-                                    return 'Preencha os metros';
-                                  }
-                                  return null;
-                                },
-                                decoration: const InputDecoration(
-                                  isDense: true,
-                                  border: OutlineInputBorder(),
-                                  hintText: 'A cada X metros',
-                                ),
-                                controller: valueDetailsController,
-                              ),
-                            )
-                          : Container(),
-                    ],
-                  ),
+                            hintText: 'A cada X metros',
+                            isRequired: true,
+                            requiredMessage: 'Preencha os metros',
+                            controller: valueDetailsController,
+                          )
+                        : Container(),
+                  ],
                 ),
               ),
             ),

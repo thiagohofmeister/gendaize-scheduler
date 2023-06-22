@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
+import 'package:mobile/components/template/dropdown_form_input/dropdown_form_input.dart';
+import 'package:mobile/components/template/screen_layout.dart';
+import 'package:mobile/components/template/screen_progress_indicator.dart';
+import 'package:mobile/components/template/text_form_input.dart';
 import 'package:mobile/models/headquarter/headquarter_create_model.dart';
 import 'package:mobile/models/shared/address_model.dart';
 import 'package:mobile/services/headquarter_service.dart';
@@ -107,178 +111,78 @@ class _HeadquarterAddScreenState extends State<HeadquarterAddScreen> {
         ],
       ),
       body: isSaving
-          ? const Padding(
-              padding: EdgeInsets.all(50),
-              child: Center(child: CircularProgressIndicator()),
-            )
+          ? const ScreenProgressIndicator()
           : Form(
               key: _formKey,
-              child: SingleChildScrollView(
-                child: Container(
-                  padding: const EdgeInsets.all(30),
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: TextFormField(
-                          validator: (value) {
-                            if (value != null && value.isEmpty) {
-                              return 'Preencha o nome';
-                            }
-                            return null;
-                          },
-                          decoration: const InputDecoration(
-                            isDense: true,
-                            border: OutlineInputBorder(),
-                            hintText: 'Nome',
-                          ),
-                          controller: nameController,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: TextFormField(
-                          validator: (value) {
-                            if (value != null && value.isEmpty) {
-                              return 'Preencha o CEP';
-                            }
-                            return null;
-                          },
-                          decoration: const InputDecoration(
-                            isDense: true,
-                            border: OutlineInputBorder(),
-                            hintText: 'CEP',
-                          ),
-                          controller: addressZipCodeController,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: DropdownButtonFormField(
-                          value: stateSelected,
-                          validator: (value) {
-                            if (value == null) {
-                              return 'Selecione o estado';
-                            }
-
-                            return null;
-                          },
-                          onChanged: (String? state) {
-                            setState(() {
-                              stateSelected = state;
-                            });
-                          },
-                          items: locationStore.states.map((String state) {
-                            return DropdownMenuItem<String>(
-                                value: state,
-                                child: Text(
-                                  state,
-                                  overflow: TextOverflow.ellipsis,
-                                ));
-                          }).toList(),
-                          decoration: const InputDecoration(
-                            labelText: "UF",
-                            border: OutlineInputBorder(),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: DropdownButtonFormField(
-                          value: citySelected,
-                          validator: (value) {
-                            if (value == null) {
-                              return 'Selecione a cidade';
-                            }
-
-                            return null;
-                          },
-                          onChanged: (String? state) {
-                            setState(() {
-                              citySelected = state;
-                            });
-                          },
-                          items: stateSelected != null
-                              ? locationStore
-                                  .getCities(stateSelected!)
-                                  .map((String city) {
-                                  return DropdownMenuItem<String>(
-                                      value: city,
-                                      child: Text(
-                                        city,
-                                        overflow: TextOverflow.ellipsis,
-                                      ));
-                                }).toList()
-                              : null,
-                          decoration: const InputDecoration(
-                            labelText: "Cidade",
-                            border: OutlineInputBorder(),
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: TextFormField(
-                          validator: (value) {
-                            if (value != null && value.isEmpty) {
-                              return 'Preencha o bairro';
-                            }
-                            return null;
-                          },
-                          decoration: const InputDecoration(
-                            isDense: true,
-                            border: OutlineInputBorder(),
-                            hintText: 'Bairro',
-                          ),
-                          controller: addressDistrictController,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: TextFormField(
-                          validator: (value) {
-                            if (value != null && value.isEmpty) {
-                              return 'Preencha a rua';
-                            }
-                            return null;
-                          },
-                          decoration: const InputDecoration(
-                            isDense: true,
-                            border: OutlineInputBorder(),
-                            hintText: 'Rua',
-                          ),
-                          controller: addressStreetController,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: TextFormField(
-                          validator: (value) {
-                            if (value != null && value.isEmpty) {
-                              return 'Preencha o número';
-                            }
-                            return null;
-                          },
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: 'Número',
-                          ),
-                          controller: addressNumberController,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: TextField(
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: 'Complemento',
-                          ),
-                          controller: addressComplementController,
-                        ),
-                      ),
-                    ],
+              child: ScreenLayout(
+                children: [
+                  TextFormInput(
+                    isRequired: true,
+                    requiredMessage: 'Preencha o nome',
+                    isDense: true,
+                    hintText: 'Nome',
+                    controller: nameController,
                   ),
-                ),
+                  TextFormInput(
+                    isRequired: true,
+                    requiredMessage: 'Preencha o CEP',
+                    isDense: true,
+                    hintText: 'CEP',
+                    controller: addressZipCodeController,
+                  ),
+                  DropdownFormInput<String>(
+                    isRequired: true,
+                    requiredMessage: 'Preencha o UF',
+                    value: stateSelected,
+                    onChanged: (String? state) {
+                      setState(() {
+                        stateSelected = state;
+                      });
+                    },
+                    items: locationStore.states,
+                    labelText: 'UF',
+                    renderLabel: (String item) => Text(item),
+                  ),
+                  DropdownFormInput<String>(
+                    isRequired: true,
+                    requiredMessage: 'Preencha a cidade',
+                    value: citySelected,
+                    onChanged: (String? state) {
+                      setState(() {
+                        citySelected = state;
+                      });
+                    },
+                    items: stateSelected != null
+                        ? locationStore.getCities(stateSelected!)
+                        : null,
+                    labelText: 'Cidade',
+                    renderLabel: (String item) => Text(item),
+                  ),
+                  TextFormInput(
+                    isRequired: true,
+                    requiredMessage: 'Preencha o bairro',
+                    isDense: true,
+                    hintText: 'Bairro',
+                    controller: addressDistrictController,
+                  ),
+                  TextFormInput(
+                    isRequired: true,
+                    requiredMessage: 'Preencha a rua',
+                    isDense: true,
+                    hintText: 'Rua',
+                    controller: addressStreetController,
+                  ),
+                  TextFormInput(
+                    isRequired: true,
+                    requiredMessage: 'Preencha o número',
+                    hintText: 'Número',
+                    controller: addressNumberController,
+                  ),
+                  TextFormInput(
+                    hintText: 'Complemento',
+                    controller: addressComplementController,
+                  ),
+                ],
               ),
             ),
     );

@@ -7,7 +7,9 @@ class TextFormInput extends StatefulWidget {
   final String requiredMessage;
   final TextInputType keyboardType;
   final bool isObscured;
+  final bool isDense;
   final ValueChanged<String>? onChanged;
+  final Widget? suffixIcon;
 
   const TextFormInput({
     Key? key,
@@ -17,7 +19,9 @@ class TextFormInput extends StatefulWidget {
     this.requiredMessage = "Campo obrigatório",
     this.keyboardType = TextInputType.text,
     this.isObscured = false,
+    this.isDense = false,
     this.onChanged,
+    this.suffixIcon,
   }) : super(key: key);
 
   @override
@@ -28,11 +32,13 @@ class _TextFormInputState extends State<TextFormInput> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: TextFormField(
         decoration: InputDecoration(
           border: const OutlineInputBorder(),
           hintText: widget.hintText,
+          isDense: widget.isDense,
+          suffixIcon: widget.suffixIcon,
         ),
         onChanged: widget.onChanged,
         keyboardType: widget.keyboardType,

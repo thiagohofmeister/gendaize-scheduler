@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/components/template/data_label.dart';
+import 'package:mobile/components/template/dropdown_form_input/dropdown_form_input.dart';
+import 'package:mobile/components/template/screen_layout.dart';
+import 'package:mobile/components/template/screen_progress_indicator.dart';
 import 'package:mobile/models/customer/customer_model.dart';
 import 'package:mobile/models/headquarter/headquarter_model.dart';
 import 'package:mobile/models/scheduled/scheduled_create_calculate_amount_model.dart';
@@ -134,6 +137,7 @@ class _ServiceBudgetScreenState extends State<ServiceBudgetScreen> {
 
   void selectCustomerAddress(AddressModel? index) {
     _selectedCustomerAddress = index;
+    fetchAmount();
   }
 
   @override
@@ -145,7 +149,7 @@ class _ServiceBudgetScreenState extends State<ServiceBudgetScreen> {
           MenuItemButton(
             onPressed: toSchedule,
             child: const Text(
-              "Copiar",
+              "Compartilhar",
               style: TextStyle(color: Colors.black),
             ),
           ),
@@ -154,231 +158,209 @@ class _ServiceBudgetScreenState extends State<ServiceBudgetScreen> {
       body: SingleChildScrollView(
         child: isSaving ||
                 Provider.of<CustomerStore>(context, listen: true).isLoading
-            ? const Padding(
-                padding: EdgeInsets.all(50),
-                child: Center(child: CircularProgressIndicator()),
-              )
+            ? const ScreenProgressIndicator()
             : Form(
                 key: _formKey,
-                child: Container(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Consumer<CustomerStore>(
-                        builder: (context, store, child) {
-                          return DropdownButtonFormField(
-                            value: _selectedCustomer,
-                            validator: (value) {
-                              if (value == null) {
-                                return 'Selecione o cliente';
-                              }
+                child: ScreenLayout(
+                  children: [
+                    Consumer<CustomerStore>(
+                      builder: (context, store, child) {
+                        return DropdownFormInput(
+                          value: _selectedCustomer,
+                          onChanged: (CustomerModel? customer) {
+                            if (customer == null) {
+                              return;
+                            }
 
-                              return null;
-                            },
-                            onChanged: (CustomerModel? customer) {
-                              if (customer == null) {
+                            setState(() {
+                              _selectedCustomer = customer;
+
+                              if (customer.addresses.length == 1) {
+                                selectCustomerAddress(
+                                  customer.addresses.firstOrNull,
+                                );
+                              }
+                            });
+                          },
+                          items: store.items,
+                          renderLabel: (CustomerModel? customer) =>
+                              Text(customer!.name),
+                          labelText: 'Selecione o cliente',
+                          isRequired: true,
+                          requiredMessage: 'Selecione o cliente',
+                        );
+                      },
+                    ),
+                    _selectedCustomer != null
+                        ? Padding(
+                            padding: const EdgeInsets.only(top: 16.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text('Selecione o endereço do cliente'),
+                                ..._selectedCustomer!.addresses.map((address) {
+                                  return RadioListTile<AddressModel>(
+                                    title: Text(address.getFullAddress()),
+                                    value: address,
+                                    groupValue: _selectedCustomerAddress,
+                                    onChanged: (AddressModel? index) {
+                                      setState(() {
+                                        selectCustomerAddress(index);
+                                      });
+                                    },
+                                  );
+                                })
+                              ],
+                            ),
+                          )
+                        : Container(),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16.0),
+                      child: Consumer<HeadquarterStore>(
+                        builder: (context, store, child) {
+                          if (store.total == 1) {
+                            _selectedHeadquarter = store.items.first;
+                            return Container();
+                          }
+
+                          return DropdownFormInput(
+                            value: _selectedHeadquarter,
+                            onChanged: (HeadquarterModel? headquarter) {
+                              if (headquarter == null) {
                                 return;
                               }
 
                               setState(() {
-                                _selectedCustomer = customer;
-
-                                if (customer.addresses.length == 1) {
-                                  selectCustomerAddress(null);
-                                }
+                                _selectedHeadquarter = headquarter;
                               });
+
+                              fetchAmount();
                             },
-                            items: store.items.map((CustomerModel customer) {
-                              return DropdownMenuItem<CustomerModel>(
-                                value: customer,
-                                child: Text(customer.name),
-                              );
-                            }).toList(),
-                            decoration: const InputDecoration(
-                              labelText: "Selecione o cliente",
-                              border: OutlineInputBorder(),
-                            ),
+                            items: store.items,
+                            renderLabel: (HeadquarterModel? headquarter) =>
+                                Text(headquarter!.name),
+                            isRequired: true,
+                            requiredMessage: 'Selecione a filial',
+                            labelText: 'Selecione a filial',
                           );
                         },
                       ),
-                      _selectedCustomer != null
-                          ? Padding(
-                              padding: const EdgeInsets.only(top: 16.0),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text('Selecione o endereço do cliente'),
-                                  ..._selectedCustomer!.addresses
-                                      .map((address) {
-                                    return RadioListTile<AddressModel>(
-                                      title: Text(address.getFullAddress()),
-                                      value: address,
-                                      groupValue: _selectedCustomerAddress,
-                                      onChanged: (AddressModel? index) {
-                                        setState(() {
-                                          selectCustomerAddress(index);
-                                        });
-                                      },
-                                    );
-                                  })
-                                ],
-                              ),
-                            )
-                          : Container(),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 16.0),
-                        child: Consumer<HeadquarterStore>(
-                          builder: (context, store, child) {
-                            if (store.total == 1) {
-                              _selectedHeadquarter = store.items.first;
-                              return Container();
-                            }
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text('Selecione os serviços'),
+                          ...Provider.of<ServiceStore>(context, listen: true)
+                              .items
+                              .map((service) {
+                            return ListTile(
+                              title: Text(service.name),
+                              trailing: Checkbox(
+                                value: _selectedServices.contains(service),
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    _amounts = [];
 
-                            return DropdownButtonFormField(
-                              value: _selectedHeadquarter,
-                              validator: (value) {
-                                if (value == null) {
-                                  return 'Selecione a filial';
-                                }
+                                    if (value == true) {
+                                      _selectedServices.add(service);
+                                    } else {
+                                      _selectedServices.remove(service);
+                                    }
 
-                                return null;
-                              },
-                              onChanged: (HeadquarterModel? headquarter) {
-                                if (headquarter == null) {
-                                  return;
-                                }
-
-                                setState(() {
-                                  _amounts = [];
-                                  _selectedHeadquarter = headquarter;
-                                  fetchAmount();
-                                });
-                              },
-                              items: store.items
-                                  .map((HeadquarterModel headquarter) {
-                                return DropdownMenuItem<HeadquarterModel>(
-                                  value: headquarter,
-                                  child: Text(headquarter.name),
-                                );
-                              }).toList(),
-                              decoration: const InputDecoration(
-                                labelText: "Selecione a filial",
-                                border: OutlineInputBorder(),
+                                    fetchAmount();
+                                  });
+                                },
                               ),
                             );
-                          },
-                        ),
+                          })
+                        ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 16.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text('Selecione os serviços'),
-                            ...Provider.of<ServiceStore>(context, listen: true)
-                                .items
-                                .map((service) {
-                              return ListTile(
-                                title: Text(service.name),
-                                trailing: Checkbox(
-                                  value: _selectedServices.contains(service),
-                                  onChanged: (bool? value) {
-                                    setState(() {
-                                      _amounts = [];
-
-                                      if (value == true) {
-                                        _selectedServices.add(service);
-                                      } else {
-                                        _selectedServices.remove(service);
-                                      }
-
-                                      fetchAmount();
-                                    });
-                                  },
-                                ),
-                              );
-                            })
-                          ],
-                        ),
-                      ),
-                      _selectedServices.isNotEmpty &&
-                              _amounts != null &&
-                              _amounts!.isNotEmpty
-                          ? Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                  const Padding(
-                                    padding: EdgeInsets.only(bottom: 8.0),
-                                    child: Text('Valores'),
+                    ),
+                    _selectedServices.isNotEmpty &&
+                            _amounts != null &&
+                            _amounts!.isNotEmpty
+                        ? Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                                const Padding(
+                                  padding:
+                                      EdgeInsets.only(top: 16, bottom: 16.0),
+                                  child: Text(
+                                    'Valores',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
                                   ),
-                                  ..._amounts!.map((amount) {
-                                    ServiceModel service = _selectedServices
-                                        .firstWhere((service) =>
-                                            service.id == amount.service!.id);
+                                ),
+                                ..._amounts!.map((amount) {
+                                  ServiceModel service =
+                                      _selectedServices.firstWhere((service) =>
+                                          service.id == amount.service!.id);
 
-                                    return Padding(
-                                      padding:
-                                          const EdgeInsets.only(bottom: 8.0),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 8.0),
-                                            child: DataLabel(
-                                              label: 'Serviço',
-                                              info: service.name,
-                                            ),
+                                  return Padding(
+                                    padding:
+                                        const EdgeInsets.only(bottom: 16.0),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              bottom: 8.0),
+                                          child: DataLabel(
+                                            label: 'Serviço',
+                                            info: service.name,
                                           ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 8.0),
-                                            child: DataLabel(
-                                              label: 'Duração',
-                                              info: service.getDuration(),
-                                            ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              bottom: 8.0),
+                                          child: DataLabel(
+                                            label: 'Duração',
+                                            info: service.getDuration(),
                                           ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 8.0),
-                                            child: DataLabel(
-                                              label: 'Valor aula',
-                                              info: amount.getSubtotal(),
-                                            ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              bottom: 8.0),
+                                          child: DataLabel(
+                                            label: 'Valor aula',
+                                            info: amount.getSubtotal(),
                                           ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 8.0),
-                                            child: DataLabel(
-                                              label: 'Taxa de deslocamento',
-                                              info: amount.taxes > 0
-                                                  ? amount.getTaxes()
-                                                  : 'Grátis',
-                                            ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              bottom: 8.0),
+                                          child: DataLabel(
+                                            label: 'Taxa de deslocamento',
+                                            info: amount.taxes > 0
+                                                ? amount.getTaxes()
+                                                : 'Grátis',
                                           ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 8.0),
-                                            child: DataLabel(
-                                              label: 'Total',
-                                              info: amount.getTotal(),
-                                            ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              bottom: 8.0),
+                                          child: DataLabel(
+                                            label: 'Total',
+                                            info: amount.getTotal(),
                                           ),
-                                        ],
-                                      ),
-                                    );
-                                  }).toList(),
-                                ])
-                          : Container(),
-                    ],
-                  ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }).toList(),
+                              ])
+                        : Container(),
+                  ],
                 ),
               ),
       ),

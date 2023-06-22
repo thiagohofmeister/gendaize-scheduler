@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:mobile/components/dialogs/choose_contact_from_device_dialog.dart';
 import 'package:mobile/components/dialogs/search_zipcode_dialog.dart';
+import 'package:mobile/components/template/screen_layout.dart';
+import 'package:mobile/components/template/screen_progress_indicator.dart';
+import 'package:mobile/components/template/text_form_input.dart';
 import 'package:mobile/models/customer/customer_address_create_model.dart';
 import 'package:mobile/models/customer/customer_create_model.dart';
 import 'package:mobile/services/customer_service.dart';
@@ -74,130 +77,77 @@ class _CustomerAddScreenState extends State<CustomerAddScreen> {
         ],
       ),
       body: isSaving
-          ? const Padding(
-              padding: EdgeInsets.all(50),
-              child: Center(child: CircularProgressIndicator()),
-            )
+          ? const ScreenProgressIndicator()
           : Form(
               key: _formKey,
-              child: SingleChildScrollView(
-                child: Container(
-                  padding: const EdgeInsets.all(30),
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: TextFormField(
-                          validator: (value) {
-                            if (value != null && value.isEmpty) {
-                              return 'Preencha o nome';
-                            }
-                            return null;
+              child: ScreenLayout(
+                children: [
+                  TextFormInput(
+                    suffixIcon: InkWell(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return const ChooseContactFromDeviceDialog();
                           },
-                          decoration: InputDecoration(
-                            isDense: true,
-                            border: const OutlineInputBorder(),
-                            hintText: 'Nome',
-                            suffixIcon: InkWell(
-                                onTap: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return const ChooseContactFromDeviceDialog();
-                                    },
-                                  ).then(
-                                    (value) {
-                                      if (value != null) {
-                                        _nameController.text =
-                                            (value['name'] as String);
+                        ).then(
+                          (value) {
+                            if (value != null) {
+                              _nameController.text = (value['name'] as String);
 
-                                        _phoneController.text =
-                                            (value['phone'] as String);
-                                      }
-                                    },
-                                  );
-                                },
-                                child: const Icon(Icons.contacts_sharp)),
-                          ),
-                          keyboardType: TextInputType.name,
-                          controller: _nameController,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: TextFormField(
-                          validator: (value) {
-                            if (value != null && value.isEmpty) {
-                              return 'Preencha o telefone';
+                              _phoneController.text =
+                                  (value['phone'] as String);
                             }
-                            return null;
                           },
-                          keyboardType: TextInputType.phone,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: 'Telefone',
-                          ),
-                          controller: _phoneController,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: TextFormField(
-                          validator: (value) {
-                            if (value != null && value.isEmpty) {
-                              return 'Preencha o CEP';
-                            }
-                            return null;
-                          },
-                          decoration: InputDecoration(
-                              border: const OutlineInputBorder(),
-                              hintText: 'CEP',
-                              suffixIcon: InkWell(
-                                onTap: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return SearchZipcodeDialog(
-                                        zipcodeController: _zipCodeController,
-                                      );
-                                    },
-                                  );
-                                },
-                                child: const Icon(Icons.search),
-                              )),
-                          keyboardType: TextInputType.number,
-                          controller: _zipCodeController,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: TextFormField(
-                          validator: (value) {
-                            if (value != null && value.isEmpty) {
-                              return 'Preencha o número';
-                            }
-                            return null;
-                          },
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: 'Número',
-                          ),
-                          controller: _numberController,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: TextField(
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: 'Complemento',
-                          ),
-                          controller: _complementController,
-                        ),
-                      ),
-                    ],
+                        );
+                      },
+                      child: const Icon(Icons.contacts_sharp),
+                    ),
+                    isRequired: true,
+                    requiredMessage: 'Preencha o nome',
+                    hintText: 'Nome',
+                    isDense: true,
+                    keyboardType: TextInputType.name,
+                    controller: _nameController,
                   ),
-                ),
+                  TextFormInput(
+                    isRequired: true,
+                    requiredMessage: 'Preencha o telefone',
+                    keyboardType: TextInputType.phone,
+                    hintText: 'Telefone',
+                    controller: _phoneController,
+                  ),
+                  TextFormInput(
+                    isRequired: true,
+                    requiredMessage: 'Preencha o CEP',
+                    hintText: 'CEP',
+                    suffixIcon: InkWell(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return SearchZipcodeDialog(
+                              zipcodeController: _zipCodeController,
+                            );
+                          },
+                        );
+                      },
+                      child: const Icon(Icons.search),
+                    ),
+                    keyboardType: TextInputType.number,
+                    controller: _zipCodeController,
+                  ),
+                  TextFormInput(
+                    isRequired: true,
+                    requiredMessage: 'Preencha o número',
+                    hintText: 'Número',
+                    controller: _numberController,
+                  ),
+                  TextFormInput(
+                    hintText: 'Complemento',
+                    controller: _complementController,
+                  ),
+                ],
               ),
             ),
     );

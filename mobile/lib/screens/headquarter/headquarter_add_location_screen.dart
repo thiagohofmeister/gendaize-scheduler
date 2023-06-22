@@ -1,6 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:mobile/components/template/screen_layout.dart';
+import 'package:mobile/components/template/screen_progress_indicator.dart';
+import 'package:mobile/components/template/text_form_input.dart';
 import 'package:mobile/models/headquarter/headquarter_model.dart';
 import 'package:mobile/models/location/location_model.dart';
 import 'package:mobile/services/headquarter_service.dart';
@@ -121,25 +124,18 @@ class _HeadquarterAddLocationScreenState
           ),
         ],
       ),
-      body: Column(
+      body: ScreenLayout(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: _searchController,
-              onChanged: _searchLocations,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'Buscar por estado ou cidade',
-              ),
-            ),
+          TextFormInput(
+            controller: _searchController,
+            onChanged: _searchLocations,
+            hintText: 'Buscar por estado ou cidade',
           ),
-          Expanded(
+          Container(
             child: isFetching
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
+                ? const ScreenProgressIndicator()
                 : ListView.builder(
+                    shrinkWrap: true,
                     itemCount: _searchResults.length,
                     itemBuilder: (context, index) {
                       final location = _searchResults[index];
