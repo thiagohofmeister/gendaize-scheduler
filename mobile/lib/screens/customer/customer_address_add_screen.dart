@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
+import 'package:mobile/components/dialogs/search_zipcode_dialog.dart';
 import 'package:mobile/components/inputs/text_form_input.dart';
 import 'package:mobile/components/template/screen_layout.dart';
 import 'package:mobile/models/customer/customer_address_create_model.dart';
@@ -96,10 +97,24 @@ class _CustomerAddressAddScreenState extends State<CustomerAddressAddScreen> {
           isLoading: isSaving,
           children: [
             TextFormInput(
-              hintText: 'CEP',
-              controller: _zipCodeController,
               isRequired: true,
               requiredMessage: 'Preencha o CEP',
+              hintText: 'CEP',
+              suffixIcon: InkWell(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return SearchZipcodeDialog(
+                        zipcodeController: _zipCodeController,
+                      );
+                    },
+                  );
+                },
+                child: const Icon(Icons.search),
+              ),
+              keyboardType: TextInputType.number,
+              controller: _zipCodeController,
             ),
             TextFormInput(
               hintText: 'Número',
