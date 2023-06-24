@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/screens/authentication/sign_in_screen.dart';
 import 'package:mobile/screens/authentication/sign_up_screen.dart';
 import 'package:mobile/screens/customer/customer_add_screen.dart';
+import 'package:mobile/screens/customer/customer_address_add_screen.dart';
 import 'package:mobile/screens/customer/customer_details_screen.dart';
 import 'package:mobile/screens/customer/customer_list_screen.dart';
 import 'package:mobile/screens/headquarter/headquarter_add_location_screen.dart';
@@ -75,6 +76,7 @@ class MyApp extends StatelessWidget {
         'customer-list': (context) => const CustomerListScreen(),
         'customer-add': (context) => const CustomerAddScreen(),
         'customer-details': (context) => const CustomerDetailsScreen(),
+        'customer-address-add': (context) => const CustomerAddressAddScreen(),
         'headquarter-list': (context) => const HeadquarterListScreen(),
         'headquarter-add': (context) => const HeadquarterAddScreen(),
         'headquarter-list-locations': (context) =>

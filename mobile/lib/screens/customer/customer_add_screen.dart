@@ -53,6 +53,7 @@ class _CustomerAddScreenState extends State<CustomerAddScreen> {
       address: CustomerAddressCreateModel(
         zipCode: _zipCodeController.text,
         number: _numberController.text,
+        complement: _complementController.text,
       ),
     );
 

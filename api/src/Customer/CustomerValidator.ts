@@ -14,7 +14,7 @@ export class CustomerValidator extends BaseValidator {
     this.createAddressSchema = Joi.object({
       zipCode: Joi.string().required(),
       number: Joi.string().required(),
-      complement: Joi.string().allow(null)
+      complement: Joi.string().optional().allow(null, '')
     })
 
     this.createSchema = Joi.object({

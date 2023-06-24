@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:mobile/models/customer/customer_address_create_model.dart';
 import 'package:mobile/models/customer/customer_create_model.dart';
 import 'package:mobile/models/customer/customer_model.dart';
 import 'package:mobile/models/shared/response_list.dart';
@@ -50,6 +51,23 @@ class CustomerService extends ServiceContract {
   Future<CustomerModel> create(CustomerCreateModel data) async {
     HttpResponseModel response = await httpRequest
         .createInstance()
+        .withPayload(jsonEncode(data.toMap()))
+        .post();
+
+    if (response.isError()) {
+      throw Exception(response.body);
+    }
+
+    return CustomerModel.fromMap(jsonDecode(response.body));
+  }
+
+  Future<CustomerModel> createAddress(
+    String id,
+    CustomerAddressCreateModel data,
+  ) async {
+    HttpResponseModel response = await httpRequest
+        .createInstance()
+        .withEndpoint('$id/address')
         .withPayload(jsonEncode(data.toMap()))
         .post();
 
