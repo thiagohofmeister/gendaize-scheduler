@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/components/template/nav_drawer.dart';
+import 'package:mobile/components/template/screen_layout.dart';
 import 'package:mobile/models/headquarter/headquarter_model.dart';
 import 'package:mobile/services/headquarter_service.dart';
 
@@ -70,8 +71,7 @@ class _HeadquarterListLocationsScreenState
         ],
       ),
       drawer: const NavDrawer(),
-      body: Padding(
-        padding: const EdgeInsets.only(bottom: 40.0),
+      body: ScreenLayout(
         child: RefreshIndicator(
           key: _refreshIndicatorKey,
           onRefresh: _fetch,

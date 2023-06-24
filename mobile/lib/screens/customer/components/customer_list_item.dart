@@ -43,7 +43,7 @@ class CustomerListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.only(bottom: 8.0),
       child: InkWell(
         onTap: () {
           Navigator.pushNamed(context, 'customer-details', arguments: customer);

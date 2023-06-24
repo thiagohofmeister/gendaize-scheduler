@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
-import 'package:mobile/components/template/dropdown_form_input/dropdown_form_input.dart';
+import 'package:mobile/components/inputs/dropdown_form_input.dart';
+import 'package:mobile/components/inputs/text_form_input.dart';
 import 'package:mobile/components/template/screen_layout.dart';
 import 'package:mobile/components/template/screen_progress_indicator.dart';
-import 'package:mobile/components/template/text_form_input.dart';
 import 'package:mobile/models/headquarter/headquarter_create_model.dart';
 import 'package:mobile/models/shared/address_model.dart';
 import 'package:mobile/services/headquarter_service.dart';
@@ -141,7 +141,8 @@ class _HeadquarterAddScreenState extends State<HeadquarterAddScreen> {
                     },
                     items: locationStore.states,
                     labelText: 'UF',
-                    renderLabel: (String item) => Text(item),
+                    labelToOnlyOneOption: 'UF',
+                    renderLabel: (String item) => item,
                   ),
                   DropdownFormInput<String>(
                     isRequired: true,
@@ -156,7 +157,8 @@ class _HeadquarterAddScreenState extends State<HeadquarterAddScreen> {
                         ? locationStore.getCities(stateSelected!)
                         : null,
                     labelText: 'Cidade',
-                    renderLabel: (String item) => Text(item),
+                    labelToOnlyOneOption: 'Cidade',
+                    renderLabel: (String item) => item,
                   ),
                   TextFormInput(
                     isRequired: true,

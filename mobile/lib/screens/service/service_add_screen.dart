@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
-import 'package:mobile/components/template/dropdown_form_input/dropdown_form_input.dart';
+import 'package:mobile/components/inputs/checkbox_group_list.dart';
+import 'package:mobile/components/inputs/dropdown_form_input.dart';
+import 'package:mobile/components/inputs/text_form_input.dart';
 import 'package:mobile/components/template/screen_layout.dart';
 import 'package:mobile/components/template/screen_progress_indicator.dart';
-import 'package:mobile/components/template/text_form_input.dart';
 import 'package:mobile/models/enums/service_type.dart';
 import 'package:mobile/models/service/service_create_model.dart';
 import 'package:mobile/models/tax/tax_model.dart';
@@ -26,7 +27,7 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
   bool isSaving = false;
 
   ServiceType? serviceTypeSelected;
-  final List<UserModel> selectedUsers = [];
+  List<UserModel> selectedUsers = [];
   final List<TaxModel> selectedTaxes = [];
 
   final TextEditingController nameController = TextEditingController();
@@ -77,29 +78,12 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
     });
   }
 
-  Future<void> fetchUsers() async {
-    UserStore userStore = Provider.of<UserStore>(context, listen: false);
-    await userStore.initialFetch(context);
-
-    if (userStore.total == 1) {
-      selectedUsers.add(userStore.items.first);
-    }
-  }
-
-  Future<void> fetchTaxes() async {
-    TaxStore taxStore = Provider.of<TaxStore>(context, listen: false);
-    await taxStore.initialFetch(context);
-
-    if (taxStore.total == 1) {
-      selectedTaxes.add(taxStore.items.first);
-    }
-  }
-
   @override
   void initState() {
     super.initState();
-    fetchUsers();
-    fetchTaxes();
+
+    Provider.of<UserStore>(context, listen: false).initialFetch(context);
+    Provider.of<TaxStore>(context, listen: false).initialFetch(context);
   }
 
   @override
@@ -140,9 +124,7 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
                       });
                     },
                     items: ServiceType.values,
-                    renderLabel: (ServiceType? type) => Text(
-                      type!.getLabel(),
-                    ),
+                    renderLabel: (ServiceType type) => type.getLabel(),
                   ),
                   TextFormInput(
                     isDense: true,
@@ -165,70 +147,20 @@ class _ServiceAddScreenState extends State<ServiceAddScreen> {
                     isRequired: true,
                     requiredMessage: 'Preencha a quantidade simultânea',
                   ),
-                  Provider.of<UserStore>(context, listen: true).total > 1
-                      ? Padding(
-                          padding: const EdgeInsets.only(top: 16.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text('Selecione os profissionais'),
-                              ...Provider.of<UserStore>(
-                                context,
-                                listen: true,
-                              ).items.map((user) {
-                                return ListTile(
-                                  title: Text(user.name),
-                                  trailing: Checkbox(
-                                    value: selectedUsers.contains(user),
-                                    onChanged: (bool? value) {
-                                      setState(() {
-                                        if (value == true) {
-                                          selectedUsers.add(user);
-                                        } else {
-                                          selectedUsers.remove(user);
-                                        }
-                                      });
-                                    },
-                                  ),
-                                );
-                              })
-                            ],
-                          ),
-                        )
-                      : Container(),
-                  Provider.of<TaxStore>(context, listen: true).total > 0
-                      ? Padding(
-                          padding: const EdgeInsets.only(top: 16.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text('Selecione as taxas'),
-                              ...Provider.of<TaxStore>(
-                                context,
-                                listen: true,
-                              ).items.map((tax) {
-                                return ListTile(
-                                  title: Text(tax.label),
-                                  trailing: Checkbox(
-                                    value: selectedTaxes.contains(tax),
-                                    onChanged: (bool? value) {
-                                      setState(() {
-                                        if (value == true) {
-                                          selectedTaxes.add(tax);
-                                        } else {
-                                          selectedTaxes.remove(tax);
-                                        }
-                                      });
-                                    },
-                                  ),
-                                );
-                              })
-                            ],
-                          ),
-                        )
-                      : Container(),
+                  CheckboxGroupList<UserModel>(
+                    items: Provider.of<UserStore>(context, listen: true).items,
+                    value: selectedUsers,
+                    label: 'Selecione os profissionais',
+                    labelToOnlyOneOption: 'Profissional',
+                    renderTitle: (item) => item.name,
+                  ),
+                  CheckboxGroupList<TaxModel>(
+                    items: Provider.of<TaxStore>(context, listen: true).items,
+                    value: selectedTaxes,
+                    label: 'Selecione as taxas',
+                    labelToOnlyOneOption: 'Taxa',
+                    renderTitle: (item) => item.label,
+                  ),
                 ],
               ),
             ),

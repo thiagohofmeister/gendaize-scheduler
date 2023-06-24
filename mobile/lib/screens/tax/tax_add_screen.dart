@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
-import 'package:mobile/components/template/dropdown_form_input/dropdown_form_input.dart';
+import 'package:mobile/components/inputs/dropdown_form_input.dart';
+import 'package:mobile/components/inputs/text_form_input.dart';
 import 'package:mobile/components/template/screen_layout.dart';
 import 'package:mobile/components/template/screen_progress_indicator.dart';
-import 'package:mobile/components/template/text_form_input.dart';
 import 'package:mobile/models/enums/tax_type.dart';
 import 'package:mobile/models/enums/tax_value_type.dart';
 import 'package:mobile/models/tax/tax_create_model.dart';
@@ -114,9 +114,7 @@ class _TaxAddScreenState extends State<TaxAddScreen> {
                         });
                       },
                       items: TaxType.values,
-                      renderLabel: (TaxType? taxType) => Text(
-                        taxType!.getLabel(),
-                      ),
+                      renderLabel: (TaxType taxType) => taxType.getLabel(),
                       labelText: "Tipo de taxa",
                     ),
                     DropdownFormInput(
@@ -129,9 +127,8 @@ class _TaxAddScreenState extends State<TaxAddScreen> {
                       isRequired: true,
                       requiredMessage: 'Selecione o tipo do valor da taxa',
                       items: TaxValueType.values,
-                      renderLabel: (TaxValueType valueType) => Text(
-                        valueType.getLabel(),
-                      ),
+                      renderLabel: (TaxValueType valueType) =>
+                          valueType.getLabel(),
                       labelText: "Tipo do valor da taxa",
                     ),
                     TextFormInput(

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/components/template/text_form_input.dart';
+import 'package:mobile/components/inputs/text_form_input.dart';
 import 'package:mobile/services/authentication_service.dart';
 
 class SignInScreen extends StatelessWidget {

@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:mobile/components/inputs/text_form_input.dart';
 import 'package:mobile/components/template/screen_layout.dart';
 import 'package:mobile/components/template/screen_progress_indicator.dart';
-import 'package:mobile/components/template/text_form_input.dart';
 import 'package:mobile/models/headquarter/headquarter_model.dart';
 import 'package:mobile/models/location/location_model.dart';
 import 'package:mobile/services/headquarter_service.dart';

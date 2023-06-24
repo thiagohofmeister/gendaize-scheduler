@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/components/inputs/date_picker_input.dart';
+import 'package:mobile/components/inputs/dropdown_form_input.dart';
+import 'package:mobile/components/inputs/radio_group_list.dart';
 import 'package:mobile/components/inputs/time_picker_input.dart';
 import 'package:mobile/components/template/data_label.dart';
-import 'package:mobile/components/template/dropdown_form_input/dropdown_form_input.dart';
 import 'package:mobile/components/template/screen_layout.dart';
 import 'package:mobile/components/template/screen_progress_indicator.dart';
 import 'package:mobile/models/customer/customer_model.dart';
@@ -13,6 +14,7 @@ import 'package:mobile/models/service/service_model.dart';
 import 'package:mobile/models/shared/address_model.dart';
 import 'package:mobile/models/shared/amount_model.dart';
 import 'package:mobile/models/user/user_model.dart';
+import 'package:mobile/screens/customer/components/customer_data.dart';
 import 'package:mobile/services/scheduled_service.dart';
 import 'package:mobile/store/customer_store.dart';
 import 'package:mobile/store/headquarter_store.dart';
@@ -103,16 +105,48 @@ class _ScheduledAddScreenState extends State<ScheduledAddScreen> {
     });
   }
 
-  void fetchInitialData() async {
-    Provider.of<ServiceStore>(context, listen: false).initialFetch(context);
-    Provider.of<HeadquarterStore>(context, listen: false).initialFetch(context);
-    Provider.of<UserStore>(context, listen: false).initialFetch(context);
+  void fetchServices() async {
+    ServiceStore store = Provider.of<ServiceStore>(context, listen: false);
+    await store.initialFetch(context);
+
+    if (store.items.length == 1) {
+      setState(() {
+        _selectedService = store.items.firstOrNull;
+      });
+    }
+  }
+
+  void fetchHeadquarters() async {
+    HeadquarterStore store =
+        Provider.of<HeadquarterStore>(context, listen: false);
+
+    await store.initialFetch(context);
+
+    if (store.items.length == 1) {
+      setState(() {
+        _selectedHeadquarter = store.items.firstOrNull;
+      });
+    }
+  }
+
+  void fetchUsers() async {
+    UserStore store = Provider.of<UserStore>(context, listen: false);
+
+    await store.initialFetch(context);
+
+    if (store.items.length == 1) {
+      setState(() {
+        _selectedUser = store.items.firstOrNull;
+      });
+    }
   }
 
   @override
   void initState() {
     super.initState();
-    fetchInitialData();
+    fetchServices();
+    fetchHeadquarters();
+    fetchUsers();
   }
 
   @override
@@ -136,7 +170,9 @@ class _ScheduledAddScreenState extends State<ScheduledAddScreen> {
   }
 
   void selectCustomerAddress(AddressModel? address) {
-    _selectedCustomerAddress = address;
+    setState(() {
+      _selectedCustomerAddress = address;
+    });
   }
 
   @override
@@ -161,134 +197,70 @@ class _ScheduledAddScreenState extends State<ScheduledAddScreen> {
               key: _formKey,
               child: ScreenLayout(
                 children: [
-                  Consumer<CustomerStore>(
-                    builder: (context, store, child) {
-                      return DropdownFormInput(
-                        value: _selectedCustomer,
-                        onChanged: (CustomerModel? customer) {
-                          if (customer == null) {
-                            return;
-                          }
-
-                          setState(() {
-                            _selectedCustomer = customer;
-
-                            if (customer.addresses.length == 1) {
-                              selectCustomerAddress(
-                                customer.addresses.firstOrNull,
-                              );
-                            }
-                          });
-                        },
-                        items: store.items,
-                        renderLabel: (CustomerModel? customer) =>
-                            Text(customer!.name),
-                        labelText: 'Selecione o cliente',
-                        isRequired: true,
-                        requiredMessage: 'Selecione o cliente',
-                      );
+                  CustomerData(customer: _selectedCustomer!),
+                  RadioGroupList(
+                    setState: setState,
+                    items: _selectedCustomer!.addresses,
+                    label: 'Selecione o endereço do cliente',
+                    labelToOnlyOneOption: 'Endereço do cliente',
+                    renderTitle: (item) => item.getFullAddress(),
+                    value: _selectedCustomerAddress,
+                    onChanged: (AddressModel? address) {
+                      selectCustomerAddress(address);
                     },
                   ),
-                  _selectedCustomer != null
-                      ? Padding(
-                          padding: const EdgeInsets.only(top: 16.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text('Selecione o endereço do cliente'),
-                              ..._selectedCustomer!.addresses.map((address) {
-                                return RadioListTile<AddressModel>(
-                                  title: Text(address.getFullAddress()),
-                                  value: address,
-                                  groupValue: _selectedCustomerAddress,
-                                  onChanged: (AddressModel? address) {
-                                    setState(() {
-                                      selectCustomerAddress(address);
-                                    });
-                                  },
-                                );
-                              })
-                            ],
-                          ),
-                        )
-                      : Container(),
-                  Consumer<UserStore>(
-                    builder: (context, store, child) {
-                      if (store.total == 1) {
-                        _selectedUser = store.items.first;
-                        return Container();
+                  DropdownFormInput(
+                    value: _selectedUser,
+                    onChanged: (UserModel? user) {
+                      if (user == null) {
+                        return;
                       }
 
-                      return DropdownFormInput(
-                        value: _selectedUser,
-                        onChanged: (UserModel? user) {
-                          if (user == null) {
-                            return;
-                          }
-
-                          setState(() {
-                            _selectedUser = user;
-                          });
-                        },
-                        items: store.items,
-                        renderLabel: (UserModel? user) => Text(user!.name),
-                        isRequired: true,
-                        requiredMessage: 'Selecione o profissional',
-                        labelText: 'Selecione o profissional',
-                      );
+                      setState(() {
+                        _selectedUser = user;
+                      });
                     },
+                    items: Provider.of<UserStore>(context).items,
+                    renderLabel: (UserModel? user) => user!.name,
+                    isRequired: true,
+                    requiredMessage: 'Selecione o profissional',
+                    labelText: 'Profissional',
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 16.0),
-                    child: Consumer<HeadquarterStore>(
-                      builder: (context, store, child) {
-                        if (store.total == 1) {
-                          _selectedHeadquarter = store.items.first;
-                          return Container();
-                        }
+                  DropdownFormInput(
+                    value: _selectedHeadquarter,
+                    onChanged: (HeadquarterModel? headquarter) {
+                      if (headquarter == null) {
+                        return;
+                      }
 
-                        return DropdownFormInput(
-                          value: _selectedHeadquarter,
-                          onChanged: (HeadquarterModel? headquarter) {
-                            if (headquarter == null) {
-                              return;
-                            }
-
-                            setState(() {
-                              _selectedHeadquarter = headquarter;
-                            });
-                          },
-                          items: store.items,
-                          renderLabel: (HeadquarterModel? headquarter) =>
-                              Text(headquarter!.name),
-                          isRequired: true,
-                          requiredMessage: 'Selecione a filial',
-                          labelText: 'Selecione a filial',
-                        );
-                      },
-                    ),
+                      setState(() {
+                        _selectedHeadquarter = headquarter;
+                      });
+                    },
+                    items: Provider.of<HeadquarterStore>(context).items,
+                    renderLabel: (HeadquarterModel headquarter) =>
+                        headquarter.name,
+                    isRequired: true,
+                    requiredMessage: 'Selecione a filial',
+                    labelText: 'Filial',
                   ),
-                  Consumer<ServiceStore>(builder: (context, store, child) {
-                    return DropdownFormInput(
-                      value: _selectedService,
-                      onChanged: (ServiceModel? value) {
-                        if (value == null) {
-                          return;
-                        }
-                        setState(() {
-                          _selectedService = value;
-                          fetchAmount();
-                        });
-                      },
-                      items: store.items,
-                      renderLabel: (ServiceModel? service) =>
-                          Text(service!.name),
-                      isRequired: true,
-                      requiredMessage: 'Selecione o serviço',
-                      labelText: 'Escolha o serviço',
-                    );
-                  }),
+                  DropdownFormInput(
+                    value: _selectedService,
+                    onChanged: (ServiceModel? value) {
+                      if (value == null) {
+                        return;
+                      }
+                      setState(() {
+                        _selectedService = value;
+                        fetchAmount();
+                      });
+                    },
+                    items: Provider.of<ServiceStore>(context).items,
+                    renderLabel: (ServiceModel service) => service.name,
+                    isRequired: true,
+                    requiredMessage: 'Selecione o serviço',
+                    labelText: 'Serviço',
+                  ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     child: DatePickerInput(

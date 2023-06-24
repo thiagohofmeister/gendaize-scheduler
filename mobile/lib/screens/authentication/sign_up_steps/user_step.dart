@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
-import 'package:mobile/components/template/text_form_input.dart';
+import 'package:mobile/components/inputs/text_form_input.dart';
 import 'package:mobile/models/register/register_model.dart';
 import 'package:mobile/screens/authentication/components/step_title.dart';
 

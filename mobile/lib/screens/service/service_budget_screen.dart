@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/components/template/data_label.dart';
-import 'package:mobile/components/template/dropdown_form_input/dropdown_form_input.dart';
+import 'package:mobile/components/inputs/checkbox_group_list.dart';
+import 'package:mobile/components/inputs/dropdown_form_input.dart';
+import 'package:mobile/components/inputs/radio_group_list.dart';
 import 'package:mobile/components/template/screen_layout.dart';
-import 'package:mobile/components/template/screen_progress_indicator.dart';
 import 'package:mobile/models/customer/customer_model.dart';
 import 'package:mobile/models/headquarter/headquarter_model.dart';
 import 'package:mobile/models/scheduled/scheduled_create_calculate_amount_model.dart';
 import 'package:mobile/models/service/service_model.dart';
 import 'package:mobile/models/shared/address_model.dart';
 import 'package:mobile/models/shared/amount_model.dart';
-import 'package:mobile/models/user/user_model.dart';
+import 'package:mobile/screens/customer/components/customer_data.dart';
+import 'package:mobile/screens/service/components/service_budget_list.dart';
 import 'package:mobile/services/scheduled_service.dart';
 import 'package:mobile/store/customer_store.dart';
 import 'package:mobile/store/headquarter_store.dart';
 import 'package:mobile/store/service_store.dart';
-import 'package:mobile/store/user_logged_store.dart';
 import 'package:mobile/store/user_store.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
@@ -35,7 +35,6 @@ class _ServiceBudgetScreenState extends State<ServiceBudgetScreen> {
   final List<ServiceModel> _selectedServices = [];
   HeadquarterModel? _selectedHeadquarter;
   List<AmountModel>? _amounts;
-  bool isSaving = false;
 
   Future<void> fetchAmount() async {
     if (_selectedCustomer == null ||
@@ -65,11 +64,7 @@ class _ServiceBudgetScreenState extends State<ServiceBudgetScreen> {
     });
   }
 
-  void toSchedule() async {
-    setState(() {
-      isSaving = true;
-    });
-
+  void toShare() async {
     if (!_formKey.currentState!.validate() || _amounts == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -77,14 +72,8 @@ class _ServiceBudgetScreenState extends State<ServiceBudgetScreen> {
         ),
       );
 
-      setState(() {
-        isSaving = false;
-      });
-
       return;
     }
-
-    UserModel user = Provider.of<UserLoggedStore>(context, listen: false).user!;
 
     String message = "Olá!\n\n"
         "Temos as seguintes opções e seus respectivos valores:\n";
@@ -95,14 +84,9 @@ class _ServiceBudgetScreenState extends State<ServiceBudgetScreen> {
       count++;
     }
 
-    message += "\nQuaisquer dúvidas fico a disposição!\n\n"
-        "Atenciosamente,\n${user.name}";
+    message += "\nQuaisquer dúvidas fico a disposição!";
 
     Share.share(message);
-
-    setState(() {
-      isSaving = false;
-    });
   }
 
   void fetchInitialData() async {
@@ -135,8 +119,10 @@ class _ServiceBudgetScreenState extends State<ServiceBudgetScreen> {
     }
   }
 
-  void selectCustomerAddress(AddressModel? index) {
-    _selectedCustomerAddress = index;
+  void selectCustomerAddress(AddressModel? address) {
+    setState(() {
+      _selectedCustomerAddress = address;
+    });
     fetchAmount();
   }
 
@@ -147,7 +133,7 @@ class _ServiceBudgetScreenState extends State<ServiceBudgetScreen> {
         title: const Text("Orçamento"),
         actions: [
           MenuItemButton(
-            onPressed: toSchedule,
+            onPressed: toShare,
             child: const Text(
               "Compartilhar",
               style: TextStyle(color: Colors.black),
@@ -156,213 +142,70 @@ class _ServiceBudgetScreenState extends State<ServiceBudgetScreen> {
         ],
       ),
       body: SingleChildScrollView(
-        child: isSaving ||
-                Provider.of<CustomerStore>(context, listen: true).isLoading
-            ? const ScreenProgressIndicator()
-            : Form(
-                key: _formKey,
-                child: ScreenLayout(
-                  children: [
-                    Consumer<CustomerStore>(
-                      builder: (context, store, child) {
-                        return DropdownFormInput(
-                          value: _selectedCustomer,
-                          onChanged: (CustomerModel? customer) {
-                            if (customer == null) {
-                              return;
-                            }
-
-                            setState(() {
-                              _selectedCustomer = customer;
-
-                              if (customer.addresses.length == 1) {
-                                selectCustomerAddress(
-                                  customer.addresses.firstOrNull,
-                                );
-                              }
-                            });
-                          },
-                          items: store.items,
-                          renderLabel: (CustomerModel? customer) =>
-                              Text(customer!.name),
-                          labelText: 'Selecione o cliente',
-                          isRequired: true,
-                          requiredMessage: 'Selecione o cliente',
-                        );
-                      },
-                    ),
-                    _selectedCustomer != null
-                        ? Padding(
-                            padding: const EdgeInsets.only(top: 16.0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text('Selecione o endereço do cliente'),
-                                ..._selectedCustomer!.addresses.map((address) {
-                                  return RadioListTile<AddressModel>(
-                                    title: Text(address.getFullAddress()),
-                                    value: address,
-                                    groupValue: _selectedCustomerAddress,
-                                    onChanged: (AddressModel? index) {
-                                      setState(() {
-                                        selectCustomerAddress(index);
-                                      });
-                                    },
-                                  );
-                                })
-                              ],
-                            ),
-                          )
-                        : Container(),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 16.0),
-                      child: Consumer<HeadquarterStore>(
-                        builder: (context, store, child) {
-                          if (store.total == 1) {
-                            _selectedHeadquarter = store.items.first;
-                            return Container();
-                          }
-
-                          return DropdownFormInput(
-                            value: _selectedHeadquarter,
-                            onChanged: (HeadquarterModel? headquarter) {
-                              if (headquarter == null) {
-                                return;
-                              }
-
-                              setState(() {
-                                _selectedHeadquarter = headquarter;
-                              });
-
-                              fetchAmount();
-                            },
-                            items: store.items,
-                            renderLabel: (HeadquarterModel? headquarter) =>
-                                Text(headquarter!.name),
-                            isRequired: true,
-                            requiredMessage: 'Selecione a filial',
-                            labelText: 'Selecione a filial',
-                          );
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 16.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text('Selecione os serviços'),
-                          ...Provider.of<ServiceStore>(context, listen: true)
-                              .items
-                              .map((service) {
-                            return ListTile(
-                              title: Text(service.name),
-                              trailing: Checkbox(
-                                value: _selectedServices.contains(service),
-                                onChanged: (bool? value) {
-                                  setState(() {
-                                    _amounts = [];
-
-                                    if (value == true) {
-                                      _selectedServices.add(service);
-                                    } else {
-                                      _selectedServices.remove(service);
-                                    }
-
-                                    fetchAmount();
-                                  });
-                                },
-                              ),
-                            );
-                          })
-                        ],
-                      ),
-                    ),
-                    _selectedServices.isNotEmpty &&
-                            _amounts != null &&
-                            _amounts!.isNotEmpty
-                        ? Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                                const Padding(
-                                  padding:
-                                      EdgeInsets.only(top: 16, bottom: 16.0),
-                                  child: Text(
-                                    'Valores',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                ),
-                                ..._amounts!.map((amount) {
-                                  ServiceModel service =
-                                      _selectedServices.firstWhere((service) =>
-                                          service.id == amount.service!.id);
-
-                                  return Padding(
-                                    padding:
-                                        const EdgeInsets.only(bottom: 16.0),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              bottom: 8.0),
-                                          child: DataLabel(
-                                            label: 'Serviço',
-                                            info: service.name,
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              bottom: 8.0),
-                                          child: DataLabel(
-                                            label: 'Duração',
-                                            info: service.getDuration(),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              bottom: 8.0),
-                                          child: DataLabel(
-                                            label: 'Valor aula',
-                                            info: amount.getSubtotal(),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              bottom: 8.0),
-                                          child: DataLabel(
-                                            label: 'Taxa de deslocamento',
-                                            info: amount.taxes > 0
-                                                ? amount.getTaxes()
-                                                : 'Grátis',
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              bottom: 8.0),
-                                          child: DataLabel(
-                                            label: 'Total',
-                                            info: amount.getTotal(),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                }).toList(),
-                              ])
-                        : Container(),
-                  ],
+        child: Form(
+          key: _formKey,
+          child: ScreenLayout(
+            children: [
+              const Padding(
+                padding: EdgeInsets.only(bottom: 16.0),
+                child: Text(
+                  'Dados do cliente',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
                 ),
               ),
+              CustomerData(
+                customer: _selectedCustomer!,
+              ),
+              RadioGroupList<AddressModel>(
+                setState: setState,
+                items: _selectedCustomer!.addresses,
+                label: 'Selecione o endereço do cliente',
+                renderTitle: (item) => item.getFullAddress(),
+                value: _selectedCustomerAddress,
+                onChanged: (item) => selectCustomerAddress(item),
+                labelToOnlyOneOption: 'Endereço',
+              ),
+              DropdownFormInput(
+                value: _selectedHeadquarter,
+                onChanged: (HeadquarterModel? headquarter) {
+                  if (headquarter == null) {
+                    return;
+                  }
+
+                  setState(() {
+                    _selectedHeadquarter = headquarter;
+                  });
+
+                  fetchAmount();
+                },
+                items: Provider.of<HeadquarterStore>(context).items,
+                renderLabel: (HeadquarterModel headquarter) => headquarter.name,
+                isRequired: true,
+                requiredMessage: 'Selecione a filial',
+                labelText: 'Selecione a filial',
+              ),
+              CheckboxGroupList<ServiceModel>(
+                items: Provider.of<ServiceStore>(context, listen: true).items,
+                value: _selectedServices,
+                onChanged: (List<ServiceModel> services) {
+                  _amounts = [];
+
+                  fetchAmount();
+                },
+                renderTitle: (service) => service.name,
+                label: 'Selecione os serviços',
+                labelToOnlyOneOption: 'Serviço',
+              ),
+              ServiceBudgetList(
+                services: _selectedServices,
+                amounts: _amounts,
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
